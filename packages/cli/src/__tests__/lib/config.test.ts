@@ -36,7 +36,7 @@ describe('Config Manager', () => {
   describe('readConfig', () => {
     it('should return default config when no file exists', () => {
       const config = readConfig();
-      expect(config.api_url).toBe('https://hub.aresdevunit.com/api/v1');
+      expect(config.api_url).toBe('https://aresdevunit.vercel.app/api/v1');
       expect(config.agents).toBeDefined();
       expect(config.agents.claude.skill_path).toBe('~/.claude/commands');
       expect(config.access_token).toBeUndefined();
@@ -61,19 +61,19 @@ describe('Config Manager', () => {
   describe('writeConfig', () => {
     it('should create config directory and file', () => {
       writeConfig({
-        api_url: 'https://hub.aresdevunit.com/api/v1',
+        api_url: 'https://aresdevunit.vercel.app/api/v1',
         agents: { claude: { skill_path: '~/.claude/commands' } },
       });
 
       expect(existsSync(configFile)).toBe(true);
       const raw = readFileSync(configFile, 'utf-8');
       const parsed = JSON.parse(raw);
-      expect(parsed.api_url).toBe('https://hub.aresdevunit.com/api/v1');
+      expect(parsed.api_url).toBe('https://aresdevunit.vercel.app/api/v1');
     });
 
     it('should set file permission to 0600', () => {
       writeConfig({
-        api_url: 'https://hub.aresdevunit.com/api/v1',
+        api_url: 'https://aresdevunit.vercel.app/api/v1',
         agents: {},
       });
 
@@ -89,7 +89,7 @@ describe('Config Manager', () => {
   describe('updateConfig', () => {
     it('should merge partial updates with existing config', () => {
       writeConfig({
-        api_url: 'https://hub.aresdevunit.com/api/v1',
+        api_url: 'https://aresdevunit.vercel.app/api/v1',
         agents: { claude: { skill_path: '~/.claude/commands' } },
       });
 
@@ -97,7 +97,7 @@ describe('Config Manager', () => {
 
       const config = readConfig();
       expect(config.access_token).toBe('new-token');
-      expect(config.api_url).toBe('https://hub.aresdevunit.com/api/v1');
+      expect(config.api_url).toBe('https://aresdevunit.vercel.app/api/v1');
     });
   });
 
@@ -106,7 +106,7 @@ describe('Config Manager', () => {
       writeConfig({
         access_token: 'token',
         refresh_token: 'refresh',
-        api_url: 'https://hub.aresdevunit.com/api/v1',
+        api_url: 'https://aresdevunit.vercel.app/api/v1',
         agents: { claude: { skill_path: '~/.claude/commands' } },
       });
 
@@ -115,7 +115,7 @@ describe('Config Manager', () => {
       const config = readConfig();
       expect(config.access_token).toBeUndefined();
       expect(config.refresh_token).toBeUndefined();
-      expect(config.api_url).toBe('https://hub.aresdevunit.com/api/v1');
+      expect(config.api_url).toBe('https://aresdevunit.vercel.app/api/v1');
     });
   });
 

@@ -24,7 +24,7 @@ function makeSkillJson(opts: {
     files[agent] = `${opts.name}.md`;
   }
   return {
-    $schema: 'https://hub.aresdevunit.com/schemas/skill.json',
+    $schema: 'https://aresdevunit.vercel.app/schemas/skill.json',
     name: opts.name,
     version: '1.0.0',
     description: opts.description,

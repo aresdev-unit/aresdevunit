@@ -47,7 +47,7 @@ function createProgram(globalOpts: Record<string, unknown> = {}) {
 }
 
 const DEFAULT_CONFIG = {
-  api_url: 'https://hub.aresdevunit.com/api/v1',
+  api_url: 'https://aresdevunit.vercel.app/api/v1',
   access_token: 'secret-jwt-token',
   agents: {
     claude: { skill_path: '~/.claude/commands' },
@@ -72,7 +72,7 @@ describe('config get', () => {
     const output = consoleSpy.mock.calls[0]![0] as string;
     const result = JSON.parse(output);
     expect(result.key).toBe('api_url');
-    expect(result.value).toBe('https://hub.aresdevunit.com/api/v1');
+    expect(result.value).toBe('https://aresdevunit.vercel.app/api/v1');
   });
 
   it('returns a nested value via dot notation', async () => {
@@ -155,7 +155,7 @@ describe('config list', () => {
 
     const output = consoleSpy.mock.calls[0]![0] as string;
     const result = JSON.parse(output);
-    expect(result['api_url']).toBe('https://hub.aresdevunit.com/api/v1');
+    expect(result['api_url']).toBe('https://aresdevunit.vercel.app/api/v1');
     expect(result['agents.claude.skill_path']).toBe('~/.claude/commands');
   });
 

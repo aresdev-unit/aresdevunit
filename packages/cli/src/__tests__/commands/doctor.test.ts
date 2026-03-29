@@ -73,7 +73,7 @@ describe('doctorCommand', () => {
 
     mockReadConfig.mockReturnValue({
       access_token: 'test-token',
-      api_url: 'https://hub.aresdevunit.com/api/v1',
+      api_url: 'https://aresdevunit.vercel.app/api/v1',
       agents: {
         claude: { skill_path: '~/.claude/commands' },
         codex: { skill_path: null },
