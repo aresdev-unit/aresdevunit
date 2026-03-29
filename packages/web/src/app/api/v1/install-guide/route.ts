@@ -18,6 +18,17 @@ git clone https://github.com/aresdev-unit/aresdevunit.git && cd aresdevunit/pack
 ## Verify Installation
 hub --version
 
+## Project Documentation
+After cloning, the following docs are available in the repo:
+- docs/SPEC.md          — Full technical specification
+- docs/PLAN.md          — Implementation plan
+- docs/SKILLS-SPEC.md   — Skills specification (13 skills)
+- CLAUDE.md             — Project guide for Claude Code agents
+
+When setting up Claude Code for this project, the CLAUDE.md at repo root
+will be automatically loaded. It contains CSV rules, data paths, CLI usage,
+and references to all specification documents.
+
 ## Available Commands
 hub login            # Authenticate via GitHub OAuth
 hub init             # Create a new skill project

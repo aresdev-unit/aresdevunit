@@ -241,6 +241,18 @@ File constraints: max 500KB per file, 1MB total, .md only, max 5 files per skill
 7. hub install some-skill       # Install a skill
 8. hub update                   # Keep skills updated
 
+## PROJECT DOCUMENTATION
+After cloning the repo, these docs are available:
+- CLAUDE.md             — Project guide (auto-loaded by Claude Code)
+- docs/SPEC.md          — Full technical specification (architecture, API, auth, security)
+- docs/PLAN.md          — Implementation plan
+- docs/SKILLS-SPEC.md   — 13 skills specification (input/output/logic/params)
+
+The CLAUDE.md contains: CSV encoding rules (UTF-8-BOM, CRLF), data paths,
+CLI usage, deployment commands, and links to all spec documents.
+
+================================================================================
+
 ## API ENDPOINTS (for direct API access)
 Base URL: ${process.env.NEXTAUTH_URL || 'https://aresdevunit.vercel.app'}/api/v1
 
