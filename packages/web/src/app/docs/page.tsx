@@ -40,12 +40,12 @@ cd aresdevunit/packages/cli
 npm install
 npm link`}</CodeBlock>
               <p>설치 확인:</p>
-              <CodeBlock>hub --version</CodeBlock>
+              <CodeBlock>aresdevhubcli --version</CodeBlock>
             </Step>
 
             <Step number={2} title="인증">
               <p>GitHub 계정으로 로그인하세요:</p>
-              <CodeBlock>hub login</CodeBlock>
+              <CodeBlock>aresdevhubcli login</CodeBlock>
               <p>
                 브라우저에서 GitHub OAuth 인증이 열립니다.
                 완료되면 토큰이 로컬에 저장됩니다.
@@ -55,10 +55,10 @@ npm link`}</CodeBlock>
             <Step number={3} title="Skill 생성">
               <p>새 Skill 프로젝트를 초기화하세요:</p>
               <CodeBlock>{`# 대화형 모드
-hub init
+aresdevhubcli init
 
 # 비대화형 (Agent용)
-hub init --name my-skill --description "Automates X" --category developer-tools --agent-types claude`}</CodeBlock>
+aresdevhubcli init --name my-skill --description "Automates X" --category developer-tools --agent-types claude`}</CodeBlock>
               <p>
                 <code className="rounded bg-zinc-100 px-1 py-0.5 text-xs font-mono dark:bg-zinc-800">skill.json</code>과
                 템플릿 <code className="rounded bg-zinc-100 px-1 py-0.5 text-xs font-mono dark:bg-zinc-800">.md</code> 파일이 생성됩니다.
@@ -68,14 +68,14 @@ hub init --name my-skill --description "Automates X" --category developer-tools 
 
             <Step number={4} title="배포">
               <p>Skill을 검증하고 배포하세요:</p>
-              <CodeBlock>{`hub validate   # Check before publish
-hub publish    # Publish to registry`}</CodeBlock>
+              <CodeBlock>{`aresdevhubcli validate   # Check before publish
+aresdevhubcli publish    # Publish to registry`}</CodeBlock>
             </Step>
 
             <Step number={5} title="Skill 설치">
               <p>다른 사람이 만든 Skill을 탐색하고 설치하세요:</p>
-              <CodeBlock>{`hub search "code review"
-hub install code-review-helper --agent claude`}</CodeBlock>
+              <CodeBlock>{`aresdevhubcli search "code review"
+aresdevhubcli install code-review-helper --agent claude`}</CodeBlock>
             </Step>
           </Section>
 
@@ -161,18 +161,18 @@ hub install code-review-helper --agent claude`}</CodeBlock>
           {/* CLI Commands */}
           <Section id="cli-commands" title="CLI 명령어">
             <div className="space-y-1">
-              <CommandRow cmd="hub login" desc="GitHub OAuth 인증" />
-              <CommandRow cmd="hub logout" desc="로그아웃 및 토큰 해제" />
-              <CommandRow cmd="hub whoami" desc="현재 사용자 정보 표시" />
-              <CommandRow cmd="hub init" desc="새 Skill 프로젝트 생성" />
-              <CommandRow cmd="hub validate" desc="배포 전 Skill 검증" />
-              <CommandRow cmd="hub publish" desc="레지스트리에 Skill 배포" />
-              <CommandRow cmd="hub install <name>" desc="Skill 설치" />
-              <CommandRow cmd="hub uninstall <name>" desc="설치된 Skill 제거" />
-              <CommandRow cmd="hub update [name]" desc="설치된 Skill 업데이트" />
-              <CommandRow cmd="hub search <query>" desc="Skill 레지스트리 검색" />
-              <CommandRow cmd="hub info <name>" desc="Skill 상세 정보 표시" />
-              <CommandRow cmd="hub list" desc="설치/배포된 Skill 목록" />
+              <CommandRow cmd="aresdevhubcli login" desc="GitHub OAuth 인증" />
+              <CommandRow cmd="aresdevhubcli logout" desc="로그아웃 및 토큰 해제" />
+              <CommandRow cmd="aresdevhubcli whoami" desc="현재 사용자 정보 표시" />
+              <CommandRow cmd="aresdevhubcli init" desc="새 Skill 프로젝트 생성" />
+              <CommandRow cmd="aresdevhubcli validate" desc="배포 전 Skill 검증" />
+              <CommandRow cmd="aresdevhubcli publish" desc="레지스트리에 Skill 배포" />
+              <CommandRow cmd="aresdevhubcli install <name>" desc="Skill 설치" />
+              <CommandRow cmd="aresdevhubcli uninstall <name>" desc="설치된 Skill 제거" />
+              <CommandRow cmd="aresdevhubcli update [name]" desc="설치된 Skill 업데이트" />
+              <CommandRow cmd="aresdevhubcli search <query>" desc="Skill 레지스트리 검색" />
+              <CommandRow cmd="aresdevhubcli info <name>" desc="Skill 상세 정보 표시" />
+              <CommandRow cmd="aresdevhubcli list" desc="설치/배포된 Skill 목록" />
             </div>
 
             <div className="mt-6">
@@ -190,7 +190,7 @@ hub install code-review-helper --agent claude`}</CodeBlock>
             <div className="mt-4 rounded-lg border border-blue-100 bg-blue-50 p-4 text-sm text-blue-800 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-300">
               <strong>Agent 친화적 패턴:</strong>
               <code className="ml-1 rounded bg-blue-100 px-1.5 py-0.5 text-xs font-mono dark:bg-blue-900">
-                hub install &lt;name&gt; --yes --json --agent claude
+                aresdevhubcli install &lt;name&gt; --yes --json --agent claude
               </code>
             </div>
 
@@ -222,7 +222,7 @@ hub install code-review-helper --agent claude`}</CodeBlock>
               </h4>
               <div className="space-y-1">
                 <CommandRow cmd="Claude Code" desc="~/.claude/commands/<name>.md" />
-                <CommandRow cmd="Codex" desc="hub config로 설정 가능" />
+                <CommandRow cmd="Codex" desc="aresdevhubcli config로 설정 가능" />
               </div>
             </div>
 
@@ -244,7 +244,7 @@ hub install code-review-helper --agent claude`}</CodeBlock>
             <div className="space-y-6">
               <FAQ
                 q="배포된 버전을 수정할 수 있나요?"
-                a="아니요. 배포된 버전은 변경 불가합니다. 버그를 수정하려면 hub publish --patch로 새 버전을 배포하세요 (예: 1.0.0 -> 1.0.1)."
+                a="아니요. 배포된 버전은 변경 불가합니다. 버그를 수정하려면 aresdevhubcli publish --patch로 새 버전을 배포하세요 (예: 1.0.0 -> 1.0.1)."
               />
               <FAQ
                 q="Skill을 설치하려면 계정이 필요한가요?"
@@ -256,11 +256,11 @@ hub install code-review-helper --agent claude`}</CodeBlock>
               />
               <FAQ
                 q="Skill을 지원 중단하려면 어떻게 하나요?"
-                a="CLI에서 hub deprecate <name>을 사용하세요. 또는 관리자에게 관리자 패널에서 지원 중단을 요청하세요."
+                a="CLI에서 aresdevhubcli deprecate <name>을 사용하세요. 또는 관리자에게 관리자 패널에서 지원 중단을 요청하세요."
               />
               <FAQ
                 q="전체 API 문서는 어디에 있나요?"
-                a="CLI 가이드에 모든 API 엔드포인트가 포함되어 있습니다. GET /api/v1/cli-guide로 접근하거나 hub --help로 명령어별 도움말을 확인하세요."
+                a="CLI 가이드에 모든 API 엔드포인트가 포함되어 있습니다. GET /api/v1/cli-guide로 접근하거나 aresdevhubcli --help로 명령어별 도움말을 확인하세요."
               />
             </div>
           </Section>

@@ -219,7 +219,7 @@ export default function DashboardPage() {
                 <QuickAction
                   href="https://github.com/aresdev-unit/aresdevunit"
                   label="CLI 가이드"
-                  desc="hub init && hub publish"
+                  desc="aresdevhubcli init && aresdevhubcli publish"
                   external
                 />
               </div>

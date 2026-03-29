@@ -1,9 +1,9 @@
 {
-  "name": "@aresdevunit/hub",
-  "version": "0.0.0",
+  "name": "@aresdevunit/aresdevhubcli",
+  "version": "0.1.1",
   "type": "module",
   "bin": {
-    "hub": "./dist/index.js"
+    "aresdevhubcli": "./dist/index.js"
   },
   "main": "./dist/index.js",
   "files": [

@@ -124,7 +124,7 @@ export const loginCommand = new Command('login')
       if (err instanceof NetworkError) {
         console.error(
           chalk.red(
-            `\n  Network error: ${err.message}\n  Check your connection and retry, or run \`hub doctor\` for diagnostics.\n  (exit code 4)`
+            `\n  Network error: ${err.message}\n  Check your connection and retry, or run \`aresdevhubcli doctor\` for diagnostics.\n  (exit code 4)`
           )
         );
         process.exit(4);

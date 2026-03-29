@@ -118,13 +118,13 @@ export class ApiClient {
         if (res.status === 401) {
           clearTokens();
           throw new AuthError(
-            'Session expired. Run `hub login` to re-authenticate.'
+            'Session expired. Run `aresdevhubcli login` to re-authenticate.'
           );
         }
       } else {
         clearTokens();
         throw new AuthError(
-          'Session expired. Run `hub login` to re-authenticate.'
+          'Session expired. Run `aresdevhubcli login` to re-authenticate.'
         );
       }
     }

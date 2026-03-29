@@ -194,7 +194,7 @@ export const initCommand = new Command('init')
       console.log();
       console.log(chalk.bold('Next steps:'));
       console.log(`  1. Edit ${chalk.cyan(`${name}.md`)} to write your skill content`);
-      console.log(`  2. Run ${chalk.cyan('hub validate')} to check your skill`);
-      console.log(`  3. Run ${chalk.cyan('hub publish')} to share it with the world`);
+      console.log(`  2. Run ${chalk.cyan('aresdevhubcli validate')} to check your skill`);
+      console.log(`  3. Run ${chalk.cyan('aresdevhubcli publish')} to share it with the world`);
     }
   });

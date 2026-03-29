@@ -81,7 +81,7 @@ export default async function SkillDetailPage({
     notFound();
   }
 
-  const installCommand = `npx @aresdevunit/hub install ${skill.name}`;
+  const installCommand = `npx @aresdevunit/aresdevhubcli install ${skill.name}`;
   const categoryLabel =
     SKILL_CATEGORIES[skill.category as keyof typeof SKILL_CATEGORIES] || skill.category;
 
@@ -277,7 +277,7 @@ export default async function SkillDetailPage({
                   버전 지정 설치
                 </h3>
                 <code className="block text-xs bg-gray-50 p-2 rounded text-gray-700 break-all">
-                  npx @aresdevunit/hub install {skill.name}@{skill.latest_version}
+                  npx @aresdevunit/aresdevhubcli install {skill.name}@{skill.latest_version}
                 </code>
               </div>
             </div>

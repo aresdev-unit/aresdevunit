@@ -56,7 +56,7 @@ export const searchCommand = new Command('search')
         if (useJson) {
           console.log(JSON.stringify({ error: { code: 'NETWORK_ERROR', message: err.message } }));
         } else {
-          console.error(chalk.red(`\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`hub doctor\` for diagnostics.\n(exit code 4)`));
+          console.error(chalk.red(`\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`aresdevhubcli doctor\` for diagnostics.\n(exit code 4)`));
         }
         process.exit(4);
       }

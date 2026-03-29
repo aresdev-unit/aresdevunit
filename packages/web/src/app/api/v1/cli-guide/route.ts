@@ -6,7 +6,7 @@ const GUIDE = `# AresDevUnit Hub CLI — Complete Usage Guide
 ## OVERVIEW
 AresDevUnit Hub is an AI Agent skill sharing platform.
 Skills are .md files that agents can execute as commands/prompts.
-The Hub CLI ("hub") manages publishing, installing, and sharing skills.
+The Hub CLI ("aresdevhubcli") manages publishing, installing, and sharing skills.
 
 ## PREREQUISITES
 - Node.js >= 20
@@ -18,59 +18,59 @@ git clone https://github.com/aresdev-unit/aresdevunit.git
 cd aresdevunit/packages/cli
 npm install
 npm link
-# Verify: hub --version
+# Verify: aresdevhubcli --version
 
 ================================================================================
 
 ## AUTHENTICATION
 
-### hub login
+### aresdevhubcli login
 Authenticate via GitHub OAuth using Device Code Flow.
 Opens browser for GitHub authorization, then saves tokens locally.
 
-  $ hub login
+  $ aresdevhubcli login
   → Opening browser for authentication...
   → Enter code: ABCD-1234
   → Logged in as johndoe
 
-### hub logout
+### aresdevhubcli logout
 Sign out and revoke tokens.
 
-  $ hub logout
+  $ aresdevhubcli logout
   → Logged out successfully
 
-### hub whoami
+### aresdevhubcli whoami
 Show current authenticated user.
 
-  $ hub whoami
+  $ aresdevhubcli whoami
   → johndoe (john@example.com)
   → Role: USER
   → Skills: 5 published
 
-  $ hub whoami --json
+  $ aresdevhubcli whoami --json
   {"username":"johndoe","email":"john@example.com","role":"USER","skills_count":5}
 
 ================================================================================
 
 ## CREATING & PUBLISHING SKILLS
 
-### hub init
+### aresdevhubcli init
 Create a new skill project with skill.json and template .md file.
 
   # Interactive mode
-  $ hub init
+  $ aresdevhubcli init
 
   # Non-interactive mode (for agents)
-  $ hub init --name my-skill --description "Automates X for Y" --category developer-tools --agent-types claude,codex
+  $ aresdevhubcli init --name my-skill --description "Automates X for Y" --category developer-tools --agent-types claude,codex
 
   Output files:
   - skill.json    (metadata)
   - my-skill.md   (skill content — edit this)
 
-### hub validate
+### aresdevhubcli validate
 Validate skill.json and files before publishing.
 
-  $ hub validate
+  $ aresdevhubcli validate
   → Validating skill.json... ✓
   → Checking file size... ✓
   → Checking for unsafe patterns... ✓
@@ -79,41 +79,41 @@ Validate skill.json and files before publishing.
   Checks: schema validation, file size (<500KB each, <1MB total),
   .md extension only, prompt injection pattern scan.
 
-### hub publish
+### aresdevhubcli publish
 Publish a skill to the registry. Runs validate automatically.
 
-  $ hub publish
+  $ aresdevhubcli publish
   → Publishing my-skill@1.0.0... ✓
   → Published: https://aresdevunit.vercel.app/skills/my-skill
 
   # Auto version bump
-  $ hub publish --patch    # 1.0.0 → 1.0.1
-  $ hub publish --minor    # 1.0.0 → 1.1.0
-  $ hub publish --major    # 1.0.0 → 2.0.0
+  $ aresdevhubcli publish --patch    # 1.0.0 → 1.0.1
+  $ aresdevhubcli publish --minor    # 1.0.0 → 1.1.0
+  $ aresdevhubcli publish --major    # 1.0.0 → 2.0.0
 
   # Agent usage (non-interactive)
-  $ hub publish --yes --json
+  $ aresdevhubcli publish --yes --json
 
 ================================================================================
 
 ## INSTALLING & MANAGING SKILLS
 
-### hub install <name>
+### aresdevhubcli install <name>
 Download and install a skill to your agent's command directory.
 
-  $ hub install git-helper
+  $ aresdevhubcli install git-helper
   → Downloading git-helper@1.2.0... ✓
   → Detected agent: Claude Code
   → Installed to ~/.claude/commands/git-helper.md
 
   # Install specific version
-  $ hub install git-helper@1.1.0
+  $ aresdevhubcli install git-helper@1.1.0
 
   # Specify agent explicitly
-  $ hub install git-helper --agent claude
+  $ aresdevhubcli install git-helper --agent claude
 
   # Agent usage (skip confirmation prompts)
-  $ hub install git-helper --yes --agent claude --json
+  $ aresdevhubcli install git-helper --yes --agent claude --json
 
   Agent detection priority:
   1. --agent flag (highest)
@@ -123,20 +123,20 @@ Download and install a skill to your agent's command directory.
 
   Install location per agent:
   - Claude Code: ~/.claude/commands/<name>.md
-  - Others: configurable via hub config
+  - Others: configurable via aresdevhubcli config
 
-### hub uninstall <name>
+### aresdevhubcli uninstall <name>
 Remove an installed skill.
 
-  $ hub uninstall git-helper
+  $ aresdevhubcli uninstall git-helper
   → Uninstalled git-helper
 
-### hub update [name]
+### aresdevhubcli update [name]
 Update installed skills to latest versions.
 
-  $ hub update              # Check all installed skills
-  $ hub update git-helper   # Update specific skill
-  $ hub update --all --yes  # Update all without prompts (agent-friendly)
+  $ aresdevhubcli update              # Check all installed skills
+  $ aresdevhubcli update git-helper   # Update specific skill
+  $ aresdevhubcli update --all --yes  # Update all without prompts (agent-friendly)
 
   Uses atomic updates: backup → replace → verify. Rolls back on failure.
 
@@ -144,38 +144,38 @@ Update installed skills to latest versions.
 
 ## BROWSING & SEARCHING
 
-### hub search <query>
+### aresdevhubcli search <query>
 Search the skill registry.
 
-  $ hub search "git automation"
+  $ aresdevhubcli search "git automation"
   → git-helper    v1.2.0  ↓1234  "Git workflow automation"
   → git-branch    v0.5.0  ↓45    "Branch management"
 
   # With filters
-  $ hub search "testing" --category testing --agent claude
+  $ aresdevhubcli search "testing" --category testing --agent claude
 
   # Agent usage
-  $ hub search "code review" --json
+  $ aresdevhubcli search "code review" --json
 
-### hub info <name>
+### aresdevhubcli info <name>
 Show detailed information about a skill.
 
-  $ hub info git-helper
+  $ aresdevhubcli info git-helper
   → git-helper v1.2.0
   → by johndoe | MIT | ↓1234
   → Category: developer-tools
   → Agents: claude, codex
-  → Install: hub install git-helper
+  → Install: aresdevhubcli install git-helper
 
-  $ hub info git-helper --json
+  $ aresdevhubcli info git-helper --json
 
-### hub list
+### aresdevhubcli list
 List skills.
 
-  $ hub list              # Show locally installed skills (default)
-  $ hub list --installed  # Same as above
-  $ hub list --mine       # Show my published skills (requires login)
-  $ hub list --json       # Agent-friendly output
+  $ aresdevhubcli list              # Show locally installed skills (default)
+  $ aresdevhubcli list --installed  # Same as above
+  $ aresdevhubcli list --mine       # Show my published skills (requires login)
+  $ aresdevhubcli list --json       # Agent-friendly output
 
 ================================================================================
 
@@ -192,12 +192,12 @@ List skills.
 When stdout is not a TTY (piped, agent-called):
 - --json is auto-enabled
 - Prompts without --yes will auto-REJECT and exit code 1
-- Recommended pattern: hub <command> --yes --json --agent claude
+- Recommended pattern: aresdevhubcli <command> --yes --json --agent claude
 
 ## EXIT CODES
   0  Success
   1  General error
-  2  Validation error (hub validate / hub publish)
+  2  Validation error (aresdevhubcli validate / aresdevhubcli publish)
   3  Authentication error (not logged in, token expired)
   4  Network error (API unreachable)
   5  Skill not found
@@ -232,14 +232,14 @@ File constraints: max 500KB per file, 1MB total, .md only, max 5 files per skill
 
 ## TYPICAL WORKFLOW
 
-1. hub login                    # Authenticate
-2. hub init --name my-skill ... # Create skill project
-3. (edit my-skill.md)           # Write skill content
-4. hub validate                 # Check before publish
-5. hub publish                  # Publish to registry
-6. hub search "keyword"         # Find skills
-7. hub install some-skill       # Install a skill
-8. hub update                   # Keep skills updated
+1. aresdevhubcli login                    # Authenticate
+2. aresdevhubcli init --name my-skill ... # Create skill project
+3. (edit my-skill.md)                     # Write skill content
+4. aresdevhubcli validate                 # Check before publish
+5. aresdevhubcli publish                  # Publish to registry
+6. aresdevhubcli search "keyword"         # Find skills
+7. aresdevhubcli install some-skill       # Install a skill
+8. aresdevhubcli update                   # Keep skills updated
 
 ## PROJECT DOCUMENTATION
 After cloning the repo, these docs are available:

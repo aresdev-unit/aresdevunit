@@ -153,7 +153,7 @@ export const installCommand = new Command('install')
         if (useJson) {
           console.log(JSON.stringify({ error: { code: 'NETWORK_ERROR', message: err.message } }));
         } else {
-          console.error(chalk.red(`\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`hub doctor\` for diagnostics.\n(exit code 4)`));
+          console.error(chalk.red(`\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`aresdevhubcli doctor\` for diagnostics.\n(exit code 4)`));
         }
         process.exit(4);
       }
@@ -292,6 +292,6 @@ export const installCommand = new Command('install')
       }));
     } else {
       console.log(chalk.green(`  Installed to ${installedPath}`));
-      console.log(`  Run ${chalk.cyan('hub list --installed')} to see all installed skills`);
+      console.log(`  Run ${chalk.cyan('aresdevhubcli list --installed')} to see all installed skills`);
     }
   });

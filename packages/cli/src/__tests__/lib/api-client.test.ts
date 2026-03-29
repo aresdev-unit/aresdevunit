@@ -161,7 +161,7 @@ describe('ApiClient', () => {
       );
 
       await expect(client.get('/users/me')).rejects.toThrow(
-        'Session expired. Run `hub login` to re-authenticate.'
+        'Session expired. Run `aresdevhubcli login` to re-authenticate.'
       );
       expect(mockFetch).toHaveBeenCalledTimes(2);
     });

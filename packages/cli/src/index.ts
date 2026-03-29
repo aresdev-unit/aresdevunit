@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+import { readFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { loginCommand } from './commands/login.js';
@@ -23,12 +26,16 @@ if (process.env['NO_COLOR'] !== undefined) {
   chalk.level = 0;
 }
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const pkg = JSON.parse(readFileSync(resolve(__dirname, '..', 'package.json'), 'utf-8'));
+
 const program = new Command();
 
 program
-  .name('hub')
+  .name('aresdevhubcli')
   .description('AresDevUnit Hub CLI — AI Agent skill manager')
-  .version('0.0.0')
+  .version(pkg.version)
   .option('--no-color', 'Disable colors and unicode symbols')
   .option('--json', 'Output in JSON format')
   .option('-y, --yes', 'Auto-approve all confirmation prompts')

@@ -39,9 +39,9 @@ export const publishCommand = new Command('publish')
     const config = readConfig();
     if (!config.access_token) {
       if (useJson) {
-        console.log(JSON.stringify({ error: { code: 'UNAUTHORIZED', message: 'Not logged in. Run `hub login` first.' } }));
+        console.log(JSON.stringify({ error: { code: 'UNAUTHORIZED', message: 'Not logged in. Run `aresdevhubcli login` first.' } }));
       } else {
-        console.error(chalk.red('Not logged in. Run `hub login` first.'));
+        console.error(chalk.red('Not logged in. Run `aresdevhubcli login` first.'));
       }
       process.exit(3);
     }
@@ -171,7 +171,7 @@ export const publishCommand = new Command('publish')
         if (useJson) {
           console.log(JSON.stringify({ error: { code: 'NETWORK_ERROR', message: err.message } }));
         } else {
-          console.error(chalk.red(`\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`hub doctor\` for diagnostics.\n(exit code 4)`));
+          console.error(chalk.red(`\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`aresdevhubcli doctor\` for diagnostics.\n(exit code 4)`));
         }
         process.exit(4);
       }

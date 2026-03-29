@@ -51,7 +51,7 @@ async function checkAuth(): Promise<CheckResult> {
       name: 'authentication',
       status: 'error',
       message: 'Not logged in',
-      detail: 'Run `hub login` to authenticate.',
+      detail: 'Run `aresdevhubcli login` to authenticate.',
     };
   }
 

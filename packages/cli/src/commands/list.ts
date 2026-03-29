@@ -18,9 +18,9 @@ export const listCommand = new Command('list')
       const config = readConfig();
       if (!config.access_token) {
         if (useJson) {
-          console.log(JSON.stringify({ error: { code: 'UNAUTHORIZED', message: 'Not logged in. Run `hub login` first.' } }));
+          console.log(JSON.stringify({ error: { code: 'UNAUTHORIZED', message: 'Not logged in. Run `aresdevhubcli login` first.' } }));
         } else {
-          console.error(chalk.red('Not logged in. Run `hub login` first.'));
+          console.error(chalk.red('Not logged in. Run `aresdevhubcli login` first.'));
         }
         process.exit(3);
       }
@@ -63,7 +63,7 @@ export const listCommand = new Command('list')
           if (useJson) {
             console.log(JSON.stringify({ error: { code: 'NETWORK_ERROR', message: err.message } }));
           } else {
-            console.error(chalk.red(`\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`hub doctor\` for diagnostics.\n(exit code 4)`));
+            console.error(chalk.red(`\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`aresdevhubcli doctor\` for diagnostics.\n(exit code 4)`));
           }
           process.exit(4);
         }
@@ -88,7 +88,7 @@ export const listCommand = new Command('list')
 
     const entries = Object.entries(skills);
     if (entries.length === 0) {
-      console.log('No skills installed. Run `hub search <query>` to find skills.');
+      console.log('No skills installed. Run `aresdevhubcli search <query>` to find skills.');
       return;
     }
 

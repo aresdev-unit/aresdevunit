@@ -55,18 +55,18 @@ git clone https://github.com/aresdev-unit/aresdevunit.git
 cd aresdevunit/packages/cli && npm install && npm link
 
 # 인증
-hub login
+aresdevhubcli login
 
 # 스킬 관리
-hub init --name <name> --description "..." --category <cat> --agent-types claude
-hub validate
-hub publish
-hub install <name> --agent claude
-hub search <query>
-hub list --installed
+aresdevhubcli init --name <name> --description "..." --category <cat> --agent-types claude
+aresdevhubcli validate
+aresdevhubcli publish
+aresdevhubcli install <name> --agent claude
+aresdevhubcli search <query>
+aresdevhubcli list --installed
 ```
 
-Agent 호출 시: `hub <command> --yes --json --agent claude`
+Agent 호출 시: `aresdevhubcli <command> --yes --json --agent claude`
 
 ## 데이터 경로
 

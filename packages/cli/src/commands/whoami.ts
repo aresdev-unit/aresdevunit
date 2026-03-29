@@ -23,11 +23,11 @@ export const whoamiCommand = new Command('whoami')
       if (useJson) {
         console.log(
           JSON.stringify({
-            error: { code: 'UNAUTHORIZED', message: 'Not logged in. Run `hub login` first.' },
+            error: { code: 'UNAUTHORIZED', message: 'Not logged in. Run `aresdevhubcli login` first.' },
           })
         );
       } else {
-        console.error(chalk.red('Not logged in. Run `hub login` first.'));
+        console.error(chalk.red('Not logged in. Run `aresdevhubcli login` first.'));
       }
       process.exit(3);
     }
@@ -67,7 +67,7 @@ export const whoamiCommand = new Command('whoami')
         } else {
           console.error(
             chalk.red(
-              `\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`hub doctor\` for diagnostics.\n(exit code 4)`
+              `\nNetwork error: ${err.message}\nCheck your connection and retry, or run \`aresdevhubcli doctor\` for diagnostics.\n(exit code 4)`
             )
           );
         }

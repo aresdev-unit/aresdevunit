@@ -69,7 +69,7 @@ export default function SettingsPage() {
           </div>
           <div className="p-6">
             <p className="mb-4 text-sm text-zinc-600 dark:text-zinc-400">
-              Agent Skill 경로는 CLI를 통해 설정합니다. <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-mono dark:bg-zinc-800">hub config</code> 명령어로 Agent 설정을 관리하세요.
+              Agent Skill 경로는 CLI를 통해 설정합니다. <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-mono dark:bg-zinc-800">aresdevhubcli config</code> 명령어로 Agent 설정을 관리하세요.
             </p>
 
             <div className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-800/50">
@@ -107,7 +107,7 @@ export default function SettingsPage() {
               </p>
               <p>
                 <strong className="text-zinc-900 dark:text-zinc-100">Codex:</strong>{' '}
-                경로 설정: <code className="rounded bg-zinc-100 px-1 text-xs font-mono dark:bg-zinc-800">hub config set agents.codex.skill_path &lt;path&gt;</code>
+                경로 설정: <code className="rounded bg-zinc-100 px-1 text-xs font-mono dark:bg-zinc-800">aresdevhubcli config set agents.codex.skill_path &lt;path&gt;</code>
               </p>
             </div>
           </div>
@@ -120,13 +120,13 @@ export default function SettingsPage() {
           </div>
           <div className="p-6">
             <div className="space-y-2 font-mono text-sm">
-              <CLICommand cmd="hub login" desc="GitHub 인증" />
-              <CLICommand cmd="hub whoami" desc="현재 사용자 확인" />
-              <CLICommand cmd="hub init" desc="새 Skill 생성" />
-              <CLICommand cmd="hub publish" desc="Hub에 Skill 배포" />
-              <CLICommand cmd="hub install <name>" desc="Skill 설치" />
-              <CLICommand cmd="hub list --mine" desc="내 배포 Skill 목록" />
-              <CLICommand cmd="hub update" desc="설치된 Skill 업데이트" />
+              <CLICommand cmd="aresdevhubcli login" desc="GitHub 인증" />
+              <CLICommand cmd="aresdevhubcli whoami" desc="현재 사용자 확인" />
+              <CLICommand cmd="aresdevhubcli init" desc="새 Skill 생성" />
+              <CLICommand cmd="aresdevhubcli publish" desc="Hub에 Skill 배포" />
+              <CLICommand cmd="aresdevhubcli install <name>" desc="Skill 설치" />
+              <CLICommand cmd="aresdevhubcli list --mine" desc="내 배포 Skill 목록" />
+              <CLICommand cmd="aresdevhubcli update" desc="설치된 Skill 업데이트" />
             </div>
           </div>
         </div>

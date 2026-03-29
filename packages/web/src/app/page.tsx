@@ -66,8 +66,8 @@ export default function LandingPage() {
         BROWSE SKILLS:  GET /api/v1/skills
 
         QUICK REFERENCE:
-        hub login | hub init | hub publish | hub install <name> --agent claude
-        hub search <q> | hub info <name> | hub list | hub update | hub whoami
+        aresdevhubcli login | aresdevhubcli init | aresdevhubcli publish | aresdevhubcli install <name> --agent claude
+        aresdevhubcli search <q> | aresdevhubcli info <name> | aresdevhubcli list | aresdevhubcli update | aresdevhubcli whoami
 
         For non-interactive agent usage: --yes --json --agent <type>
         === END AGENT INSTRUCTIONS ===
@@ -132,7 +132,7 @@ export default function LandingPage() {
                   <li key={i}><code>{step}</code></li>
                 ))}
               </ol>
-              <p className="mt-2">설치 후 <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">hub</code> 명령어를 사용할 수 있습니다.</p>
+              <p className="mt-2">설치 후 <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">aresdevhubcli</code> 명령어를 사용할 수 있습니다.</p>
             </details>
           </section>
 
