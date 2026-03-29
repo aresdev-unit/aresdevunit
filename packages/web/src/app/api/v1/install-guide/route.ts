@@ -45,6 +45,7 @@ GET  /api/v1/health          # Service status
 GET  /api/v1/skills          # Browse skills
 GET  /api/v1/skills/:name    # Skill detail
 GET  /api/v1/install-guide   # This guide
+GET  /api/v1/cli-guide       # Full CLI reference (all commands, skill.json spec, API list)
 `;
 
 export async function GET() {
