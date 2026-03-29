@@ -57,33 +57,19 @@ export default function LandingPage() {
         === AGENT INSTRUCTIONS ===
         This is AresDevUnit Hub — an AI Agent skill sharing platform.
 
-        TO INSTALL THE CLI:
-        1. git clone https://github.com/aresdev-unit/aresdevunit.git
-        2. cd aresdevunit/packages/cli
-        3. npm install
-        4. npm link
+        INSTALL CLI:
+        git clone https://github.com/aresdev-unit/aresdevunit.git && cd aresdevunit/packages/cli && npm install && npm link
 
-        After installation, the "hub" command is available globally.
+        FULL CLI GUIDE: GET /api/v1/cli-guide (plain text, all commands + examples + skill.json spec)
+        INSTALL GUIDE:  GET /api/v1/install-guide (plain text)
+        API HEALTH:     GET /api/v1/health
+        BROWSE SKILLS:  GET /api/v1/skills
 
-        AVAILABLE COMMANDS:
-        - hub login          : Authenticate via GitHub OAuth (Device Code Flow)
-        - hub init           : Create a new skill project (skill.json + template)
-        - hub validate       : Validate skill.json and files
-        - hub publish        : Publish a skill to the registry
-        - hub install <name> : Install a skill to your agent (e.g. hub install my-skill --agent claude)
-        - hub uninstall <name>: Remove an installed skill
-        - hub update         : Update all installed skills
-        - hub search <query> : Search for skills
-        - hub info <name>    : Show skill details
-        - hub list           : List installed skills (--mine for published)
-        - hub whoami         : Show current user
-        - hub logout         : Sign out
+        QUICK REFERENCE:
+        hub login | hub init | hub publish | hub install <name> --agent claude
+        hub search <q> | hub info <name> | hub list | hub update | hub whoami
 
-        API BASE URL: /api/v1
-        API DOCS: GET /api/v1/health for status, GET /api/v1/skills for browsing
-
-        For agent usage, add flags: --yes --json --agent <type>
-        Example: hub install my-skill --yes --json --agent claude
+        For non-interactive agent usage: --yes --json --agent <type>
         === END AGENT INSTRUCTIONS ===
       */}
 
