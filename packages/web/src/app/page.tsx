@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 export default function LandingPage() {
   const [copied, setCopied] = useState(false);
-  const installCommand = 'npm install -g @aresdevunit/hub';
+  const installCommand = 'git clone https://github.com/aresdev-unit/aresdevunit.git && cd aresdevunit/packages/cli && npm install && npm link';
 
   const handleCopy = async () => {
     try {
@@ -12,7 +12,6 @@ export default function LandingPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback for older browsers
       const textarea = document.createElement('textarea');
       textarea.value = installCommand;
       document.body.appendChild(textarea);
@@ -31,7 +30,7 @@ export default function LandingPage() {
         <div className="flex flex-col items-center gap-6 text-center">
           <div className="flex items-center gap-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
             <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
-            Open Source
+            Internal Tool
           </div>
 
           <h1 className="max-w-2xl text-5xl font-bold leading-tight tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-6xl">
@@ -45,14 +44,17 @@ export default function LandingPage() {
         </div>
 
         {/* Install command */}
-        <div className="w-full max-w-lg">
+        <div className="w-full max-w-2xl">
+          <p className="mb-2 text-sm text-zinc-500 dark:text-zinc-400 text-center">
+            CLI 설치 (Agent에게 아래 명령어를 붙여넣기하세요)
+          </p>
           <div className="flex items-center rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-            <code className="flex-1 px-5 py-4 text-sm font-mono text-zinc-800 dark:text-zinc-200 select-all">
+            <code className="flex-1 px-5 py-4 text-xs font-mono text-zinc-800 dark:text-zinc-200 select-all overflow-x-auto">
               $ {installCommand}
             </code>
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1.5 px-4 py-4 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors border-l border-zinc-200 dark:border-zinc-800"
+              className="flex-shrink-0 flex items-center gap-1.5 px-4 py-4 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors border-l border-zinc-200 dark:border-zinc-800"
               aria-label="Copy install command"
             >
               {copied ? (
@@ -78,13 +80,13 @@ export default function LandingPage() {
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           <a
             className="flex h-12 items-center justify-center gap-2 rounded-full bg-zinc-900 px-8 text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-            href="/login"
+            href="/skills"
           >
-            Get Started
+            Browse Skills
           </a>
           <a
             className="flex h-12 items-center justify-center rounded-full border border-zinc-200 px-8 transition-colors hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-500"
-            href="https://github.com/aresdev-unit/hub"
+            href="https://github.com/aresdev-unit/aresdevunit"
             target="_blank"
             rel="noopener noreferrer"
           >
