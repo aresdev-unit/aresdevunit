@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum ActionType {
+  PUBLISH
+  INSTALL
+  UNINSTALL
+  UPDATE
+  LIKE
+  UNLIKE
+}
+
+model User {
+  id         String   @id @default(uuid())
+  githubId   String   @unique @map("github_id")
+  username   String   @unique
+  email      String?
+  avatarUrl  String?  @map("avatar_url")
+  role       UserRole @default(USER)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  skills        Skill[]
+  activities    ActivityLog[]
+  likes         SkillLike[]
+  refreshTokens RefreshToken[]
+  deviceCodes   DeviceCode[]
+
+  @@map("users")
+}
+
+model Skill {
+  id            String    @id @default(uuid())
+  name          String
+  description   String
+  readme        String?   @db.Text
+  category      String
+  latestVersion String    @map("latest_version")
+  agentTypes    String[]  @map("agent_types")
+  keywords      String[]  @default([])
+  license       String    @default("MIT")
+  downloads     Int       @default(0)
+  isVerified    Boolean   @default(false) @map("is_verified")
+  deprecated    Boolean   @default(false)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  authorId  String        @map("author_id")
+  author    User          @relation(fields: [authorId], references: [id])
+  versions  SkillVersion[]
+  activities ActivityLog[]
+  likes     SkillLike[]
+
+  @@index([category])
+  @@index([authorId])
+  @@index([downloads(sort: Desc)])
+  @@index([name])
+  @@map("skills")
+  // Note: partial unique index on name WHERE deprecated = false
+  // must be created via raw SQL migration:
+  // CREATE UNIQUE INDEX skills_name_unique ON skills(name) WHERE deprecated = false;
+}
+
+model SkillVersion {
+  id        String   @id @default(uuid())
+  version   String
+  changelog String?  @db.Text
+  repoPath  String   @map("repo_path")
+  fileHash  String   @map("file_hash")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  skillId String @map("skill_id")
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([skillId, version])
+  @@map("skill_versions")
+}
+
+model SkillLike {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userId  String @map("user_id")
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId String @map("skill_id")
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skillId])
+  @@map("skill_likes")
+}
+
+model ActivityLog {
+  id        String     @id @default(uuid())
+  action    ActionType
+  metadata  Json?
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  userId  String @map("user_id")
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId String @map("skill_id")
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([skillId])
+  @@index([createdAt(sort: Desc)])
+  @@map("activity_logs")
+}
+
+model DeviceCode {
+  id        String   @id @default(uuid())
+  code      String   @unique @map("device_code")
+  userCode  String   @map("user_code")
+  clientId  String   @map("client_id")
+  status    String   @default("pending") // pending, approved, expired
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id])
+
+  @@index([code])
+  @@map("device_codes")
+}
+
+model RateLimit {
+  id          String   @id @default(uuid())
+  clientId    String   @map("client_id")
+  endpointKey String   @map("endpoint_key")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([clientId, endpointKey, createdAt])
+  @@map("rate_limits")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tokenHash])
+  @@index([userId])
+  @@map("refresh_tokens")
+}
