@@ -14,6 +14,8 @@ import { updateCommand } from './commands/update.js';
 import { searchCommand } from './commands/search.js';
 import { infoCommand } from './commands/info.js';
 import { listCommand } from './commands/list.js';
+import { doctorCommand } from './commands/doctor.js';
+import { configCommand } from './commands/config.js';
 
 // NO_COLOR support (https://no-color.org/)
 if (process.env['NO_COLOR'] !== undefined) {
@@ -57,5 +59,7 @@ program.addCommand(updateCommand);
 program.addCommand(searchCommand);
 program.addCommand(infoCommand);
 program.addCommand(listCommand);
+program.addCommand(doctorCommand);
+program.addCommand(configCommand);
 
 program.parse();
