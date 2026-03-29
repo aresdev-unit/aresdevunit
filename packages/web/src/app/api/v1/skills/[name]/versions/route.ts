@@ -93,11 +93,12 @@ export async function POST(
     /\]\s*\(\s*https?:\/\//i,
   ];
 
+  let promptInjectionWarning = false;
   for (const file of input.files) {
     const decoded = Buffer.from(file.content, 'base64').toString('utf-8');
     if (INJECTION_PATTERNS.some((p) => p.test(decoded))) {
-      // Flag but don't block (SPEC 6.5)
-      (input as any).prompt_injection_warning = true;
+      promptInjectionWarning = true;
+      break;
     }
   }
 
@@ -177,9 +178,7 @@ export async function POST(
             skillId: skill.id,
             metadata: {
               version: input.version,
-              ...((input as any).prompt_injection_warning
-                ? { prompt_injection_warning: true }
-                : {}),
+              ...(promptInjectionWarning ? { prompt_injection_warning: true } : {}),
             },
           },
         });

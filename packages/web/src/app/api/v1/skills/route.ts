@@ -222,13 +222,12 @@ export async function POST(request: NextRequest) {
     /\]\s*\(\s*https?:\/\//i,
   ];
 
+  let promptInjectionWarning = false;
   for (const file of input.files) {
     const decoded = Buffer.from(file.content, 'base64').toString('utf-8');
-    const hasInjection = INJECTION_PATTERNS.some((p) => p.test(decoded));
-    if (hasInjection) {
-      // Don't block, but flag in metadata (SPEC: "스캔 실패 시 publish 차단하지 않되 경고 플래그")
-      // Metadata will be stored with the skill version
-      input.metadata = { ...((input as any).metadata || {}), prompt_injection_warning: true };
+    if (INJECTION_PATTERNS.some((p) => p.test(decoded))) {
+      promptInjectionWarning = true;
+      break;
     }
   }
 
@@ -291,9 +290,7 @@ export async function POST(request: NextRequest) {
             skillId: skill.id,
             metadata: {
               version: input.version,
-              ...((input as any).metadata?.prompt_injection_warning
-                ? { prompt_injection_warning: true }
-                : {}),
+              ...(promptInjectionWarning ? { prompt_injection_warning: true } : {}),
             },
           },
         });
