@@ -50,11 +50,11 @@ function DeviceContent() {
       } else {
         const data = await res.json();
         setResult('error');
-        setErrorMessage(data?.error?.message || 'Failed to authorize device');
+        setErrorMessage(data?.error?.message || '기기 인증에 실패했습니다');
       }
     } catch {
       setResult('error');
-      setErrorMessage('Network error. Please try again.');
+      setErrorMessage('네트워크 오류. 다시 시도해 주세요.');
     } finally {
       setSubmitting(false);
     }
@@ -65,20 +65,20 @@ function DeviceContent() {
       <main className="flex flex-col items-center gap-8 w-full max-w-sm px-6">
         <div className="flex flex-col items-center gap-3 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-            Device Authorization
+            기기 인증
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400">
-            Enter the code shown in your CLI to authorize this device.
+            CLI에 표시된 코드를 입력하여 이 기기를 인증하세요.
           </p>
         </div>
 
         {result === 'success' ? (
           <div className="w-full rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-800 dark:bg-emerald-900/20">
             <div className="text-lg font-semibold text-emerald-700 dark:text-emerald-400">
-              Device Authorized
+              기기 인증 완료
             </div>
             <p className="mt-2 text-sm text-emerald-600 dark:text-emerald-500">
-              You can close this window and return to your CLI.
+              이 창을 닫고 CLI로 돌아가세요.
             </p>
           </div>
         ) : (
@@ -88,7 +88,7 @@ function DeviceContent() {
                 htmlFor="user-code"
                 className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
               >
-                Authorization Code
+                인증 코드
               </label>
               <input
                 id="user-code"
@@ -117,17 +117,17 @@ function DeviceContent() {
               className="flex w-full h-12 items-center justify-center rounded-xl bg-zinc-900 px-6 text-white font-medium transition-colors hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
             >
               {submitting
-                ? 'Authorizing...'
+                ? '인증 중...'
                 : status !== 'authenticated'
-                  ? 'Sign in & Authorize'
-                  : 'Authorize Device'}
+                  ? '로그인 후 인증'
+                  : '기기 인증'}
             </button>
           </form>
         )}
 
         {status === 'authenticated' && session?.user && (
           <p className="text-xs text-zinc-500 dark:text-zinc-500">
-            Signed in as <span className="font-medium">{session.user.username || session.user.name}</span>
+            로그인: <span className="font-medium">{session.user.username || session.user.name}</span>
           </p>
         )}
       </main>
@@ -139,7 +139,7 @@ export default function DevicePage() {
   return (
     <Suspense fallback={
       <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 dark:bg-black">
-        <div className="text-zinc-400">Loading...</div>
+        <div className="text-zinc-400">로딩 중...</div>
       </div>
     }>
       <DeviceContent />

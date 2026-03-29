@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { SKILL_CATEGORIES } from '@aresdevunit/shared';
+import { prisma } from '@/lib/prisma';
 
 interface AuthorProfile {
   username: string;
@@ -23,14 +24,45 @@ interface AuthorProfile {
 }
 
 async function fetchAuthor(username: string): Promise<AuthorProfile | null> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
   try {
-    const res = await fetch(`${baseUrl}/api/v1/users/${encodeURIComponent(username)}`, {
-      cache: 'no-store',
+    const user = await prisma.user.findUnique({
+      where: { username },
+      include: {
+        skills: {
+          where: { deprecated: false },
+          orderBy: { downloads: 'desc' },
+          include: {
+            _count: { select: { likes: true } },
+          },
+        },
+      },
     });
-    if (!res.ok) return null;
-    return res.json();
-  } catch {
+
+    if (!user) return null;
+
+    const totalDownloads = user.skills.reduce((sum, s) => sum + s.downloads, 0);
+
+    return {
+      username: user.username,
+      avatar_url: user.avatarUrl,
+      skills_count: user.skills.length,
+      total_downloads: totalDownloads,
+      created_at: user.createdAt.toISOString(),
+      skills: user.skills.map((s) => ({
+        id: s.id,
+        name: s.name,
+        description: s.description,
+        category: s.category,
+        latest_version: s.latestVersion,
+        agent_types: s.agentTypes,
+        downloads: s.downloads,
+        likes: s._count.likes,
+        is_verified: s.isVerified,
+        created_at: s.createdAt.toISOString(),
+      })),
+    };
+  } catch (error) {
+    console.error('Failed to fetch author:', error);
     return null;
   }
 }
@@ -43,7 +75,7 @@ export async function generateMetadata({
   const { username } = await params;
   return {
     title: `${username} - AresDevUnit Hub`,
-    description: `Skills by ${username}`,
+    description: `${username}의 Skill`,
   };
 }
 
@@ -80,11 +112,11 @@ export default async function AuthorPage({
               {author.username}
             </h1>
             <div className="mt-2 flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
-              <span>{author.skills_count} skills</span>
+              <span>{author.skills_count}개 Skill</span>
               <span className="text-zinc-300 dark:text-zinc-700">|</span>
-              <span>{author.total_downloads.toLocaleString()} total downloads</span>
+              <span>총 {author.total_downloads.toLocaleString()} 다운로드</span>
               <span className="text-zinc-300 dark:text-zinc-700">|</span>
-              <span>Joined {new Date(author.created_at).toLocaleDateString()}</span>
+              <span>가입일 {new Date(author.created_at).toLocaleDateString()}</span>
             </div>
           </div>
         </div>
@@ -96,7 +128,7 @@ export default async function AuthorPage({
 
         {author.skills.length === 0 ? (
           <div className="rounded-xl border border-zinc-200 bg-white px-6 py-12 text-center text-sm text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
-            This author has not published any skills yet.
+            이 작성자는 아직 Skill을 배포하지 않았습니다.
           </div>
         ) : (
           <div className="grid gap-4">
@@ -117,7 +149,7 @@ export default async function AuthorPage({
                       </span>
                       {skill.is_verified && (
                         <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                          Verified
+                          인증됨
                         </span>
                       )}
                     </div>
@@ -135,9 +167,9 @@ export default async function AuthorPage({
                     <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                       {skill.downloads.toLocaleString()}
                     </p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">downloads</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">다운로드</p>
                     <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                      {skill.likes} likes
+                      {skill.likes} 좋아요
                     </p>
                   </div>
                 </div>

@@ -93,7 +93,7 @@ export default function AdminPage() {
         );
       } else {
         const body = await res.json();
-        alert(body.error?.message || 'Failed to update role');
+        alert(body.error?.message || '역할 변경에 실패했습니다');
       }
     } catch (err) {
       console.error('Failed to toggle role:', err);
@@ -116,7 +116,7 @@ export default function AdminPage() {
         );
       } else {
         const body = await res.json();
-        alert(body.error?.message || 'Failed to update skill');
+        alert(body.error?.message || 'Skill 업데이트에 실패했습니다');
       }
     } catch (err) {
       console.error('Failed to toggle skill prop:', err);
@@ -128,7 +128,7 @@ export default function AdminPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="flex flex-1 items-center justify-center bg-zinc-50 dark:bg-zinc-950">
-        <div className="text-zinc-400">Loading admin panel...</div>
+        <div className="text-zinc-400">관리자 패널 로딩 중...</div>
       </div>
     );
   }
@@ -138,18 +138,18 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <h1 className="mb-2 text-2xl font-bold text-zinc-900 dark:text-zinc-50">Admin Panel</h1>
+        <h1 className="mb-2 text-2xl font-bold text-zinc-900 dark:text-zinc-50">관리자 패널</h1>
         <p className="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
-          Manage users and skills
+          사용자 및 Skill 관리
         </p>
 
         {/* Tabs */}
         <div className="mb-6 flex gap-1 rounded-lg border border-zinc-200 bg-white p-1 dark:border-zinc-800 dark:bg-zinc-900">
           <TabButton active={tab === 'users'} onClick={() => setTab('users')}>
-            Users ({users.length})
+            사용자 ({users.length})
           </TabButton>
           <TabButton active={tab === 'skills'} onClick={() => setTab('skills')}>
-            Skills ({skills.length})
+            Skill ({skills.length})
           </TabButton>
         </div>
 
@@ -160,12 +160,12 @@ export default function AdminPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-zinc-100 text-left text-xs font-medium uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-                    <th className="px-6 py-3">User</th>
-                    <th className="px-6 py-3">Email</th>
-                    <th className="px-6 py-3">Role</th>
-                    <th className="px-6 py-3 text-right">Skills</th>
-                    <th className="px-6 py-3">Joined</th>
-                    <th className="px-6 py-3">Action</th>
+                    <th className="px-6 py-3">사용자</th>
+                    <th className="px-6 py-3">이메일</th>
+                    <th className="px-6 py-3">역할</th>
+                    <th className="px-6 py-3 text-right">Skill</th>
+                    <th className="px-6 py-3">가입일</th>
+                    <th className="px-6 py-3">작업</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -213,8 +213,8 @@ export default function AdminPage() {
                             {actionLoading === u.id
                               ? '...'
                               : u.role === 'ADMIN'
-                              ? 'Demote'
-                              : 'Promote'}
+                              ? '강등'
+                              : '승격'}
                           </button>
                         )}
                       </td>
@@ -234,10 +234,10 @@ export default function AdminPage() {
                 <thead>
                   <tr className="border-b border-zinc-100 text-left text-xs font-medium uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
                     <th className="px-6 py-3">Skill</th>
-                    <th className="px-6 py-3">Author</th>
-                    <th className="px-6 py-3 text-right">Downloads</th>
-                    <th className="px-6 py-3">Status</th>
-                    <th className="px-6 py-3">Actions</th>
+                    <th className="px-6 py-3">작성자</th>
+                    <th className="px-6 py-3 text-right">다운로드</th>
+                    <th className="px-6 py-3">상태</th>
+                    <th className="px-6 py-3">작업</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -259,17 +259,17 @@ export default function AdminPage() {
                         <div className="flex gap-1.5">
                           {s.is_verified && (
                             <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                              Verified
+                              인증됨
                             </span>
                           )}
                           {s.deprecated && (
                             <span className="inline-flex items-center rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                              Deprecated
+                              지원 중단
                             </span>
                           )}
                           {!s.is_verified && !s.deprecated && (
                             <span className="inline-flex items-center rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                              Active
+                              활성
                             </span>
                           )}
                         </div>
@@ -285,7 +285,7 @@ export default function AdminPage() {
                                 : 'border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800'
                             }`}
                           >
-                            {actionLoading === s.id ? '...' : s.is_verified ? 'Unverify' : 'Verify'}
+                            {actionLoading === s.id ? '...' : s.is_verified ? '인증 해제' : '인증'}
                           </button>
                           <button
                             onClick={() => toggleSkillProp(s.id, 'deprecated', s.deprecated)}
@@ -299,8 +299,8 @@ export default function AdminPage() {
                             {actionLoading === s.id
                               ? '...'
                               : s.deprecated
-                              ? 'Restore'
-                              : 'Deprecate'}
+                              ? '복원'
+                              : '지원 중단'}
                           </button>
                         </div>
                       </td>

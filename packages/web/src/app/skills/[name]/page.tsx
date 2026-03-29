@@ -1,18 +1,56 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { SKILL_CATEGORIES } from '@aresdevunit/shared';
-import type { SkillDetail } from '@aresdevunit/shared';
+import { prisma } from '@/lib/prisma';
 import { LikeButton } from './like-button';
 import { CopyButton } from './copy-button';
 
-async function fetchSkill(name: string): Promise<SkillDetail | null> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-  const res = await fetch(`${baseUrl}/api/v1/skills/${encodeURIComponent(name)}`, {
-    cache: 'no-store',
-  });
+async function fetchSkill(name: string) {
+  try {
+    const skill = await prisma.skill.findFirst({
+      where: { name, deprecated: false },
+      include: {
+        author: { select: { username: true, avatarUrl: true } },
+        versions: {
+          select: { version: true, changelog: true, createdAt: true },
+          orderBy: { createdAt: 'desc' },
+        },
+        _count: { select: { likes: true } },
+      },
+    });
 
-  if (!res.ok) return null;
-  return res.json();
+    if (!skill) return null;
+
+    return {
+      id: skill.id,
+      name: skill.name,
+      description: skill.description,
+      readme: skill.readme,
+      category: skill.category,
+      latest_version: skill.latestVersion,
+      agent_types: skill.agentTypes,
+      keywords: skill.keywords,
+      license: skill.license,
+      author: {
+        username: skill.author.username,
+        avatar_url: skill.author.avatarUrl,
+      },
+      downloads: skill.downloads,
+      likes: skill._count.likes,
+      is_verified: skill.isVerified,
+      deprecated: skill.deprecated,
+      versions: skill.versions.map((v) => ({
+        version: v.version,
+        changelog: v.changelog,
+        created_at: v.createdAt.toISOString(),
+      })),
+      created_at: skill.createdAt.toISOString(),
+      updated_at: skill.updatedAt.toISOString(),
+    };
+  } catch (error) {
+    console.error('Failed to get skill:', error);
+    return null;
+  }
 }
 
 export async function generateMetadata({
@@ -23,7 +61,7 @@ export async function generateMetadata({
   const { name } = await params;
   const skill = await fetchSkill(name);
   if (!skill) {
-    return { title: 'Skill Not Found - AresDevUnit Hub' };
+    return { title: 'Skill을 찾을 수 없음 - AresDevUnit Hub' };
   }
   return {
     title: `${skill.name} - AresDevUnit Hub`,
@@ -74,12 +112,12 @@ export default async function SkillDetailPage({
                     <h1 className="text-2xl font-bold text-gray-900">{skill.name}</h1>
                     {skill.is_verified && (
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Verified
+                        인증됨
                       </span>
                     )}
                     {skill.deprecated && (
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                        Deprecated
+                        지원 중단
                       </span>
                     )}
                   </div>
@@ -104,7 +142,7 @@ export default async function SkillDetailPage({
               {/* Meta */}
               <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-600">
                 <span>
-                  by{' '}
+                  작성자:{' '}
                   <span className="font-medium text-gray-900">
                     {skill.author.username}
                   </span>
@@ -114,7 +152,7 @@ export default async function SkillDetailPage({
                   {categoryLabel}
                 </span>
                 <span className="text-gray-300">|</span>
-                <span>License: {skill.license}</span>
+                <span>라이선스: {skill.license}</span>
                 <span className="text-gray-300">|</span>
                 <span>{skill.agent_types.join(', ')}</span>
               </div>
@@ -147,7 +185,7 @@ export default async function SkillDetailPage({
 
             {/* Versions */}
             <div className="mt-6 bg-white rounded-lg border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Versions</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">버전</h2>
               <div className="space-y-4">
                 {skill.versions.map((v, i) => (
                   <div
@@ -163,7 +201,7 @@ export default async function SkillDetailPage({
                         </span>
                         {v.version === skill.latest_version && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                            Latest
+                            최신
                           </span>
                         )}
                       </div>
@@ -183,35 +221,35 @@ export default async function SkillDetailPage({
           {/* Sidebar */}
           <aside className="w-full lg:w-72 shrink-0">
             <div className="bg-white rounded-lg border border-gray-200 p-5 sticky top-8">
-              <h2 className="font-semibold text-gray-900 mb-4">Stats</h2>
+              <h2 className="font-semibold text-gray-900 mb-4">통계</h2>
 
               <dl className="space-y-3">
                 <div className="flex justify-between">
-                  <dt className="text-sm text-gray-600">Version</dt>
+                  <dt className="text-sm text-gray-600">버전</dt>
                   <dd className="text-sm font-medium text-gray-900">
                     {skill.latest_version}
                   </dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm text-gray-600">Downloads</dt>
+                  <dt className="text-sm text-gray-600">다운로드</dt>
                   <dd className="text-sm font-medium text-gray-900">
                     {skill.downloads.toLocaleString()}
                   </dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm text-gray-600">Likes</dt>
+                  <dt className="text-sm text-gray-600">좋아요</dt>
                   <dd className="text-sm font-medium text-gray-900">
                     {skill.likes}
                   </dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm text-gray-600">Created</dt>
+                  <dt className="text-sm text-gray-600">생성일</dt>
                   <dd className="text-sm font-medium text-gray-900">
                     {new Date(skill.created_at).toLocaleDateString()}
                   </dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm text-gray-600">Updated</dt>
+                  <dt className="text-sm text-gray-600">수정일</dt>
                   <dd className="text-sm font-medium text-gray-900">
                     {new Date(skill.updated_at).toLocaleDateString()}
                   </dd>
@@ -220,7 +258,7 @@ export default async function SkillDetailPage({
 
               <div className="mt-6 pt-4 border-t border-gray-200">
                 <h3 className="text-sm font-medium text-gray-900 mb-2">
-                  Supported Agents
+                  지원 Agent
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {skill.agent_types.map((agent) => (
@@ -236,7 +274,7 @@ export default async function SkillDetailPage({
 
               <div className="mt-6 pt-4 border-t border-gray-200">
                 <h3 className="text-sm font-medium text-gray-900 mb-2">
-                  Install with version
+                  버전 지정 설치
                 </h3>
                 <code className="block text-xs bg-gray-50 p-2 rounded text-gray-700 break-all">
                   npx @aresdevunit/hub install {skill.name}@{skill.latest_version}

@@ -78,7 +78,7 @@ export default function DashboardPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="flex flex-1 items-center justify-center bg-zinc-50 dark:bg-zinc-950">
-        <div className="text-zinc-400">Loading dashboard...</div>
+        <div className="text-zinc-400">대시보드 로딩 중...</div>
       </div>
     );
   }
@@ -90,29 +90,29 @@ export default function DashboardPage() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Dashboard</h1>
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">대시보드</h1>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Welcome back, {session?.user?.username}
+            환영합니다, {session?.user?.username}
           </p>
         </div>
 
         {/* Stats Cards */}
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
-            label="My Skills"
+            label="내 Skill"
             value={stats?.skills_count ?? 0}
           />
           <StatCard
-            label="Total Downloads"
+            label="총 다운로드"
             value={stats?.total_downloads ?? 0}
           />
           <StatCard
-            label="Weekly Downloads"
+            label="주간 다운로드"
             value={stats?.weekly_downloads ?? 0}
             delta={stats?.weekly_downloads_delta}
           />
           <StatCard
-            label="Author Rank"
+            label="작성자 순위"
             value={stats?.rank ? `#${stats.rank}` : '--'}
           />
         </div>
@@ -121,7 +121,7 @@ export default function DashboardPage() {
         {stats && stats.download_trend.length > 0 && (
           <div className="mb-8 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
             <h3 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-              Download Trend (30 days)
+              다운로드 추이 (30일)
             </h3>
             <div className="flex items-end gap-1 h-32">
               {stats.download_trend.map((d, i) => {
@@ -145,22 +145,22 @@ export default function DashboardPage() {
           <div className="lg:col-span-2">
             <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
               <div className="flex items-center justify-between border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
-                <h2 className="font-semibold text-zinc-900 dark:text-zinc-50">My Skills</h2>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">{skills.length} skills</span>
+                <h2 className="font-semibold text-zinc-900 dark:text-zinc-50">내 Skill</h2>
+                <span className="text-xs text-zinc-500 dark:text-zinc-400">{skills.length}개</span>
               </div>
               {skills.length === 0 ? (
                 <div className="px-6 py-12 text-center text-sm text-zinc-500 dark:text-zinc-400">
-                  No skills published yet. Create your first skill with the CLI.
+                  아직 배포한 Skill이 없습니다. CLI로 첫 Skill을 만들어 보세요.
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-zinc-100 text-left text-xs font-medium uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-                        <th className="px-6 py-3">Name</th>
-                        <th className="px-6 py-3">Version</th>
-                        <th className="px-6 py-3 text-right">Downloads</th>
-                        <th className="px-6 py-3">Status</th>
+                        <th className="px-6 py-3">이름</th>
+                        <th className="px-6 py-3">버전</th>
+                        <th className="px-6 py-3 text-right">다운로드</th>
+                        <th className="px-6 py-3">상태</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -184,17 +184,17 @@ export default function DashboardPage() {
                             <div className="flex gap-1.5">
                               {skill.is_verified && (
                                 <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                                  Verified
+                                  인증됨
                                 </span>
                               )}
                               {skill.deprecated && (
                                 <span className="inline-flex items-center rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                                  Deprecated
+                                  지원 중단
                                 </span>
                               )}
                               {!skill.is_verified && !skill.deprecated && (
                                 <span className="inline-flex items-center rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                                  Active
+                                  활성
                                 </span>
                               )}
                             </div>
@@ -212,13 +212,13 @@ export default function DashboardPage() {
           <div className="flex flex-col gap-6">
             {/* Quick Actions */}
             <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-              <h2 className="mb-4 font-semibold text-zinc-900 dark:text-zinc-50">Quick Actions</h2>
+              <h2 className="mb-4 font-semibold text-zinc-900 dark:text-zinc-50">빠른 작업</h2>
               <div className="flex flex-col gap-2">
-                <QuickAction href="/docs" label="Read Docs" desc="Getting started guide" />
-                <QuickAction href="/skills" label="Browse Skills" desc="Discover skills" />
+                <QuickAction href="/docs" label="문서 보기" desc="시작 가이드" />
+                <QuickAction href="/skills" label="Skill 둘러보기" desc="Skill 탐색" />
                 <QuickAction
                   href="https://github.com/aresdev-unit/aresdevunit"
-                  label="CLI Guide"
+                  label="CLI 가이드"
                   desc="hub init && hub publish"
                   external
                 />
@@ -228,11 +228,11 @@ export default function DashboardPage() {
             {/* Activity Feed */}
             <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
               <div className="border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
-                <h2 className="font-semibold text-zinc-900 dark:text-zinc-50">Recent Activity</h2>
+                <h2 className="font-semibold text-zinc-900 dark:text-zinc-50">최근 활동</h2>
               </div>
               {feed.length === 0 ? (
                 <div className="px-6 py-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
-                  No recent activity on your skills.
+                  Skill에 대한 최근 활동이 없습니다.
                 </div>
               ) : (
                 <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -247,7 +247,7 @@ export default function DashboardPage() {
                         <p className="text-sm text-zinc-700 dark:text-zinc-300">
                           <span className="font-medium">{item.user.username}</span>
                           {' '}
-                          {item.action === 'INSTALL' ? 'installed' : 'liked'}
+                          {item.action === 'INSTALL' ? '설치함' : '좋아요'}
                           {' '}
                           <Link
                             href={`/skills/${item.skill.name}`}
@@ -300,7 +300,7 @@ function StatCard({
           }`}
         >
           {delta > 0 ? '+' : ''}
-          {delta} vs last week
+          {delta} 지난주 대비
         </p>
       )}
     </div>
@@ -341,11 +341,11 @@ function QuickAction({
 function formatRelativeTime(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return '방금 전';
+  if (mins < 60) return `${mins}분 전`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `${hours}시간 전`;
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}d ago`;
+  if (days < 30) return `${days}일 전`;
   return new Date(iso).toLocaleDateString();
 }

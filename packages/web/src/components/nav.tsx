@@ -23,15 +23,15 @@ export function Nav() {
           </Link>
 
           <div className="hidden items-center gap-1 sm:flex">
-            <NavLink href="/skills">Skills</NavLink>
-            <NavLink href="/docs">Docs</NavLink>
+            <NavLink href="/skills">Skill</NavLink>
+            <NavLink href="/docs">문서</NavLink>
             {status === 'authenticated' && (
               <>
-                <NavLink href="/dashboard">Dashboard</NavLink>
-                <NavLink href="/settings">Settings</NavLink>
+                <NavLink href="/dashboard">대시보드</NavLink>
+                <NavLink href="/settings">설정</NavLink>
               </>
             )}
-            {isAdmin && <NavLink href="/admin">Admin</NavLink>}
+            {isAdmin && <NavLink href="/admin">관리자</NavLink>}
           </div>
         </div>
 
@@ -45,7 +45,7 @@ export function Nav() {
               href="/login"
               className="inline-flex h-8 items-center rounded-md bg-zinc-900 px-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
             >
-              Sign in
+              로그인
             </Link>
           )}
           {status === 'authenticated' && session?.user && (
@@ -64,7 +64,7 @@ export function Nav() {
                 onClick={() => signOut({ callbackUrl: '/' })}
                 className="inline-flex h-8 items-center rounded-md border border-zinc-200 px-3 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               >
-                Sign out
+                로그아웃
               </button>
             </div>
           )}
@@ -90,27 +90,27 @@ export function Nav() {
       {mobileOpen && (
         <div className="border-t border-zinc-200 px-4 py-3 sm:hidden dark:border-zinc-800">
           <div className="flex flex-col gap-1">
-            <MobileLink href="/skills" onClick={() => setMobileOpen(false)}>Skills</MobileLink>
-            <MobileLink href="/docs" onClick={() => setMobileOpen(false)}>Docs</MobileLink>
+            <MobileLink href="/skills" onClick={() => setMobileOpen(false)}>Skill</MobileLink>
+            <MobileLink href="/docs" onClick={() => setMobileOpen(false)}>문서</MobileLink>
             {status === 'authenticated' && (
               <>
-                <MobileLink href="/dashboard" onClick={() => setMobileOpen(false)}>Dashboard</MobileLink>
-                <MobileLink href="/settings" onClick={() => setMobileOpen(false)}>Settings</MobileLink>
+                <MobileLink href="/dashboard" onClick={() => setMobileOpen(false)}>대시보드</MobileLink>
+                <MobileLink href="/settings" onClick={() => setMobileOpen(false)}>설정</MobileLink>
               </>
             )}
             {isAdmin && (
-              <MobileLink href="/admin" onClick={() => setMobileOpen(false)}>Admin</MobileLink>
+              <MobileLink href="/admin" onClick={() => setMobileOpen(false)}>관리자</MobileLink>
             )}
             <div className="my-2 border-t border-zinc-200 dark:border-zinc-800" />
             {status === 'unauthenticated' && (
-              <MobileLink href="/login" onClick={() => setMobileOpen(false)}>Sign in</MobileLink>
+              <MobileLink href="/login" onClick={() => setMobileOpen(false)}>로그인</MobileLink>
             )}
             {status === 'authenticated' && (
               <button
                 onClick={() => { signOut({ callbackUrl: '/' }); setMobileOpen(false); }}
                 className="w-full rounded-md px-3 py-2 text-left text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
               >
-                Sign out
+                로그아웃
               </button>
             )}
           </div>
