@@ -15,6 +15,7 @@ export interface HubConfig {
   refresh_token?: string;
   api_url: string;
   agents: Record<string, AgentConfig>;
+  workspace_path?: string;
 }
 
 const DEFAULT_CONFIG: HubConfig = {

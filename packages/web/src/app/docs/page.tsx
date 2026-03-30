@@ -34,11 +34,12 @@ export default function DocsPage() {
           {/* Getting Started */}
           <Section id="getting-started" title="시작하기">
             <Step number={1} title="CLI 설치">
-              <p>저장소를 클론하고 CLI를 전역으로 링크하세요:</p>
+              <p>원라인 설치:</p>
+              <CodeBlock>curl -fsSL https://aresdevunit.vercel.app/api/v1/install.sh | bash</CodeBlock>
+              <p>또는 수동 설치:</p>
               <CodeBlock>{`git clone https://github.com/aresdev-unit/aresdevunit.git
 cd aresdevunit/packages/cli
-npm install
-npm link`}</CodeBlock>
+npm install && npm run build && npm link`}</CodeBlock>
               <p>설치 확인:</p>
               <CodeBlock>aresdevhubcli --version</CodeBlock>
             </Step>
@@ -52,7 +53,13 @@ npm link`}</CodeBlock>
               </p>
             </Step>
 
-            <Step number={3} title="Skill 생성">
+            <Step number={3} title="Workspace 설정">
+              <p>데이터 테이블 작업 시 workspace 경로를 설정하세요 (최초 1회):</p>
+              <CodeBlock>{`aresdevhubcli config set workspace_path "0_데이터 테이블/TRUNK_GL경로"
+# 이후 skill/rule 설치 시 {workspace_path}/.skills/ 에 자동 저장`}</CodeBlock>
+            </Step>
+
+            <Step number={4} title="Skill 생성">
               <p>새 Skill 프로젝트를 초기화하세요:</p>
               <CodeBlock>{`# 대화형 모드
 aresdevhubcli init
@@ -66,13 +73,13 @@ aresdevhubcli init --name my-skill --description "Automates X" --category develo
               </p>
             </Step>
 
-            <Step number={4} title="배포">
+            <Step number={5} title="배포">
               <p>Skill을 검증하고 배포하세요:</p>
               <CodeBlock>{`aresdevhubcli validate   # Check before publish
 aresdevhubcli publish    # Publish to registry`}</CodeBlock>
             </Step>
 
-            <Step number={5} title="Skill 설치">
+            <Step number={6} title="Skill 설치">
               <p>다른 사람이 만든 Skill을 탐색하고 설치하세요:</p>
               <CodeBlock>{`aresdevhubcli search "code review"
 aresdevhubcli install code-review-helper --agent claude`}</CodeBlock>
@@ -173,6 +180,9 @@ aresdevhubcli install code-review-helper --agent claude`}</CodeBlock>
               <CommandRow cmd="aresdevhubcli search <query>" desc="Skill 레지스트리 검색" />
               <CommandRow cmd="aresdevhubcli info <name>" desc="Skill 상세 정보 표시" />
               <CommandRow cmd="aresdevhubcli list" desc="설치/배포된 Skill 목록" />
+              <CommandRow cmd="aresdevhubcli rules list" desc="설치된 규칙 목록" />
+              <CommandRow cmd="aresdevhubcli rules path" desc="규칙 디렉토리 경로" />
+              <CommandRow cmd="aresdevhubcli rules show &lt;name&gt;" desc="규칙 내용 보기" />
             </div>
 
             <div className="mt-6">

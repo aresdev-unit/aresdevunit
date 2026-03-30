@@ -225,18 +225,36 @@ export const installCommand = new Command('install')
       }
     }
 
+    // --- Resolve workspace .skills/ path ---
+    const config = readConfig();
+    const workspaceSkillsDir = config.workspace_path
+      ? join(config.workspace_path, '.skills')
+      : null;
+
     // --- Rule install path ---
     if (installType === 'rule') {
-      // Rules go to ~/.aresdevunit/rules/<name>.md (agent-independent)
       let installedPath = '';
       let fileHash = '';
 
       for (const file of download.files) {
         const content = Buffer.from(file.content, 'base64');
-        const rulePath = installRule(download.name, content.toString('utf-8'));
 
-        if (!installedPath) {
-          installedPath = rulePath.replace(homedir(), '~');
+        if (workspaceSkillsDir) {
+          // Install to workspace .skills/ directory
+          if (!existsSync(workspaceSkillsDir)) {
+            mkdirSync(workspaceSkillsDir, { recursive: true });
+          }
+          const targetPath = join(workspaceSkillsDir, `${download.name}.md`);
+          writeFileSync(targetPath, content);
+          if (!installedPath) {
+            installedPath = targetPath;
+          }
+        } else {
+          // Fallback: install to ~/.aresdevunit/rules/
+          const rulePath = installRule(download.name, content.toString('utf-8'));
+          if (!installedPath) {
+            installedPath = rulePath.replace(homedir(), '~');
+          }
         }
 
         const hash = createHash('sha256').update(content).digest('hex');
@@ -249,7 +267,7 @@ export const installCommand = new Command('install')
       addInstalledSkill(download.name, {
         version: download.version,
         agent: 'all',
-        path: installedPath,
+        path: workspaceSkillsDir ? installedPath : installedPath,
         file_hash: fileHash,
         installed_at: new Date().toISOString(),
         type: 'rule',
@@ -270,26 +288,36 @@ export const installCommand = new Command('install')
       return;
     }
 
-    // --- Skill install path (existing flow) ---
+    // --- Skill install path ---
 
-    // Detect agent
     let agent: string;
     let skillPath: string;
-    try {
-      const detected = await detectAgent(flagAgent, useYes, isTTY);
-      agent = detected.agent;
-      skillPath = detected.skillPath;
-    } catch (err) {
-      if (useJson) {
-        console.log(JSON.stringify({ error: { code: 'AGENT_DETECT_FAILED', message: err instanceof Error ? err.message : 'Agent detection failed' } }));
-      } else {
-        console.error(chalk.red(err instanceof Error ? err.message : 'Agent detection failed'));
-      }
-      process.exit(1);
-    }
 
-    if (!useJson) {
-      console.log(`  Detected agent: ${KNOWN_AGENTS[agent as AgentType]?.name ?? agent}`);
+    if (workspaceSkillsDir) {
+      // Use workspace .skills/ directory
+      agent = 'workspace';
+      skillPath = workspaceSkillsDir;
+      if (!useJson) {
+        console.log(`  Using workspace: ${config.workspace_path}`);
+      }
+    } else {
+      // Fallback: detect agent and use agent-specific path
+      try {
+        const detected = await detectAgent(flagAgent, useYes, isTTY);
+        agent = detected.agent;
+        skillPath = detected.skillPath;
+      } catch (err) {
+        if (useJson) {
+          console.log(JSON.stringify({ error: { code: 'AGENT_DETECT_FAILED', message: err instanceof Error ? err.message : 'Agent detection failed' } }));
+        } else {
+          console.error(chalk.red(err instanceof Error ? err.message : 'Agent detection failed'));
+        }
+        process.exit(1);
+      }
+
+      if (!useJson) {
+        console.log(`  Detected agent: ${KNOWN_AGENTS[agent as AgentType]?.name ?? agent}`);
+      }
     }
 
     // Ensure target directory exists
@@ -314,7 +342,9 @@ export const installCommand = new Command('install')
       writeFileSync(targetPath, content);
 
       if (!installedPath) {
-        installedPath = targetPath.replace(homedir(), '~');
+        installedPath = workspaceSkillsDir
+          ? targetPath
+          : targetPath.replace(homedir(), '~');
       }
 
       const hash = createHash('sha256').update(content).digest('hex');

@@ -14,11 +14,21 @@ The Hub CLI ("aresdevhubcli") manages publishing, installing, and sharing skills
 - GitHub account (for publishing)
 
 ## INSTALLATION
+
+### One-liner (recommended)
+curl -fsSL https://aresdevunit.vercel.app/api/v1/install.sh | bash
+
+### Manual
 git clone https://github.com/aresdev-unit/aresdevunit.git
 cd aresdevunit/packages/cli
 npm install
+npm run build
 npm link
 # Verify: aresdevhubcli --version
+
+## WORKSPACE SETUP
+aresdevhubcli config set workspace_path "0_데이터 테이블/TRUNK_GL"
+# 이후 skill/rule 설치 시 자동으로 .skills/ 폴더에 저장
 
 ================================================================================
 

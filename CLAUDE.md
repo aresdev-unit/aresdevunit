@@ -50,9 +50,8 @@ aresdevunit/
 ## Hub CLI 사용법
 
 ```bash
-# 설치
-git clone https://github.com/aresdev-unit/aresdevunit.git
-cd aresdevunit/packages/cli && npm install && npm link
+# 설치 (원라인)
+curl -fsSL https://aresdevunit.vercel.app/api/v1/install.sh | bash
 
 # 인증
 aresdevhubcli login
@@ -70,6 +69,10 @@ aresdevhubcli install ares-data-rules --type rule
 aresdevhubcli rules list
 aresdevhubcli rules path
 aresdevhubcli rules show <name>
+
+# Workspace 설정 (최초 1회)
+aresdevhubcli config set workspace_path "0_데이터 테이블/TRUNK_GL경로"
+# 이후 skill/rule 설치 시 {workspace_path}/.skills/ 에 자동 저장
 ```
 
 Agent 호출 시: `aresdevhubcli <command> --yes --json --agent claude`

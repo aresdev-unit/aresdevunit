@@ -1,9 +1,26 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
+import { readConfig } from './config.js';
 
 const CONFIG_DIR = join(homedir(), '.aresdevunit');
 const INSTALLED_FILE = join(CONFIG_DIR, 'installed.json');
+
+function getEffectiveInstalledFile(): string {
+  try {
+    const config = readConfig();
+    if (config.workspace_path) {
+      const skillsDir = join(config.workspace_path, '.skills');
+      if (!existsSync(skillsDir)) {
+        mkdirSync(skillsDir, { recursive: true });
+      }
+      return join(skillsDir, 'installed.json');
+    }
+  } catch {
+    // fallback to default
+  }
+  return INSTALLED_FILE;
+}
 
 export interface InstalledSkill {
   version: string;
@@ -21,15 +38,16 @@ export interface InstalledManifest {
 const EMPTY_MANIFEST: InstalledManifest = { skills: {} };
 
 export function getInstalledPath(): string {
-  return INSTALLED_FILE;
+  return getEffectiveInstalledFile();
 }
 
 export function readInstalled(): InstalledManifest {
-  if (!existsSync(INSTALLED_FILE)) {
+  const filePath = getEffectiveInstalledFile();
+  if (!existsSync(filePath)) {
     return { ...EMPTY_MANIFEST, skills: {} };
   }
   try {
-    const raw = readFileSync(INSTALLED_FILE, 'utf-8');
+    const raw = readFileSync(filePath, 'utf-8');
     const parsed = JSON.parse(raw) as Partial<InstalledManifest>;
     return {
       skills: parsed.skills ?? {},
@@ -40,10 +58,12 @@ export function readInstalled(): InstalledManifest {
 }
 
 export function writeInstalled(manifest: InstalledManifest): void {
-  if (!existsSync(CONFIG_DIR)) {
-    mkdirSync(CONFIG_DIR, { recursive: true });
+  const filePath = getEffectiveInstalledFile();
+  const dir = join(filePath, '..');
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
   }
-  writeFileSync(INSTALLED_FILE, JSON.stringify(manifest, null, 2) + '\n', 'utf-8');
+  writeFileSync(filePath, JSON.stringify(manifest, null, 2) + '\n', 'utf-8');
 }
 
 export function addInstalledSkill(

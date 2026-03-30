@@ -2,14 +2,15 @@
 
 import { useState } from 'react';
 
-const INSTALL_STEPS = [
+const INSTALL_COMMAND = 'curl -fsSL https://aresdevunit.vercel.app/api/v1/install.sh | bash';
+
+const MANUAL_INSTALL_STEPS = [
   'git clone https://github.com/aresdev-unit/aresdevunit.git',
   'cd aresdevunit/packages/cli',
   'npm install',
+  'npm run build',
   'npm link',
 ];
-
-const INSTALL_COMMAND = INSTALL_STEPS.join(' && ');
 
 export default function LandingPage() {
   const [copied, setCopied] = useState(false);
@@ -58,7 +59,7 @@ export default function LandingPage() {
         This is AresDevUnit Hub — an AI Agent skill sharing platform.
 
         INSTALL CLI:
-        git clone https://github.com/aresdev-unit/aresdevunit.git && cd aresdevunit/packages/cli && npm install && npm link
+        curl -fsSL https://aresdevunit.vercel.app/api/v1/install.sh | bash
 
         FULL CLI GUIDE: GET /api/v1/cli-guide (plain text, all commands + examples + skill.json spec)
         INSTALL GUIDE:  GET /api/v1/install-guide (plain text)
@@ -124,11 +125,11 @@ export default function LandingPage() {
               </button>
             </div>
 
-            {/* Step-by-step for clarity */}
+            {/* Manual install fallback */}
             <details className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
-              <summary className="cursor-pointer hover:text-zinc-700 dark:hover:text-zinc-300">단계별 설치 방법</summary>
+              <summary className="cursor-pointer hover:text-zinc-700 dark:hover:text-zinc-300">수동 설치</summary>
               <ol className="mt-2 ml-4 list-decimal space-y-1 font-mono text-xs">
-                {INSTALL_STEPS.map((step, i) => (
+                {MANUAL_INSTALL_STEPS.map((step, i) => (
                   <li key={i}><code>{step}</code></li>
                 ))}
               </ol>

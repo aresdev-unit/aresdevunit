@@ -6,14 +6,15 @@ const GUIDE = `# AresDevUnit Hub CLI - Installation Guide
 - Node.js >= 20
 - Git
 
-## Installation
+## Quick Start (one-liner)
+curl -fsSL https://aresdevunit.vercel.app/api/v1/install.sh | bash
+
+## Manual Installation
 git clone https://github.com/aresdev-unit/aresdevunit.git
 cd aresdevunit/packages/cli
 npm install
+npm run build
 npm link
-
-## Quick Start (one-liner)
-git clone https://github.com/aresdev-unit/aresdevunit.git && cd aresdevunit/packages/cli && npm install && npm link
 
 ## Verify Installation
 aresdevhubcli --version
