@@ -76,7 +76,7 @@ describe('doctorCommand', () => {
       api_url: 'https://aresdevunit.vercel.app/api/v1',
       agents: {
         claude: { skill_path: '~/.claude/commands' },
-        codex: { skill_path: null },
+        codex: { skill_path: '~/.codex/skills' },
       },
     });
     mockListInstalledSkills.mockReturnValue({});
@@ -115,6 +115,7 @@ describe('doctorCommand', () => {
     mockGet.mockResolvedValueOnce({ username: 'johndoe' });
     vi.mocked(existsSync).mockImplementation((p) => {
       if (String(p).includes('.claude/commands')) return true;
+      if (String(p).includes('.codex/skills')) return true;
       return false;
     });
 
@@ -128,8 +129,8 @@ describe('doctorCommand', () => {
     expect(claudeCheck.status).toBe('ok');
 
     const codexCheck = result.checks.find((c: any) => c.name === 'agent_path.codex');
-    expect(codexCheck.status).toBe('warn');
-    expect(codexCheck.message).toBe('not configured');
+    expect(codexCheck.status).toBe('ok');
+    expect(codexCheck.message).toBe('~/.codex/skills');
   });
 
   it('validates skill hash match', async () => {

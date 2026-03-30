@@ -6,8 +6,8 @@ export const KNOWN_AGENTS = {
   },
   codex: {
     name: 'Codex',
-    defaultPath: null,
-    detectDir: null,
+    defaultPath: '~/.codex/skills',
+    detectDir: '~/.codex',
   },
 } as const;
 

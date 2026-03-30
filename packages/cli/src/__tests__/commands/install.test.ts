@@ -62,6 +62,14 @@ vi.mock('../../lib/installed.js', () => ({
   getInstalledSkill: (name: string) => mockGetInstalledSkill(name),
 }));
 
+vi.mock('@aresdevunit/shared', () => ({
+  KNOWN_AGENTS: {
+    claude: { name: 'Claude Code', defaultPath: '~/.claude/commands', detectDir: '~/.claude' },
+    codex: { name: 'Codex', defaultPath: '~/.codex/skills', detectDir: '~/.codex' },
+  },
+  AGENT_TYPES: ['claude', 'codex'],
+}));
+
 import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { installCommand } from '../../commands/install.js';
 
@@ -97,6 +105,7 @@ describe('installCommand', () => {
       access_token: 'test-token',
       agents: {
         claude: { skill_path: '~/.claude/commands' },
+        codex: { skill_path: '~/.codex/skills' },
       },
     });
     // Simulate non-TTY
@@ -189,6 +198,49 @@ describe('installCommand', () => {
     expect(mkdirSync).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({ recursive: true }),
+    );
+  });
+
+
+  it('adds codex frontmatter to SKILL.md files', async () => {
+    mockGet.mockResolvedValueOnce({
+      ...DOWNLOAD_RESPONSE,
+      files: [
+        { path: 'SKILL.md', content: Buffer.from('# Test Skill\n\nSkill body').toString('base64') },
+      ],
+    });
+
+    const program = createProgram({ json: true, yes: true, agent: 'codex' });
+    await program.parseAsync(['node', 'hub', 'install', 'test-skill']);
+
+    expect(writeFileSync).toHaveBeenCalledWith(
+      expect.stringContaining('/home/testuser/.codex/skills/test-skill/SKILL.md'),
+      expect.any(Buffer),
+    );
+
+    const content = vi.mocked(writeFileSync).mock.calls[0]?.[1] as Buffer;
+    expect(content.toString('utf-8')).toContain('name: "test-skill"');
+    expect(content.toString('utf-8')).toContain('description: "Skill body"');
+  });
+
+  it('uses configured codex path when --agent codex is specified', async () => {
+    mockGet.mockResolvedValueOnce({
+      ...DOWNLOAD_RESPONSE,
+      files: [
+        { path: 'SKILL.md', content: Buffer.from('# Test Skill').toString('base64') },
+      ],
+    });
+
+    const program = createProgram({ json: true, yes: true, agent: 'codex' });
+    await program.parseAsync(['node', 'hub', 'install', 'test-skill']);
+
+    expect(writeFileSync).toHaveBeenCalledWith(
+      expect.stringContaining('/home/testuser/.codex/skills/test-skill/SKILL.md'),
+      expect.any(Buffer),
+    );
+    expect(mockAddInstalledSkill).toHaveBeenCalledWith(
+      'test-skill',
+      expect.objectContaining({ agent: 'codex' }),
     );
   });
 });

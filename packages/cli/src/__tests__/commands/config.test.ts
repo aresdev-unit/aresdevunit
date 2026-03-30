@@ -51,7 +51,7 @@ const DEFAULT_CONFIG = {
   access_token: 'secret-jwt-token',
   agents: {
     claude: { skill_path: '~/.claude/commands' },
-    codex: { skill_path: null },
+    codex: { skill_path: '~/.codex/skills' },
   },
 };
 

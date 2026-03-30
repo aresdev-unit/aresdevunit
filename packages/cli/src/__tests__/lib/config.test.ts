@@ -39,6 +39,7 @@ describe('Config Manager', () => {
       expect(config.api_url).toBe('https://aresdevunit.vercel.app/api/v1');
       expect(config.agents).toBeDefined();
       expect(config.agents.claude.skill_path).toBe('~/.claude/commands');
+      expect(config.agents.codex.skill_path).toBe('~/.codex/skills');
       expect(config.access_token).toBeUndefined();
       expect(config.refresh_token).toBeUndefined();
     });

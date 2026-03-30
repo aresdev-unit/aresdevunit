@@ -22,7 +22,7 @@ const DEFAULT_CONFIG: HubConfig = {
   api_url: 'https://aresdevunit.vercel.app/api/v1',
   agents: {
     claude: { skill_path: '~/.claude/commands' },
-    codex: { skill_path: null },
+    codex: { skill_path: '~/.codex/skills' },
   },
 };
 

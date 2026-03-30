@@ -11,6 +11,7 @@ import { readConfig, updateConfig } from '../lib/config.js';
 import { addInstalledSkill, getInstalledSkill } from '../lib/installed.js';
 import { installRule } from '../lib/rules.js';
 import { KNOWN_AGENTS, AGENT_TYPES, type AgentType } from '@aresdevunit/shared';
+import { normalizeSkillContentForAgent } from '../lib/agent-skill-format.js';
 import type { SkillDownload } from '@aresdevunit/shared';
 
 function expandPath(p: string): string {
@@ -27,6 +28,12 @@ async function detectAgent(
 ): Promise<{ agent: string; skillPath: string }> {
   // 1. --agent flag
   if (flagAgent) {
+    const config = readConfig();
+    const configuredPath = config.agents[flagAgent]?.skill_path;
+    if (configuredPath) {
+      return { agent: flagAgent, skillPath: expandPath(configuredPath) };
+    }
+
     const info = KNOWN_AGENTS[flagAgent as AgentType];
     if (info && info.defaultPath) {
       return { agent: flagAgent, skillPath: expandPath(info.defaultPath) };
@@ -331,7 +338,8 @@ export const installCommand = new Command('install')
     let fileHash = '';
 
     for (const file of download.files) {
-      const content = Buffer.from(file.content, 'base64');
+      const originalContent = Buffer.from(file.content, 'base64');
+      const content = normalizeSkillContentForAgent(agent, download.name, file.path, originalContent);
       const targetPath = join(skillDir, file.path);
 
       // Ensure parent dir exists

@@ -8,6 +8,7 @@ import { createHash } from 'node:crypto';
 import inquirer from 'inquirer';
 import semver from 'semver';
 import { getApiClient, AuthError, NetworkError } from '../lib/api-client.js';
+import { normalizeSkillContentForAgent } from '../lib/agent-skill-format.js';
 import { readInstalled, writeInstalled, type InstalledSkill } from '../lib/installed.js';
 import type { SkillDownload } from '@aresdevunit/shared';
 
@@ -190,7 +191,8 @@ export const updateCommand = new Command('update')
           // Write new files
           let newHash = '';
           for (const file of download.files) {
-            const content = Buffer.from(file.content, 'base64');
+            const originalContent = Buffer.from(file.content, 'base64');
+            const content = normalizeSkillContentForAgent(installed.agent, check.name, file.path, originalContent);
             const targetPath = join(dirname(filePath), file.path);
 
             const targetDir = dirname(targetPath);
