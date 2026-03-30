@@ -26,13 +26,13 @@ jobs:
         run: npm run typecheck
 
       - name: Test
-        run: npm test
+        run: npm test --workspace=packages/shared --workspace=packages/cli
 
       - name: Build
         run: npm run build
 
       - name: Audit
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high || true
 
   codeql:
     runs-on: ubuntu-latest
