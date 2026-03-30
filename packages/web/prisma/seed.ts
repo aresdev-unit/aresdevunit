@@ -12,11 +12,20 @@ const prisma = new PrismaClient();
 
 async function main() {
   // 1. admin user upsert
+  // First, fix old seed admin if exists (githubId was 'admin', should be real GitHub ID)
+  const oldAdmin = await prisma.user.findUnique({ where: { githubId: 'admin' } });
+  if (oldAdmin) {
+    await prisma.user.update({
+      where: { id: oldAdmin.id },
+      data: { githubId: '271990720' },
+    });
+  }
+
   const admin = await prisma.user.upsert({
-    where: { githubId: 'admin' },
-    update: {},
+    where: { githubId: '271990720' },
+    update: { role: 'ADMIN' },
     create: {
-      githubId: 'admin',
+      githubId: '271990720',
       username: 'aresdev-unit',
       email: 'aorying@seconddive.co.kr',
       role: 'ADMIN',
