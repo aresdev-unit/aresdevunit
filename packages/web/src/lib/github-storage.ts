@@ -31,12 +31,15 @@ const REPO_NAME = 'skill-registry';
  */
 function createAppJwt(): string {
   const appId = process.env.GITHUB_APP_ID;
-  const privateKeyB64 = process.env.GITHUB_APP_PRIVATE_KEY;
-  if (!appId || !privateKeyB64) {
+  const privateKeyRaw = process.env.GITHUB_APP_PRIVATE_KEY;
+  if (!appId || !privateKeyRaw) {
     throw new Error('GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY must be set');
   }
 
-  const privateKey = Buffer.from(privateKeyB64, 'base64').toString('utf-8');
+  // Support both raw PEM and base64-encoded PEM
+  const privateKey = privateKeyRaw.startsWith('-----')
+    ? privateKeyRaw
+    : Buffer.from(privateKeyRaw, 'base64').toString('utf-8');
   const now = Math.floor(Date.now() / 1000);
 
   const header = { alg: 'RS256', typ: 'JWT' };
