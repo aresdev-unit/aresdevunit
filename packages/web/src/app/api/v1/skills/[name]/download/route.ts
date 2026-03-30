@@ -68,9 +68,10 @@ export async function GET(
     const files = await storage.download(name, version);
 
     // Atomic downloads increment
-    await prisma.$executeRaw`
-      UPDATE skills SET downloads = downloads + 1 WHERE id = ${skill.id}::uuid
-    `;
+    await prisma.skill.update({
+      where: { id: skill.id },
+      data: { downloads: { increment: 1 } },
+    });
 
     // Log activity for authenticated users (with 10min dedup)
     if (userId) {
