@@ -9,6 +9,7 @@ import inquirer from 'inquirer';
 import { getApiClient, AuthError, NetworkError } from '../lib/api-client.js';
 import { readConfig, updateConfig } from '../lib/config.js';
 import { addInstalledSkill, getInstalledSkill } from '../lib/installed.js';
+import { installRule } from '../lib/rules.js';
 import { KNOWN_AGENTS, AGENT_TYPES, type AgentType } from '@aresdevunit/shared';
 import type { SkillDownload } from '@aresdevunit/shared';
 
@@ -101,15 +102,17 @@ async function detectAgent(
 }
 
 export const installCommand = new Command('install')
-  .description('Install a skill from AresDevUnit Hub')
+  .description('Install a skill or rule from AresDevUnit Hub')
   .argument('<name>', 'Skill name (optionally with @version suffix)')
-  .action(async (nameArg: string) => {
+  .option('--type <type>', 'Content type: skill or rule', 'skill')
+  .action(async (nameArg: string, cmdOpts: { type?: string }) => {
     const parentOpts = installCommand.parent?.opts() ?? {};
     const useJson = parentOpts.json ?? false;
     const useYes = parentOpts.yes ?? false;
     const flagAgent = parentOpts.agent as string | undefined;
     const isTTY = process.stdout.isTTY ?? false;
     const spinner = ora();
+    const installType = cmdOpts.type ?? 'skill';
 
     // Parse name@version
     let name: string;
@@ -222,6 +225,53 @@ export const installCommand = new Command('install')
       }
     }
 
+    // --- Rule install path ---
+    if (installType === 'rule') {
+      // Rules go to ~/.aresdevunit/rules/<name>.md (agent-independent)
+      let installedPath = '';
+      let fileHash = '';
+
+      for (const file of download.files) {
+        const content = Buffer.from(file.content, 'base64');
+        const rulePath = installRule(download.name, content.toString('utf-8'));
+
+        if (!installedPath) {
+          installedPath = rulePath.replace(homedir(), '~');
+        }
+
+        const hash = createHash('sha256').update(content).digest('hex');
+        if (!fileHash) {
+          fileHash = `sha256:${hash}`;
+        }
+      }
+
+      // Update installed.json with type field
+      addInstalledSkill(download.name, {
+        version: download.version,
+        agent: 'all',
+        path: installedPath,
+        file_hash: fileHash,
+        installed_at: new Date().toISOString(),
+        type: 'rule',
+      });
+
+      if (useJson) {
+        console.log(JSON.stringify({
+          status: 'ok',
+          name: download.name,
+          version: download.version,
+          type: 'rule',
+          path: installedPath,
+        }));
+      } else {
+        console.log(chalk.green(`  Rule installed to ${installedPath}`));
+        console.log(`  Run ${chalk.cyan('aresdevhubcli rules list')} to see all installed rules`);
+      }
+      return;
+    }
+
+    // --- Skill install path (existing flow) ---
+
     // Detect agent
     let agent: string;
     let skillPath: string;
@@ -280,6 +330,7 @@ export const installCommand = new Command('install')
       path: installedPath,
       file_hash: fileHash,
       installed_at: new Date().toISOString(),
+      type: 'skill',
     });
 
     if (useJson) {

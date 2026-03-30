@@ -67,6 +67,7 @@ export interface SkillDownload {
   agent_types: string[];
   is_verified: boolean;
   deprecated: boolean;
+  type?: string;
   files: { path: string; content: string }[];
 }
 

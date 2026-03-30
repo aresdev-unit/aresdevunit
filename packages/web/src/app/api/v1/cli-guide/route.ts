@@ -125,6 +125,39 @@ Download and install a skill to your agent's command directory.
   - Claude Code: ~/.claude/commands/<name>.md
   - Others: configurable via aresdevhubcli config
 
+### aresdevhubcli install <name> --type rule
+Install a rule to ~/.aresdevunit/rules/ (agent-independent).
+Rules are always-on reference content loaded regardless of agent type.
+
+  $ aresdevhubcli install ares-data-rules --type rule
+  → Downloading ares-data-rules@1.0.0... ✓
+  → Rule installed to ~/.aresdevunit/rules/ares-data-rules.md
+
+================================================================================
+
+## RULES MANAGEMENT
+
+### aresdevhubcli rules list
+List all installed rules.
+
+  $ aresdevhubcli rules list
+  → Installed rules (1):
+  →   ares-data-rules
+  →     ~/.aresdevunit/rules/ares-data-rules.md
+
+### aresdevhubcli rules path
+Show the rules directory path.
+
+  $ aresdevhubcli rules path
+  → /home/user/.aresdevunit/rules
+
+### aresdevhubcli rules show <name>
+Show content of an installed rule.
+
+  $ aresdevhubcli rules show ares-data-rules
+
+================================================================================
+
 ### aresdevhubcli uninstall <name>
 Remove an installed skill.
 

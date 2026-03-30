@@ -35,11 +35,15 @@ aresdevhubcli init             # Create a new skill project
 aresdevhubcli validate         # Validate skill.json and files
 aresdevhubcli publish          # Publish a skill to the registry
 aresdevhubcli install <name>   # Install a skill (e.g. aresdevhubcli install my-skill --agent claude)
+aresdevhubcli install <name> --type rule  # Install a rule to ~/.aresdevunit/rules/
 aresdevhubcli uninstall <name> # Remove an installed skill
 aresdevhubcli update           # Update all installed skills
 aresdevhubcli search <query>   # Search for skills
 aresdevhubcli info <name>      # Show skill details
 aresdevhubcli list             # List installed skills (--mine for your published skills)
+aresdevhubcli rules list       # List installed rules
+aresdevhubcli rules path       # Show rules directory path
+aresdevhubcli rules show <name> # Show rule content
 aresdevhubcli whoami           # Show current user
 aresdevhubcli logout           # Sign out
 

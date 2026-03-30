@@ -25,8 +25,16 @@ async function main() {
 
   console.log(`Admin user: ${admin.username} (${admin.id})`);
 
-  // 2. All 13 skills from SKILLS-SPEC.md
-  const skills = [
+  // 2. All 13 skills + rules from SKILLS-SPEC.md
+  const skills: Array<{
+    name: string;
+    description: string;
+    category: string;
+    agentTypes: string[];
+    keywords: string[];
+    version: string;
+    type?: string;
+  }> = [
     // --- Tier 0 ---
     {
       name: 'gear-encyclopedia-generate',
@@ -134,6 +142,16 @@ async function main() {
       keywords: ['vehicle', 'mount', 'encyclopedia'],
       version: '1.0.0',
     },
+    // --- Rules (type: rule) ---
+    {
+      name: 'ares-data-rules',
+      description: 'Ares 게임 데이터 테이블 작업 규칙 (CSV 인코딩, 경로, 시스템 참조 등)',
+      category: 'productivity',
+      agentTypes: ['claude', 'codex'],
+      keywords: ['rules', 'claude-md', 'csv', 'encoding', 'data-table'],
+      version: '1.0.0',
+      type: 'rule',
+    },
   ];
 
   let created = 0;
@@ -173,7 +191,9 @@ async function main() {
     created++;
   }
 
-  console.log(`\nSeed complete: ${created} created, ${skipped} skipped (total ${skills.length} skills)`);
+  const ruleCount = skills.filter((s) => s.type === 'rule').length;
+  const skillCount = skills.length - ruleCount;
+  console.log(`\nSeed complete: ${created} created, ${skipped} skipped (${skillCount} skills, ${ruleCount} rules)`);
 }
 
 main()

@@ -64,6 +64,12 @@ aresdevhubcli publish
 aresdevhubcli install <name> --agent claude
 aresdevhubcli search <query>
 aresdevhubcli list --installed
+
+# 룰 관리 (agent 무관, ~/.aresdevunit/rules/에 설치)
+aresdevhubcli install ares-data-rules --type rule
+aresdevhubcli rules list
+aresdevhubcli rules path
+aresdevhubcli rules show <name>
 ```
 
 Agent 호출 시: `aresdevhubcli <command> --yes --json --agent claude`

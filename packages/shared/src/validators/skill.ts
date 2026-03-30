@@ -8,6 +8,9 @@ export const skillNameSchema = z
   .max(50)
   .regex(/^[a-z][a-z0-9-]*$/, 'Must be lowercase alphanumeric with hyphens, starting with a letter');
 
+export const SKILL_TYPE_VALUES = ['skill', 'rule'] as const;
+export type SkillType = (typeof SKILL_TYPE_VALUES)[number];
+
 export const skillJsonSchema = z.object({
   name: skillNameSchema,
   version: z.string().regex(/^\d+\.\d+\.\d+$/, 'Must be valid semver (e.g. 1.0.0)'),
@@ -19,6 +22,7 @@ export const skillJsonSchema = z.object({
     .min(1, 'At least one agent type required'),
   keywords: z.array(z.string().max(30)).max(10).default([]),
   license: z.string().default('MIT'),
+  skill_type: z.enum(SKILL_TYPE_VALUES).default('skill').optional(),
   files: z.record(z.string(), z.string()).refine((obj) => Object.keys(obj).length > 0, {
     message: 'At least one file mapping required',
   }),

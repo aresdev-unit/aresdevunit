@@ -11,6 +11,7 @@ export interface InstalledSkill {
   path: string;
   file_hash: string;
   installed_at: string;
+  type?: string; // 'skill' | 'rule'
 }
 
 export interface InstalledManifest {
