@@ -320,9 +320,10 @@ export const installCommand = new Command('install')
       }
     }
 
-    // Ensure target directory exists
-    if (!existsSync(skillPath)) {
-      mkdirSync(skillPath, { recursive: true });
+    // Ensure target directory exists (skill-specific subdirectory)
+    const skillDir = join(skillPath, download.name);
+    if (!existsSync(skillDir)) {
+      mkdirSync(skillDir, { recursive: true });
     }
 
     // Write files and compute hash
@@ -331,7 +332,7 @@ export const installCommand = new Command('install')
 
     for (const file of download.files) {
       const content = Buffer.from(file.content, 'base64');
-      const targetPath = join(skillPath, file.path);
+      const targetPath = join(skillDir, file.path);
 
       // Ensure parent dir exists
       const targetDir = dirname(targetPath);
