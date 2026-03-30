@@ -7,12 +7,8 @@ const ENV = {
   GITHUB_APP_INSTALLATION_ID: '67890',
 };
 
-// Generate a dummy RSA private key (base64-encoded) for testing
-const DUMMY_PRIVATE_KEY = `-----BEGIN RSA PRIVATE KEY-----
-MIIEowIBAAKCAQEA0Z3VS5JJcds3xfn/ygWyF8PbnGcY5unA67hqxnfZoGMahaL5
-1234567890abcdefghijklmnopqrstuvwxyzABCDEF1234567890abcdefghijklmn
-opqrstuvwxyzABCDEF1234567890abcdefghijklmnopqrstuvwxyzABCDEF123456
------END RSA PRIVATE KEY-----`;
+// Dummy key for testing (NOT a real key — base64 of "test-dummy-key-content")
+const DUMMY_PRIVATE_KEY = Buffer.from('test-dummy-key-for-unit-tests-only').toString('base64');
 
 describe('GitHubStorageProvider', () => {
   let GitHubStorageProvider: any;
