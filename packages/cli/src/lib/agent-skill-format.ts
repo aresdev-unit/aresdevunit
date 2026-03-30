@@ -1,7 +1,7 @@
 import { basename } from 'node:path';
 
 function escapeYamlString(value: string): string {
-  return value.replace(/\\/g, '\\\\').replace(/"/g, '\"');
+  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
 function extractDescription(markdown: string, skillName: string): string {
