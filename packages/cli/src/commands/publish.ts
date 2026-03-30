@@ -98,6 +98,10 @@ export const publishCommand = new Command('publish')
       });
     }
 
+    // Read README.md if present
+    const readmePath = join(cwd, 'README.md');
+    const readme = existsSync(readmePath) ? readFileSync(readmePath, 'utf-8') : skillJson.description;
+
     // Determine if new or update — try POST /skills first, if 409 then POST /skills/:name/versions
     if (!useJson) {
       spinner.start(`Publishing ${skillJson.name}@${version}...`);
@@ -113,7 +117,7 @@ export const publishCommand = new Command('publish')
           {
             name: skillJson.name,
             description: skillJson.description,
-            readme: null,
+            readme,
             category: skillJson.category,
             version,
             changelog: opts.changelog ?? 'Initial release',
