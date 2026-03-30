@@ -19,7 +19,7 @@ export const RATE_LIMITS: Record<string, RateLimitConfig> = {
     windowSeconds: 15 * 60, // 15 min
   },
   'POST:/api/v1/skills': {
-    authenticated: 20,
+    authenticated: 200,
     anonymous: 0, // auth only
     windowSeconds: 60 * 60, // 1 hour
   },
