@@ -31,23 +31,24 @@ export const loginCommand = new Command('login')
       spinner.stop();
 
       // Step 2: Show user code and open browser
+      // Always print clearly — even in JSON mode, user needs to see the code
+      console.log();
+      console.log(`  ============================================`);
+      console.log(`  브라우저에서 아래 URL을 열고 코드를 입력하세요:`);
+      console.log();
+      console.log(`  URL:  ${useJson ? deviceCode.verification_url : chalk.cyan(deviceCode.verification_url)}`);
+      console.log(`  코드: ${useJson ? deviceCode.user_code : chalk.bold.yellow(deviceCode.user_code)}`);
+      console.log(`  ============================================`);
+      console.log();
+
       if (useJson) {
-        // In JSON mode, output the verification info
         console.log(
           JSON.stringify({
+            action: 'open_browser_and_enter_code',
             user_code: deviceCode.user_code,
             verification_url: deviceCode.verification_url,
           })
         );
-      } else {
-        console.log();
-        console.log(
-          `  Open ${chalk.cyan(deviceCode.verification_url)} in your browser`
-        );
-        console.log(
-          `  Enter code: ${chalk.bold.yellow(deviceCode.user_code)}`
-        );
-        console.log();
       }
 
       // Try to open browser (ignore failure)
