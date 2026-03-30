@@ -116,9 +116,7 @@ export async function POST(
     if (!preCheck) {
       return withCors(errorResponse('SKILL_NOT_FOUND', `Skill '${name}' not found`, 404));
     }
-    if (preCheck.authorId !== user.id) {
-      return withCors(errorResponse('FORBIDDEN', 'Only the author can add versions', 403));
-    }
+    // Author check removed — any authenticated user can add versions (internal team)
 
     // 1. Upload to GitHub (outside transaction to avoid holding DB lock during external I/O)
     await storage.upload(name, input.version, input.files);
@@ -141,9 +139,7 @@ export async function POST(
           throw { code: 'SKILL_NOT_FOUND', status: 404 };
         }
 
-        if (skill.authorId !== user.id) {
-          throw { code: 'FORBIDDEN', status: 403 };
-        }
+        // Author check removed — any authenticated user can add versions (internal team)
 
         // Check version doesn't already exist
         const existingVersion = await tx.skillVersion.findFirst({
