@@ -7,6 +7,7 @@ import {
   handleCorsPreflightResponse,
   type AuthUser,
 } from '@/lib/api-middleware';
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
 export async function OPTIONS() {
@@ -58,12 +59,12 @@ export async function POST(request: NextRequest) {
         date,
         summary: parsed.data.summary,
         unfinished: parsed.data.unfinished || null,
-        metadata: parsed.data.metadata || null,
+        metadata: parsed.data.metadata ?? Prisma.JsonNull,
       },
       update: {
         summary: parsed.data.summary,
         unfinished: parsed.data.unfinished || null,
-        metadata: parsed.data.metadata || null,
+        metadata: parsed.data.metadata ?? Prisma.JsonNull,
       },
     });
 
