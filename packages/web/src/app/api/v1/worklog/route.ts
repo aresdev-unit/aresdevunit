@@ -22,10 +22,14 @@ function getKSTDate(): Date {
   return new Date(dateStr + 'T00:00:00.000Z');
 }
 
+const jsonValue: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
+  z.union([z.string(), z.number(), z.boolean(), z.null(), z.array(jsonValue), z.record(jsonValue)])
+);
+
 const createWorklogSchema = z.object({
   summary: z.string().min(1).max(50000),
   unfinished: z.string().max(10000).optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(jsonValue).optional(),
 });
 
 // POST /api/v1/worklog — Save daily work log
@@ -59,12 +63,12 @@ export async function POST(request: NextRequest) {
         date,
         summary: parsed.data.summary,
         unfinished: parsed.data.unfinished || null,
-        metadata: parsed.data.metadata ?? Prisma.JsonNull,
+        metadata: parsed.data.metadata ?? Prisma.DbNull,
       },
       update: {
         summary: parsed.data.summary,
         unfinished: parsed.data.unfinished || null,
-        metadata: parsed.data.metadata ?? Prisma.JsonNull,
+        metadata: parsed.data.metadata ?? Prisma.DbNull,
       },
     });
 
