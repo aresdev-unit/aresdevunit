@@ -55,6 +55,17 @@ export async function POST(request: NextRequest) {
 
     const user = storedToken.user;
 
+    // Check if user account is rejected
+    if (user.status === 'REJECTED') {
+      await prisma.refreshToken.update({
+        where: { id: storedToken.id },
+        data: { revokedAt: new Date() },
+      });
+      return withCors(
+        errorResponse('ACCOUNT_REJECTED', 'Account has been rejected', 403)
+      );
+    }
+
     // Revoke old refresh token (rotation)
     await prisma.refreshToken.update({
       where: { id: storedToken.id },

@@ -45,6 +45,23 @@ export const authOptions: NextAuthOptions = {
           token.userId = dbUser.id;
           token.username = dbUser.username;
           token.role = dbUser.role;
+          token.status = dbUser.status;
+        }
+      } else if (token.userId) {
+        // Re-fetch status from DB every 30 seconds to reflect approval changes promptly
+        const now = Math.floor(Date.now() / 1000);
+        const lastCheck = (token.statusCheckedAt as number) || 0;
+        if (now - lastCheck > 30) {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: token.userId as string },
+            select: { status: true, role: true, username: true },
+          });
+          if (dbUser) {
+            token.status = dbUser.status;
+            token.role = dbUser.role;
+            token.username = dbUser.username;
+          }
+          token.statusCheckedAt = now;
         }
       }
       return token;
@@ -57,6 +74,7 @@ export const authOptions: NextAuthOptions = {
           id: token.userId as string,
           username: token.username as string,
           role: token.role as string,
+          status: (token.status as string) || 'PENDING',
         };
       }
       return session;
@@ -92,6 +110,7 @@ declare module 'next-auth' {
       id: string;
       username: string;
       role: string;
+      status: string;
       name?: string | null;
       email?: string | null;
       image?: string | null;
@@ -104,5 +123,7 @@ declare module 'next-auth/jwt' {
     userId?: string;
     username?: string;
     role?: string;
+    status?: string;
+    statusCheckedAt?: number;
   }
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './auth';
 import { verifyAccessToken, type JwtPayload } from './jwt';
+import { prisma } from './prisma';
 
 export interface AuthUser {
   id: string;
@@ -78,6 +79,32 @@ export async function requireAuth(
     );
   }
   return result.user;
+}
+
+/**
+ * Require authentication + APPROVED status
+ */
+export async function requireApproved(
+  request: NextRequest
+): Promise<AuthUser | NextResponse> {
+  const authResult = await requireAuth(request);
+  if (authResult instanceof NextResponse) return authResult;
+  const user = authResult as AuthUser;
+
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: { status: true },
+  });
+
+  if (!dbUser || dbUser.status !== 'APPROVED') {
+    const code = dbUser?.status === 'REJECTED' ? 'ACCOUNT_REJECTED' : 'ACCOUNT_PENDING';
+    const message = dbUser?.status === 'REJECTED'
+      ? 'Account has been rejected. Contact admin.'
+      : 'Account not yet approved. Contact admin.';
+    return errorResponse(code, message, 403);
+  }
+
+  return user;
 }
 
 /**

@@ -21,6 +21,7 @@ import { doctorCommand } from './commands/doctor.js';
 import { configCommand } from './commands/config.js';
 import { updateCliCommand } from './commands/update-cli.js';
 import { rulesCommand } from './commands/rules.js';
+import { workCommand } from './commands/work.js';
 
 // NO_COLOR support (https://no-color.org/)
 if (process.env['NO_COLOR'] !== undefined) {
@@ -72,5 +73,6 @@ program.addCommand(doctorCommand);
 program.addCommand(configCommand);
 program.addCommand(updateCliCommand);
 program.addCommand(rulesCommand);
+program.addCommand(workCommand);
 
 program.parse();

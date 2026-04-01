@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import {
   getAuthUser,
-  requireAuth,
+  requireApproved,
   errorResponse,
   withCors,
   handleCorsPreflightResponse,
@@ -194,7 +194,7 @@ export async function GET(request: NextRequest) {
 // --- POST /api/v1/skills ---
 export async function POST(request: NextRequest) {
   // Auth required
-  const authResult = await requireAuth(request);
+  const authResult = await requireApproved(request);
   if (authResult instanceof NextResponse) return withCors(authResult);
   const user = authResult as AuthUser;
 

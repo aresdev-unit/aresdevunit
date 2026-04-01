@@ -14,6 +14,13 @@ export class NetworkError extends Error {
   }
 }
 
+export class AccountPendingError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AccountPendingError';
+  }
+}
+
 interface RequestOptions extends RequestInit {
   skipAuth?: boolean;
 }
@@ -47,6 +54,16 @@ export class ApiClient {
       });
 
       if (!res.ok) {
+        // Check if the refresh was rejected due to account status
+        try {
+          const errBody = await res.json() as { error?: { code: string; message: string } };
+          if (errBody.error?.code === 'ACCOUNT_REJECTED' || errBody.error?.code === 'ACCOUNT_PENDING') {
+            clearTokens();
+            throw new AccountPendingError(errBody.error.message);
+          }
+        } catch (e) {
+          if (e instanceof AccountPendingError) throw e;
+        }
         return false;
       }
 
@@ -62,7 +79,8 @@ export class ApiClient {
       });
 
       return true;
-    } catch {
+    } catch (e) {
+      if (e instanceof AccountPendingError) throw e;
       return false;
     }
   }
@@ -141,6 +159,9 @@ export class ApiClient {
         error?: { code: string; message: string; status: number };
       };
       if (apiError.error) {
+        if (res.status === 403 && (apiError.error.code === 'ACCOUNT_PENDING' || apiError.error.code === 'ACCOUNT_REJECTED')) {
+          throw new AccountPendingError(apiError.error.message);
+        }
         if (res.status === 401 || res.status === 403) {
           throw new AuthError(apiError.error.message);
         }

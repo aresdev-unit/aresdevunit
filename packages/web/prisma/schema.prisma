@@ -12,6 +12,12 @@ enum UserRole {
   ADMIN
 }
 
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum ActionType {
   PUBLISH
   INSTALL
@@ -27,15 +33,17 @@ model User {
   username   String   @unique
   email      String?
   avatarUrl  String?  @map("avatar_url")
-  role       UserRole @default(USER)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  role       UserRole   @default(USER)
+  status     UserStatus @default(PENDING) @map("status")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
 
   skills        Skill[]
   activities    ActivityLog[]
   likes         SkillLike[]
   refreshTokens RefreshToken[]
   deviceCodes   DeviceCode[]
+  worklogs      Worklog[]
 
   @@map("users")
 }
@@ -156,4 +164,21 @@ model RefreshToken {
   @@index([tokenHash])
   @@index([userId])
   @@map("refresh_tokens")
+}
+
+model Worklog {
+  id         String   @id @default(uuid())
+  summary    String   @db.Text
+  unfinished String?  @db.Text
+  metadata   Json?
+  date       DateTime @db.Date
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, date])
+  @@index([userId, date(sort: Desc)])
+  @@map("worklogs")
 }

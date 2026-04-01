@@ -37,6 +37,7 @@ export async function GET(request: NextRequest) {
       email: dbUser.email,
       avatar_url: dbUser.avatarUrl,
       role: dbUser.role,
+      status: dbUser.status,
       skills_count: dbUser._count.skills,
       total_downloads: totalDownloads._sum.downloads || 0,
       created_at: dbUser.createdAt.toISOString(),

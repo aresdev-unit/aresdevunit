@@ -54,6 +54,7 @@ export async function GET(request: NextRequest) {
       email: u.email,
       avatar_url: u.avatarUrl,
       role: u.role,
+      status: u.status,
       skills_count: u._count.skills,
       created_at: u.createdAt.toISOString(),
     }));
