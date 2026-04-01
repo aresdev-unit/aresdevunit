@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 const INSTALL_COMMAND = 'curl -fsSL https://aresdevunit.vercel.app/api/v1/install.sh | bash';
 
@@ -139,12 +140,12 @@ export default function LandingPage() {
 
           {/* CTA buttons */}
           <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-            <a
+            <Link
               className="flex h-12 items-center justify-center gap-2 rounded-full bg-zinc-900 px-8 text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
               href="/skills"
             >
               Skill 둘러보기
-            </a>
+            </Link>
             <a
               className="flex h-12 items-center justify-center rounded-full border border-zinc-200 px-8 transition-colors hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-500"
               href="https://github.com/aresdev-unit/aresdevunit"

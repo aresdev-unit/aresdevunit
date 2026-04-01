@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import {
   getAuthUser,
@@ -38,6 +39,37 @@ const createSkillSchema = z.object({
     .max(FILE_CONSTRAINTS.MAX_FILES),
 });
 
+function parsePositiveInt(value: string | null, fallback: number): number {
+  const parsed = Number.parseInt(value || '', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function isSafeSkillFilePath(path: string): boolean {
+  if (!path || path.startsWith('/') || path.startsWith('\\')) {
+    return false;
+  }
+
+  const normalized = path.replace(/\\/g, '/');
+  if (!/^[A-Za-z0-9._/-]+$/.test(normalized)) {
+    return false;
+  }
+
+  const segments = normalized.split('/');
+  return segments.every((segment) => segment.length > 0 && segment !== '.' && segment !== '..');
+}
+
+function isStrictBase64(value: string): boolean {
+  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(value) || value.length % 4 !== 0) {
+    return false;
+  }
+
+  try {
+    return Buffer.from(value, 'base64').toString('base64') === value;
+  } catch {
+    return false;
+  }
+}
+
 // --- OPTIONS ---
 export async function OPTIONS() {
   return handleCorsPreflightResponse();
@@ -54,8 +86,8 @@ export async function GET(request: NextRequest) {
   if (rateLimited) return withCors(rateLimited);
 
   const { searchParams } = new URL(request.url);
-  const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
-  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20', 10)));
+  const page = parsePositiveInt(searchParams.get('page'), 1);
+  const limit = Math.min(100, parsePositiveInt(searchParams.get('limit'), 20));
   const sort = searchParams.get('sort') || 'downloads';
   const category = searchParams.get('category');
   const agent = searchParams.get('agent');
@@ -83,16 +115,16 @@ export async function GET(request: NextRequest) {
 
   // Filter by author if requested
   const authorParam = searchParams.get('author');
-  if (authorParam && auth.authenticated) {
-    if (authorParam === 'me') {
+  if (authorParam) {
+    if (authorParam === 'me' && auth.authenticated) {
       where.authorId = auth.user.id;
-    } else {
+    } else if (authorParam !== 'me') {
       where.author = { username: authorParam };
     }
   }
 
   // Build orderBy
-  let orderBy: Record<string, string>;
+  let orderBy: Prisma.SkillOrderByWithRelationInput | Prisma.SkillOrderByWithRelationInput[];
   switch (sort) {
     case 'latest':
       orderBy = { createdAt: 'desc' };
@@ -101,8 +133,7 @@ export async function GET(request: NextRequest) {
       orderBy = { name: 'asc' };
       break;
     case 'likes':
-      // We'll use a different approach for likes sorting
-      orderBy = { downloads: 'desc' }; // fallback, actual likes sorting below
+      orderBy = [{ likes: { _count: 'desc' } }, { downloads: 'desc' }];
       break;
     case 'downloads':
     default:
@@ -114,7 +145,7 @@ export async function GET(request: NextRequest) {
     const [skills, total] = await Promise.all([
       prisma.skill.findMany({
         where: where as any,
-        orderBy: orderBy as any,
+        orderBy,
         skip: (page - 1) * limit,
         take: limit,
         include: {
@@ -142,11 +173,6 @@ export async function GET(request: NextRequest) {
       deprecated: skill.deprecated,
       created_at: skill.createdAt.toISOString(),
     }));
-
-    // Sort by likes if requested (post-query sort since Prisma can't sort by _count easily in all cases)
-    if (sort === 'likes') {
-      data.sort((a, b) => b.likes - a.likes);
-    }
 
     const response = NextResponse.json({
       data,
@@ -196,6 +222,39 @@ export async function POST(request: NextRequest) {
   // Validate file sizes
   let totalSize = 0;
   for (const file of input.files) {
+    if (!isSafeSkillFilePath(file.path)) {
+      return withCors(
+        errorResponse(
+          'VALIDATION_ERROR',
+          `File path ${file.path} is invalid`,
+          422
+        )
+      );
+    }
+
+    if (!isStrictBase64(file.content)) {
+      return withCors(
+        errorResponse(
+          'VALIDATION_ERROR',
+          `File ${file.path} content must be valid base64`,
+          422
+        )
+      );
+    }
+
+    const hasAllowedExtension = FILE_CONSTRAINTS.ALLOWED_EXTENSIONS.some((ext) =>
+      file.path.toLowerCase().endsWith(ext)
+    );
+    if (!hasAllowedExtension) {
+      return withCors(
+        errorResponse(
+          'VALIDATION_ERROR',
+          `File ${file.path} must use one of: ${FILE_CONSTRAINTS.ALLOWED_EXTENSIONS.join(', ')}`,
+          422
+        )
+      );
+    }
+
     const fileSize = Buffer.from(file.content, 'base64').length;
     if (fileSize > FILE_CONSTRAINTS.MAX_FILE_SIZE) {
       return withCors(
@@ -238,6 +297,16 @@ export async function POST(request: NextRequest) {
   const fileHash = computeFileHash(input.files.map((f) => f.content).join(''));
 
   try {
+    const existingSkill = await prisma.skill.findFirst({
+      where: { name: input.name, deprecated: false },
+      select: { id: true },
+    });
+    if (existingSkill) {
+      return withCors(
+        errorResponse('SKILL_ALREADY_EXISTS', 'Skill with this name already exists', 409)
+      );
+    }
+
     // 1. Upload to GitHub (outside transaction to avoid holding DB lock during external I/O)
     await storage.upload(input.name, input.version, input.files);
 
@@ -298,8 +367,20 @@ export async function POST(request: NextRequest) {
         return skill;
       });
     } catch (err) {
-      // 3. Rollback GitHub on DB failure
-      await storage.delete(input.name, input.version).catch(() => {});
+      const publishedVersion = await prisma.skillVersion.findFirst({
+        where: {
+          version: input.version,
+          skill: {
+            name: input.name,
+            deprecated: false,
+          },
+        },
+        select: { id: true },
+      });
+
+      if (!publishedVersion) {
+        await storage.delete(input.name, input.version).catch(() => {});
+      }
       throw err;
     }
 

@@ -137,26 +137,54 @@ async function getFileSha(token: string, repoPath: string): Promise<string | nul
   return data.sha;
 }
 
+async function deleteRepoFile(token: string, repoPath: string, sha: string, message: string): Promise<void> {
+  const deleteUrl = `${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/contents/${repoPath}`;
+  await fetch(deleteUrl, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+    body: JSON.stringify({
+      message,
+      sha,
+    }),
+  }).catch(() => {});
+}
+
 // --- GitHubStorageProvider ---
 
 export class GitHubStorageProvider implements SkillStorageProvider {
   async upload(name: string, version: string, files: SkillFile[]): Promise<void> {
     const token = await getInstallationToken();
+    const repoPaths = files.map((file) => ({
+      file,
+      repoPath: buildRepoPath(name, version, file.path),
+    }));
 
-    for (const file of files) {
-      const repoPath = buildRepoPath(name, version, file.path);
+    const existingFiles = await Promise.all(
+      repoPaths.map(async ({ repoPath }) => ({
+        repoPath,
+        sha: await getFileSha(token, repoPath),
+      }))
+    );
+    const conflict = existingFiles.find((entry) => entry.sha);
+    if (conflict) {
+      throw new Error(`GitHub upload target already exists: ${conflict.repoPath}`);
+    }
+
+    const uploaded: Array<{ repoPath: string; sha: string }> = [];
+
+    try {
+      for (const { file, repoPath } of repoPaths) {
       const url = `${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/contents/${repoPath}`;
-
-      // Check if file already exists (for update with sha)
-      const existingSha = await getFileSha(token, repoPath);
 
       const body: Record<string, string> = {
         message: `publish ${name}@${version}: ${file.path}`,
         content: file.content,
       };
-      if (existingSha) {
-        body.sha = existingSha;
-      }
 
       const response = await fetch(url, {
         method: 'PUT',
@@ -175,6 +203,21 @@ export class GitHubStorageProvider implements SkillStorageProvider {
           `GitHub upload failed for ${repoPath}: ${response.status} ${errBody}`
         );
       }
+        const data = (await response.json()) as { content?: { sha?: string } };
+        if (data.content?.sha) {
+          uploaded.push({ repoPath, sha: data.content.sha });
+        }
+      }
+    } catch (error) {
+      await Promise.all(
+        uploaded
+          .slice()
+          .reverse()
+          .map(({ repoPath, sha }) =>
+            deleteRepoFile(token, repoPath, sha, `rollback ${name}@${version}: ${repoPath}`)
+          )
+      );
+      throw error;
     }
   }
 
