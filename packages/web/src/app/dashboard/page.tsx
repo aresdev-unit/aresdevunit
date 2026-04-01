@@ -31,12 +31,22 @@ interface FeedItem {
   created_at: string;
 }
 
+interface WorklogEntry {
+  id: string;
+  date: string;
+  summary: string;
+  unfinished: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [skills, setSkills] = useState<SkillRow[]>([]);
   const [feed, setFeed] = useState<FeedItem[]>([]);
+  const [worklogs, setWorklogs] = useState<WorklogEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -50,10 +60,11 @@ export default function DashboardPage() {
 
     async function fetchData() {
       try {
-        const [statsRes, skillsRes, feedRes] = await Promise.all([
+        const [statsRes, skillsRes, feedRes, worklogRes] = await Promise.all([
           fetch('/api/v1/dashboard/stats'),
           fetch('/api/v1/skills?author=me&limit=50'),
           fetch('/api/v1/dashboard/feed?limit=10'),
+          fetch('/api/v1/worklog?limit=10'),
         ]);
 
         if (statsRes.ok) setStats(await statsRes.json());
@@ -64,6 +75,10 @@ export default function DashboardPage() {
         if (feedRes.ok) {
           const body = await feedRes.json();
           setFeed(body.data || []);
+        }
+        if (worklogRes.ok) {
+          const body = await worklogRes.json();
+          setWorklogs(body.data || []);
         }
       } catch (err) {
         console.error('Failed to load dashboard:', err);
@@ -136,6 +151,38 @@ export default function DashboardPage() {
                   />
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {/* Worklog History */}
+        {worklogs.length > 0 && (
+          <div className="mb-8 rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="flex items-center justify-between border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
+              <h2 className="font-semibold text-zinc-900 dark:text-zinc-50">업무 기록</h2>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">최근 {worklogs.length}건</span>
+            </div>
+            <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              {worklogs.map((w) => (
+                <div key={w.id} className="px-6 py-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                      {w.date}
+                    </span>
+                    <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                      {w.updated_at !== w.created_at ? '수정됨' : ''}
+                    </span>
+                  </div>
+                  <p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap leading-relaxed">
+                    {w.summary}
+                  </p>
+                  {w.unfinished && (
+                    <div className="mt-2 rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
+                      <span className="font-medium">이월 항목:</span> {w.unfinished}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         )}
