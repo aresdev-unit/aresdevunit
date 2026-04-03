@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/api-middleware';
-import { getCsvPageIdForTable, getDataset } from '@/lib/tables/data';
+import { hasDatabaseUrl, prisma } from '@/lib/prisma';
+import { getCsvPageIdForTable, getDataset, invalidateDatasetCache } from '@/lib/tables/data';
 import {
   appendEditLog,
   deleteRelationOverride,
@@ -58,20 +59,28 @@ export async function POST(request: NextRequest) {
     const csvPageId = getCsvPageIdForTable(sourceTable);
     let actionType: 'set_relation' | 'ignore_relation' | 'reset_relation';
     let afterPayload: Record<string, unknown>;
+    let persistRelationChange: ((client?: Parameters<typeof upsertRelationOverride>[1]) => Promise<void>) | null = null;
 
     if (reset) {
-      await deleteRelationOverride(sourceTable, sourceColumn);
+      persistRelationChange = async (client) => {
+        await deleteRelationOverride(sourceTable, sourceColumn, client);
+      };
       actionType = 'reset_relation';
       afterPayload = { relation: null };
     } else if (mode === 'ignore') {
-      await upsertRelationOverride({
-        sourceTable,
-        sourceColumn,
-        targetTable: null,
-        targetColumn: null,
-        mode: 'ignore',
-        reason: reason || 'manual ignore',
-      });
+      persistRelationChange = async (client) => {
+        await upsertRelationOverride(
+          {
+            sourceTable,
+            sourceColumn,
+            targetTable: null,
+            targetColumn: null,
+            mode: 'ignore',
+            reason: reason || 'manual ignore',
+          },
+          client
+        );
+      };
       actionType = 'ignore_relation';
       afterPayload = relationPayload({
         sourceTable,
@@ -82,14 +91,19 @@ export async function POST(request: NextRequest) {
         reason: reason || 'manual ignore',
       });
     } else if (targetTable && targetColumn) {
-      await upsertRelationOverride({
-        sourceTable,
-        sourceColumn,
-        targetTable,
-        targetColumn,
-        mode: 'force',
-        reason: reason || 'manual override',
-      });
+      persistRelationChange = async (client) => {
+        await upsertRelationOverride(
+          {
+            sourceTable,
+            sourceColumn,
+            targetTable,
+            targetColumn,
+            mode: 'force',
+            reason: reason || 'manual override',
+          },
+          client
+        );
+      };
       actionType = 'set_relation';
       afterPayload = relationPayload({
         sourceTable,
@@ -103,8 +117,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'targetTable and targetColumn are required' }, { status: 400 });
     }
 
-    await appendEditLog({
-      entityType: 'relation',
+    let logWarning: string | null = null;
+    const logPayload = {
+      entityType: 'relation' as const,
       actionType,
       sourceTable,
       sourceColumn,
@@ -125,9 +140,26 @@ export async function POST(request: NextRequest) {
       reason,
       actorUserId: authUser.id,
       actorUsername: authUser.username,
-    });
+    };
 
-    return NextResponse.json({ ok: true, store: getOverrideStoreKind(), user: authUser.username });
+    if (hasDatabaseUrl) {
+      await prisma.$transaction(async (tx) => {
+        await persistRelationChange?.(tx);
+        await appendEditLog(logPayload, tx);
+      });
+    } else {
+      await persistRelationChange?.();
+      try {
+        await appendEditLog(logPayload);
+      } catch (logError) {
+        console.error('Relation override saved but edit log append failed:', logError);
+        logWarning = 'saved_without_log';
+      }
+    }
+
+    invalidateDatasetCache();
+
+    return NextResponse.json({ ok: true, store: getOverrideStoreKind(), user: authUser.username, logWarning });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'unknown error';
     return NextResponse.json({ error: message }, { status: 500 });

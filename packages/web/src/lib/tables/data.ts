@@ -6,6 +6,10 @@ import { listColumnOverrides, listRelationOverrides } from '@/lib/tables/overrid
 import type { CsvPage, Dataset, TableIndex } from '@/lib/tables/types';
 
 const snapshotDataset = rawData as Dataset;
+const DATASET_CACHE_TTL_MS = 5_000;
+
+let cachedDataset: Dataset | null = null;
+let cachedDatasetExpiresAt = 0;
 
 function compareTableIds(left: string, right: string) {
   if (left === right) return 0;
@@ -80,6 +84,11 @@ export function buildTableHref(
 
 export async function getDataset(): Promise<Dataset> {
   noStore();
+  const now = Date.now();
+  if (cachedDataset && now < cachedDatasetExpiresAt) {
+    return structuredClone(cachedDataset) as Dataset;
+  }
+
   const [relationOverrides, columnOverrides] = await Promise.all([
     listRelationOverrides(),
     listColumnOverrides(),
@@ -87,7 +96,14 @@ export async function getDataset(): Promise<Dataset> {
   const next = structuredClone(snapshotDataset) as Dataset;
   applyRelationOverrides(next, relationOverrides);
   applyColumnOverrides(next, columnOverrides);
-  return next;
+  cachedDataset = next;
+  cachedDatasetExpiresAt = now + DATASET_CACHE_TTL_MS;
+  return structuredClone(next) as Dataset;
+}
+
+export function invalidateDatasetCache() {
+  cachedDataset = null;
+  cachedDatasetExpiresAt = 0;
 }
 
 export async function getCsvPages(): Promise<CsvPage[]> {

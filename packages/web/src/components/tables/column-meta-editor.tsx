@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { ManualSupplementTable } from '@/lib/tables/types';
@@ -153,6 +154,7 @@ export function ColumnMetaEditor({
   currentNote,
   currentManualTables,
 }: ColumnMetaEditorProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [description, setDescription] = useState(currentDescription);
@@ -283,7 +285,9 @@ export function ColumnMetaEditor({
         throw new Error(data.error || 'save failed');
       }
 
-      window.location.reload();
+      setOpen(false);
+      setSaving(false);
+      router.refresh();
     } catch (caughtError) {
       setError(caughtError instanceof Error ? caughtError.message : 'save failed');
       setSaving(false);

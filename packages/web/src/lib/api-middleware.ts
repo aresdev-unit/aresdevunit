@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './auth';
 import { verifyAccessToken, type JwtPayload } from './jwt';
+import { getLocalDevAuthUser } from './local-dev-auth';
+import { LOCAL_DEV_AUTH_COOKIE } from './local-dev-auth-shared';
 import { prisma } from './prisma';
 
 export interface AuthUser {
@@ -13,6 +15,12 @@ export interface AuthUser {
 export type AuthResult =
   | { authenticated: true; user: AuthUser }
   | { authenticated: false; user: null };
+
+const LOCAL_DEV_TABLES_API_PREFIX = '/api/v1/tables';
+
+export function supportsLocalDevTablesAuth(pathname: string) {
+  return pathname.startsWith(LOCAL_DEV_TABLES_API_PREFIX);
+}
 
 /**
  * Dual auth: Bearer JWT > session cookie > anonymous
@@ -55,7 +63,22 @@ export async function getAuthUser(request: NextRequest): Promise<AuthResult> {
     // Session check failed, treat as anonymous
   }
 
-  // 3. Anonymous
+  // 3. Check local dev auth cookie (dev-only tables workflow)
+  if (supportsLocalDevTablesAuth(request.nextUrl.pathname)) {
+    const localDevUser = await getLocalDevAuthUser(request.cookies.get(LOCAL_DEV_AUTH_COOKIE)?.value);
+    if (localDevUser) {
+      return {
+        authenticated: true,
+        user: {
+          id: localDevUser.id,
+          username: localDevUser.username,
+          role: localDevUser.role,
+        },
+      };
+    }
+  }
+
+  // 4. Anonymous
   return { authenticated: false, user: null };
 }
 

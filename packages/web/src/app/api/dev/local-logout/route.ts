@@ -8,7 +8,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Not available' }, { status: 404 });
   }
 
-  const callbackUrl = request.nextUrl.searchParams.get('callbackUrl') || '/';
+  const rawCallbackUrl = request.nextUrl.searchParams.get('callbackUrl') || '/';
+  const callbackUrl = rawCallbackUrl.startsWith('/') ? rawCallbackUrl : '/';
   const response = NextResponse.redirect(new URL(callbackUrl, request.url));
   response.cookies.set({
     name: LOCAL_DEV_AUTH_COOKIE,

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import type { RelationRef } from '@/lib/tables/types';
 
@@ -21,6 +22,7 @@ export function RelationEditor({
   currentRelation,
   tableOptions,
 }: RelationEditorProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [targetTable, setTargetTable] = useState(currentRelation?.targetTable ?? '');
   const [targetColumn, setTargetColumn] = useState(currentRelation?.targetColumn ?? '');
@@ -59,7 +61,9 @@ export function RelationEditor({
         throw new Error(data.error || '저장 실패');
       }
 
-      window.location.reload();
+      setOpen(false);
+      setSaving(false);
+      router.refresh();
     } catch (caughtError) {
       setError(caughtError instanceof Error ? caughtError.message : '저장 실패');
       setSaving(false);

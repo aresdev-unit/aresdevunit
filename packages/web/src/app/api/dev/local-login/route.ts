@@ -9,7 +9,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Not available' }, { status: 404 });
   }
 
-  const callbackUrl = request.nextUrl.searchParams.get('callbackUrl') || '/tables';
+  const rawCallbackUrl = request.nextUrl.searchParams.get('callbackUrl') || '/tables';
+  const callbackUrl = rawCallbackUrl.startsWith('/') ? rawCallbackUrl : '/tables';
   const user = await getLocalDevAuthUser('1');
 
   if (!user) {

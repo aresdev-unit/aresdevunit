@@ -1,36 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/api-middleware';
-import { getCsvPageIdForTable, getDataset } from '@/lib/tables/data';
+import { hasDatabaseUrl, prisma } from '@/lib/prisma';
+import { getCsvPageIdForTable, getDataset, invalidateDatasetCache } from '@/lib/tables/data';
+import { normalizeManualTables } from '@/lib/tables/normalize';
 import { appendEditLog, upsertColumnOverride } from '@/lib/tables/override-store';
-import type { ManualSupplementTable } from '@/lib/tables/types';
 
 export const runtime = 'nodejs';
-
-function normalizeManualTables(value: unknown): ManualSupplementTable[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value.map((table, tableIndex) => {
-    const raw = (table ?? {}) as Record<string, unknown>;
-    const rawHeaders = Array.isArray(raw.headers) ? raw.headers : [];
-    const rawRows = Array.isArray(raw.rows) ? raw.rows : [];
-    const width = Math.max(
-      rawHeaders.length,
-      ...rawRows.map((row) => (Array.isArray(row) ? row.length : 0)),
-      1
-    );
-
-    return {
-      id: String(raw.id ?? `manual-${tableIndex + 1}`).trim() || `manual-${tableIndex + 1}`,
-      title: String(raw.title ?? '').trim(),
-      headers: Array.from({ length: width }, (_, index) => String(rawHeaders[index] ?? '')),
-      rows: rawRows.map((row) =>
-        Array.from({ length: width }, (_, index) => (Array.isArray(row) ? String(row[index] ?? '') : ''))
-      ),
-    };
-  });
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -75,23 +50,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true, unchanged: true });
     }
 
-    await upsertColumnOverride(
-      {
-        sourceTable,
-        sourceColumn,
-        description,
-        note,
-        manualTables,
-      },
-      {
-        userId: authUser.id,
-        username: authUser.username,
-      }
-    );
-
-    await appendEditLog({
-      entityType: 'column_meta',
-      actionType: 'update_column_meta',
+    let logWarning: string | null = null;
+    const overridePayload = {
+      sourceTable,
+      sourceColumn,
+      description,
+      note,
+      manualTables,
+    };
+    const actor = {
+      userId: authUser.id,
+      username: authUser.username,
+    };
+    const logPayload = {
+      entityType: 'column_meta' as const,
+      actionType: 'update_column_meta' as const,
       sourceTable,
       sourceColumn,
       csvPageId: getCsvPageIdForTable(sourceTable),
@@ -100,9 +73,26 @@ export async function POST(request: NextRequest) {
       reason,
       actorUserId: authUser.id,
       actorUsername: authUser.username,
-    });
+    };
 
-    return NextResponse.json({ ok: true, user: authUser.username });
+    if (hasDatabaseUrl) {
+      await prisma.$transaction(async (tx) => {
+        await upsertColumnOverride(overridePayload, actor, tx);
+        await appendEditLog(logPayload, tx);
+      });
+    } else {
+      await upsertColumnOverride(overridePayload, actor);
+      try {
+        await appendEditLog(logPayload);
+      } catch (logError) {
+        console.error('Column override saved but edit log append failed:', logError);
+        logWarning = 'saved_without_log';
+      }
+    }
+
+    invalidateDatasetCache();
+
+    return NextResponse.json({ ok: true, user: authUser.username, logWarning });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'unknown error';
     return NextResponse.json({ error: message }, { status: 500 });

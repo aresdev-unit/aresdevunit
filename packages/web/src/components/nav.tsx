@@ -11,7 +11,8 @@ export function Nav() {
   const [hasLocalDevAuth, setHasLocalDevAuth] = useState(false);
 
   const isAdmin = session?.user?.role === 'ADMIN';
-  const canAccessTables = status === 'authenticated' || hasLocalDevAuth;
+  const isApproved = session?.user?.status === 'APPROVED';
+  const canAccessTables = (status === 'authenticated' && isApproved) || hasLocalDevAuth;
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
@@ -40,16 +41,16 @@ export function Nav() {
           </Link>
 
           <div className="hidden items-center gap-1 sm:flex">
-            <NavLink href="/skills">Skill</NavLink>
+            {isApproved && <NavLink href="/skills">Skill</NavLink>}
             <NavLink href="/docs">문서</NavLink>
             {canAccessTables && <NavLink href="/tables">테이블</NavLink>}
-            {status === 'authenticated' && (
+            {status === 'authenticated' && isApproved && (
               <>
                 <NavLink href="/dashboard">대시보드</NavLink>
                 <NavLink href="/settings">설정</NavLink>
               </>
             )}
-            {isAdmin && <NavLink href="/admin">관리자</NavLink>}
+            {isAdmin && isApproved && <NavLink href="/admin">관리자</NavLink>}
           </div>
         </div>
 
@@ -118,18 +119,18 @@ export function Nav() {
       {mobileOpen && (
         <div className="border-t border-zinc-200 px-4 py-3 sm:hidden dark:border-zinc-800">
           <div className="flex flex-col gap-1">
-            <MobileLink href="/skills" onClick={() => setMobileOpen(false)}>Skill</MobileLink>
+            {isApproved && <MobileLink href="/skills" onClick={() => setMobileOpen(false)}>Skill</MobileLink>}
             <MobileLink href="/docs" onClick={() => setMobileOpen(false)}>문서</MobileLink>
             {canAccessTables && (
               <MobileLink href="/tables" onClick={() => setMobileOpen(false)}>테이블</MobileLink>
             )}
-            {status === 'authenticated' && (
+            {status === 'authenticated' && isApproved && (
               <>
                 <MobileLink href="/dashboard" onClick={() => setMobileOpen(false)}>대시보드</MobileLink>
                 <MobileLink href="/settings" onClick={() => setMobileOpen(false)}>설정</MobileLink>
               </>
             )}
-            {isAdmin && (
+            {isAdmin && isApproved && (
               <MobileLink href="/admin" onClick={() => setMobileOpen(false)}>관리자</MobileLink>
             )}
             <div className="my-2 border-t border-zinc-200 dark:border-zinc-800" />

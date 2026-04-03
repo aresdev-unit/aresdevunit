@@ -1,7 +1,10 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
+import { normalizeManualTables } from '@/lib/tables/normalize';
 import type {
   ManualSupplementTable,
   RelationOverrideMode,
@@ -36,34 +39,14 @@ type EditLogListOptions = {
   limit?: number;
 };
 
+type OverrideDbClient = PrismaClient | Prisma.TransactionClient;
+
 function hasDatabase() {
   return Boolean(process.env.DATABASE_URL);
 }
 
-function normalizeManualTables(tables: ManualSupplementTable[] | unknown): ManualSupplementTable[] {
-  if (!Array.isArray(tables)) {
-    return [];
-  }
-
-  return tables.map((table, tableIndex) => {
-    const rawTable = (table ?? {}) as Record<string, unknown>;
-    const rawHeaders = Array.isArray(rawTable.headers) ? rawTable.headers : [];
-    const rawRows = Array.isArray(rawTable.rows) ? rawTable.rows : [];
-    const rowLengths = rawRows.map((row) => (Array.isArray(row) ? row.length : 0));
-    const width = Math.max(rawHeaders.length, ...rowLengths, 1);
-    const headers = Array.from({ length: width }, (_, index) => String(rawHeaders[index] ?? ''));
-
-    return {
-      id: String(rawTable.id ?? `manual-${tableIndex + 1}`).trim() || `manual-${tableIndex + 1}`,
-      title: String(rawTable.title ?? '').trim(),
-      headers,
-      rows: rawRows.map((row) =>
-        Array.from({ length: width }, (_, index) =>
-          Array.isArray(row) ? String(row[index] ?? '') : ''
-        )
-      ),
-    };
-  });
+function getDbClient(client?: OverrideDbClient) {
+  return client ?? prisma;
 }
 
 function normalizeRelationOverride(value: Partial<StoredRelationOverride>): StoredRelationOverride {
@@ -118,9 +101,9 @@ function normalizeEditLog(row: {
   };
 }
 
-function readFileOverrides() {
+async function readFileOverrides() {
   if (!fs.existsSync(FILE_OVERRIDE_PATH)) return [];
-  const parsed = JSON.parse(fs.readFileSync(FILE_OVERRIDE_PATH, 'utf8')) as Array<Record<string, unknown>>;
+  const parsed = JSON.parse(await readFile(FILE_OVERRIDE_PATH, 'utf8')) as Array<Record<string, unknown>>;
   return parsed
     .map((item) =>
       normalizeRelationOverride({
@@ -135,7 +118,7 @@ function readFileOverrides() {
     .filter((item) => item.sourceTable && item.sourceColumn);
 }
 
-function writeFileOverrides(overrides: StoredRelationOverride[]) {
+async function writeFileOverrides(overrides: StoredRelationOverride[]) {
   const payload = overrides.map((item) => ({
     sourceTable: item.sourceTable,
     sourceColumn: item.sourceColumn,
@@ -146,12 +129,12 @@ function writeFileOverrides(overrides: StoredRelationOverride[]) {
   }));
 
   // File fallback is for local single-user development only; concurrent writes are not protected.
-  fs.writeFileSync(FILE_OVERRIDE_PATH, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
+  await writeFile(FILE_OVERRIDE_PATH, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 }
 
-function readFileColumnOverrides() {
+async function readFileColumnOverrides() {
   if (!fs.existsSync(FILE_COLUMN_OVERRIDE_PATH)) return [];
-  const parsed = JSON.parse(fs.readFileSync(FILE_COLUMN_OVERRIDE_PATH, 'utf8')) as Array<Record<string, unknown>>;
+  const parsed = JSON.parse(await readFile(FILE_COLUMN_OVERRIDE_PATH, 'utf8')) as Array<Record<string, unknown>>;
   return parsed
     .map((item) =>
       normalizeColumnOverride({
@@ -167,22 +150,22 @@ function readFileColumnOverrides() {
     .filter((item) => item.sourceTable && item.sourceColumn);
 }
 
-function writeFileColumnOverrides(overrides: StoredColumnOverride[]) {
+async function writeFileColumnOverrides(overrides: StoredColumnOverride[]) {
   // File fallback is for local single-user development only; concurrent writes are not protected.
-  fs.writeFileSync(FILE_COLUMN_OVERRIDE_PATH, `${JSON.stringify(overrides, null, 2)}\n`, 'utf8');
+  await writeFile(FILE_COLUMN_OVERRIDE_PATH, `${JSON.stringify(overrides, null, 2)}\n`, 'utf8');
 }
 
-function readFileEditLogs() {
+async function readFileEditLogs() {
   const targetPath = fs.existsSync(LOCAL_EDIT_LOG_PATH) ? LOCAL_EDIT_LOG_PATH : FILE_EDIT_LOG_PATH;
   if (!fs.existsSync(targetPath)) return [];
-  const parsed = JSON.parse(fs.readFileSync(targetPath, 'utf8')) as TableEditLog[];
+  const parsed = JSON.parse(await readFile(targetPath, 'utf8')) as TableEditLog[];
   return Array.isArray(parsed) ? parsed : [];
 }
 
-function writeFileEditLogs(logs: TableEditLog[]) {
-  fs.mkdirSync(path.dirname(LOCAL_EDIT_LOG_PATH), { recursive: true });
+async function writeFileEditLogs(logs: TableEditLog[]) {
+  await mkdir(path.dirname(LOCAL_EDIT_LOG_PATH), { recursive: true });
   // File fallback is for local single-user development only; concurrent writes are not protected.
-  fs.writeFileSync(LOCAL_EDIT_LOG_PATH, `${JSON.stringify(logs, null, 2)}\n`, 'utf8');
+  await writeFile(LOCAL_EDIT_LOG_PATH, `${JSON.stringify(logs, null, 2)}\n`, 'utf8');
 }
 
 let ensureTablesPromise: Promise<void> | null = null;
@@ -265,7 +248,7 @@ export function getOverrideStoreKind() {
 
 export async function listRelationOverrides(): Promise<StoredRelationOverride[]> {
   if (!hasDatabase()) {
-    return readFileOverrides();
+    return await readFileOverrides();
   }
 
   try {
@@ -302,13 +285,13 @@ export async function listRelationOverrides(): Promise<StoredRelationOverride[]>
       })
     );
   } catch {
-    return readFileOverrides();
+    return await readFileOverrides();
   }
 }
 
 export async function listColumnOverrides(): Promise<StoredColumnOverride[]> {
   if (!hasDatabase()) {
-    return readFileColumnOverrides();
+    return await readFileColumnOverrides();
   }
 
   await ensureTables();
@@ -345,7 +328,10 @@ export async function listColumnOverrides(): Promise<StoredColumnOverride[]> {
   );
 }
 
-export async function upsertRelationOverride(override: StoredRelationOverride) {
+export async function upsertRelationOverride(
+  override: StoredRelationOverride,
+  client?: OverrideDbClient
+) {
   const normalized = normalizeRelationOverride(override);
 
   if (!normalized.sourceTable || !normalized.sourceColumn) {
@@ -357,17 +343,17 @@ export async function upsertRelationOverride(override: StoredRelationOverride) {
   }
 
   if (!hasDatabase()) {
-    const overrides = readFileOverrides().filter(
+    const overrides = (await readFileOverrides()).filter(
       (item) =>
         !(item.sourceTable === normalized.sourceTable && item.sourceColumn === normalized.sourceColumn)
     );
     overrides.push(normalized);
-    writeFileOverrides(overrides);
+    await writeFileOverrides(overrides);
     return;
   }
 
   await ensureTables();
-  await prisma.$executeRawUnsafe(
+  await getDbClient(client).$executeRawUnsafe(
     `
       insert into table_relation_overrides (
         source_table,
@@ -395,21 +381,25 @@ export async function upsertRelationOverride(override: StoredRelationOverride) {
   );
 }
 
-export async function deleteRelationOverride(sourceTable: string, sourceColumn: string) {
+export async function deleteRelationOverride(
+  sourceTable: string,
+  sourceColumn: string,
+  client?: OverrideDbClient
+) {
   if (!sourceTable || !sourceColumn) {
     throw new Error('sourceTable and sourceColumn are required');
   }
 
   if (!hasDatabase()) {
-    const overrides = readFileOverrides().filter(
+    const overrides = (await readFileOverrides()).filter(
       (item) => !(item.sourceTable === sourceTable && item.sourceColumn === sourceColumn)
     );
-    writeFileOverrides(overrides);
+    await writeFileOverrides(overrides);
     return;
   }
 
   await ensureTables();
-  await prisma.$executeRawUnsafe(
+  await getDbClient(client).$executeRawUnsafe(
     `
       delete from table_relation_overrides
       where source_table = $1 and source_column = $2
@@ -421,7 +411,8 @@ export async function deleteRelationOverride(sourceTable: string, sourceColumn: 
 
 export async function upsertColumnOverride(
   override: StoredColumnOverride,
-  actor: { userId: string; username: string }
+  actor: { userId: string; username: string },
+  client?: OverrideDbClient
 ) {
   const normalized = normalizeColumnOverride(override);
 
@@ -430,7 +421,7 @@ export async function upsertColumnOverride(
   }
 
   if (!hasDatabase()) {
-    const current = readFileColumnOverrides().filter(
+    const current = (await readFileColumnOverrides()).filter(
       (item) => !(item.sourceTable === normalized.sourceTable && item.sourceColumn === normalized.sourceColumn)
     );
     current.push({
@@ -438,12 +429,12 @@ export async function upsertColumnOverride(
       updatedAt: new Date().toISOString(),
       updatedByUsername: actor.username,
     });
-    writeFileColumnOverrides(current);
+    await writeFileColumnOverrides(current);
     return normalized;
   }
 
   await ensureTables();
-  await prisma.$executeRawUnsafe(
+  await getDbClient(client).$executeRawUnsafe(
     `
       insert into table_column_overrides (
         source_table,
@@ -476,9 +467,9 @@ export async function upsertColumnOverride(
   return normalized;
 }
 
-export async function appendEditLog(input: EditLogRecordInput) {
+export async function appendEditLog(input: EditLogRecordInput, client?: OverrideDbClient) {
   if (!hasDatabase()) {
-    const current = readFileEditLogs();
+    const current = await readFileEditLogs();
     current.unshift({
       id: crypto.randomUUID(),
       entityType: input.entityType,
@@ -492,12 +483,12 @@ export async function appendEditLog(input: EditLogRecordInput) {
       actorUsername: input.actorUsername,
       createdAt: new Date().toISOString(),
     });
-    writeFileEditLogs(current.slice(0, 500));
+    await writeFileEditLogs(current.slice(0, 500));
     return;
   }
 
   await ensureTables();
-  await prisma.$executeRawUnsafe(
+  await getDbClient(client).$executeRawUnsafe(
     `
       insert into table_edit_logs (
         id,
@@ -530,7 +521,7 @@ export async function appendEditLog(input: EditLogRecordInput) {
 
 export async function listEditLogs(options: EditLogListOptions = {}): Promise<TableEditLog[]> {
   if (!hasDatabase()) {
-    return readFileEditLogs()
+    return (await readFileEditLogs())
       .filter((log) => (options.pageId ? log.csvPageId === options.pageId : true))
       .filter((log) => (options.tableId ? log.sourceTable === options.tableId : true))
       .slice(0, Math.max(1, Math.min(options.limit ?? 100, 200)));
