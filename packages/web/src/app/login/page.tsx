@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
@@ -38,6 +39,15 @@ function LoginContent() {
           </svg>
           GitHub로 계속하기
         </button>
+
+        {process.env.NODE_ENV !== 'production' ? (
+          <Link
+            href={`/api/dev/local-login?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+            className="flex w-full h-12 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-6 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100"
+          >
+            로컬 테스트 로그인
+          </Link>
+        ) : null}
 
         <p className="text-xs text-zinc-500 dark:text-zinc-500">
           로그인하면 서비스 이용약관 및 개인정보 처리방침에 동의하게 됩니다.

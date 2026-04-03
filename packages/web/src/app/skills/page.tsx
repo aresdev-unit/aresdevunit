@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Prisma } from '@prisma/client';
 import { unstable_cache } from 'next/cache';
 import { SKILL_CATEGORIES } from '@aresdevunit/shared';
-import { prisma } from '@/lib/prisma';
+import { hasDatabaseUrl, prisma } from '@/lib/prisma';
 
 interface SearchParams {
   page?: string;
@@ -17,6 +17,10 @@ function parsePositiveInt(value: string | undefined, fallback: number): number {
 }
 
 async function fetchSkills(searchParams: SearchParams) {
+  if (!hasDatabaseUrl) {
+    return { data: [], pagination: { page: 1, limit: 20, total: 0, total_pages: 0 } };
+  }
+
   const page = parsePositiveInt(searchParams.page, 1);
   const limit = 20;
   const sort = searchParams.sort || 'downloads';
@@ -190,9 +194,7 @@ export default async function SkillsPage({
           <main className="min-w-0 flex-1">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row">
               <form className="flex-1" action="/skills" method="GET">
-                {currentCategory && (
-                  <input type="hidden" name="category" value={currentCategory} />
-                )}
+                {currentCategory && <input type="hidden" name="category" value={currentCategory} />}
                 {currentSort && currentSort !== 'downloads' && (
                   <input type="hidden" name="sort" value={currentSort} />
                 )}
@@ -270,9 +272,7 @@ export default async function SkillsPage({
                             </span>
                           )}
                         </div>
-                        <p className="mt-1 line-clamp-2 text-sm text-gray-600">
-                          {skill.description}
-                        </p>
+                        <p className="mt-1 line-clamp-2 text-sm text-gray-600">{skill.description}</p>
                         <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
                           <span className="inline-flex items-center gap-1 rounded bg-gray-100 px-2 py-0.5">
                             {SKILL_CATEGORIES[skill.category as keyof typeof SKILL_CATEGORIES] || skill.category}
@@ -298,9 +298,7 @@ export default async function SkillsPage({
               <div className="mt-8 flex justify-center gap-2">
                 {pagination.page > 1 && (
                   <Link
-                    href={buildUrl(resolvedParams, {
-                      page: String(pagination.page - 1),
-                    })}
+                    href={buildUrl(resolvedParams, { page: String(pagination.page - 1) })}
                     className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
                   >
                     Previous
@@ -311,9 +309,7 @@ export default async function SkillsPage({
                 </span>
                 {pagination.page < pagination.total_pages && (
                   <Link
-                    href={buildUrl(resolvedParams, {
-                      page: String(pagination.page + 1),
-                    })}
+                    href={buildUrl(resolvedParams, { page: String(pagination.page + 1) })}
                     className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
                   >
                     Next
