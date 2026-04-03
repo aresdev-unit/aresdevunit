@@ -88,16 +88,14 @@ function applyForcedRelation(dataset: Dataset, override: StoredRelationOverride)
 export function applyRelationOverrides(dataset: Dataset, overrides: StoredRelationOverride[]) {
   if (overrides.length === 0) return dataset;
 
-  const next = structuredClone(dataset) as Dataset;
-
   for (const override of overrides) {
-    removeExistingRelation(next, override);
+    removeExistingRelation(dataset, override);
     if (override.mode === 'force') {
-      applyForcedRelation(next, override);
+      applyForcedRelation(dataset, override);
     }
   }
 
-  next.relationCount = next.tables.reduce((sum, table) => sum + table.outboundRelations.length, 0);
-  next.graph = buildGraph(next.tables);
-  return next;
+  dataset.relationCount = dataset.tables.reduce((sum, table) => sum + table.outboundRelations.length, 0);
+  dataset.graph = buildGraph(dataset.tables);
+  return dataset;
 }

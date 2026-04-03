@@ -27,10 +27,8 @@ export function applyColumnOverrides(dataset: Dataset, overrides: StoredColumnOv
     return dataset;
   }
 
-  const next = structuredClone(dataset) as Dataset;
-
   for (const override of overrides) {
-    const table = next.tables.find((candidate) => candidate.tableId === override.sourceTable);
+    const table = dataset.tables.find((candidate) => candidate.tableId === override.sourceTable);
     const column = table?.columns.find((candidate) => candidate.name === override.sourceColumn);
     if (!column) {
       continue;
@@ -41,5 +39,5 @@ export function applyColumnOverrides(dataset: Dataset, overrides: StoredColumnOv
     column.manualTables = normalizeManualTables(override);
   }
 
-  return next;
+  return dataset;
 }

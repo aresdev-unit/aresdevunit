@@ -12,7 +12,8 @@ export async function GET(request: NextRequest) {
 
   const pageId = request.nextUrl.searchParams.get('pageId') || undefined;
   const tableId = request.nextUrl.searchParams.get('tableId') || undefined;
-  const limit = Number(request.nextUrl.searchParams.get('limit') ?? '100');
+  const rawLimit = parseInt(request.nextUrl.searchParams.get('limit') || '100', 10);
+  const limit = Math.max(1, Math.min(200, Number.isFinite(rawLimit) ? rawLimit : 100));
   const logs = await listEditLogs({ pageId, tableId, limit });
 
   return NextResponse.json({ ok: true, data: logs });

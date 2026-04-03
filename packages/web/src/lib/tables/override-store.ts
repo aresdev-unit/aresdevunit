@@ -145,6 +145,7 @@ function writeFileOverrides(overrides: StoredRelationOverride[]) {
     reason: item.reason,
   }));
 
+  // File fallback is for local single-user development only; concurrent writes are not protected.
   fs.writeFileSync(FILE_OVERRIDE_PATH, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 }
 
@@ -167,6 +168,7 @@ function readFileColumnOverrides() {
 }
 
 function writeFileColumnOverrides(overrides: StoredColumnOverride[]) {
+  // File fallback is for local single-user development only; concurrent writes are not protected.
   fs.writeFileSync(FILE_COLUMN_OVERRIDE_PATH, `${JSON.stringify(overrides, null, 2)}\n`, 'utf8');
 }
 
@@ -179,10 +181,13 @@ function readFileEditLogs() {
 
 function writeFileEditLogs(logs: TableEditLog[]) {
   fs.mkdirSync(path.dirname(LOCAL_EDIT_LOG_PATH), { recursive: true });
+  // File fallback is for local single-user development only; concurrent writes are not protected.
   fs.writeFileSync(LOCAL_EDIT_LOG_PATH, `${JSON.stringify(logs, null, 2)}\n`, 'utf8');
 }
 
-async function ensureTables() {
+let ensureTablesPromise: Promise<void> | null = null;
+
+async function createTables() {
   await prisma.$executeRawUnsafe(`
     create table if not exists table_relation_overrides (
       source_table text not null,
@@ -241,6 +246,17 @@ async function ensureTables() {
     create index if not exists table_edit_logs_source_table_idx
     on table_edit_logs (source_table)
   `);
+}
+
+async function ensureTables() {
+  if (!ensureTablesPromise) {
+    ensureTablesPromise = createTables().catch((error) => {
+      ensureTablesPromise = null;
+      throw error;
+    });
+  }
+
+  await ensureTablesPromise;
 }
 
 export function getOverrideStoreKind() {

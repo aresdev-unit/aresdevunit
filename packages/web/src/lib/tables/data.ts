@@ -84,8 +84,10 @@ export async function getDataset(): Promise<Dataset> {
     listRelationOverrides(),
     listColumnOverrides(),
   ]);
-  const withRelations = applyRelationOverrides(snapshotDataset, relationOverrides);
-  return applyColumnOverrides(withRelations, columnOverrides);
+  const next = structuredClone(snapshotDataset) as Dataset;
+  applyRelationOverrides(next, relationOverrides);
+  applyColumnOverrides(next, columnOverrides);
+  return next;
 }
 
 export async function getCsvPages(): Promise<CsvPage[]> {
