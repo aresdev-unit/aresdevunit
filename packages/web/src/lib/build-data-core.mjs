@@ -239,6 +239,35 @@ function loadWorkbookSheets(workbookPath) {
   }));
 }
 
+function loadWorkbookSheetsWithCache(workbookPath, cacheDir) {
+  if (!cacheDir) return loadWorkbookSheets(workbookPath);
+
+  const cacheFile = path.join(cacheDir, '.manual-cache.json');
+  let cache = {};
+  try {
+    cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
+  } catch {
+    // no cache yet
+  }
+
+  const absPath = path.resolve(workbookPath);
+  const stat = fs.statSync(absPath);
+  const mtime = stat.mtimeMs;
+  const size = stat.size;
+
+  if (cache[absPath] && cache[absPath].mtime === mtime && cache[absPath].size === size) {
+    return cache[absPath].sheets;
+  }
+
+  const sheets = loadWorkbookSheets(workbookPath);
+  cache[absPath] = { mtime, size, sheets };
+
+  fs.mkdirSync(cacheDir, { recursive: true });
+  fs.writeFileSync(cacheFile, JSON.stringify(cache), 'utf8');
+
+  return sheets;
+}
+
 function findHeaderBlocks(rows) {
   const blocks = [];
 
@@ -1006,14 +1035,17 @@ function mergeColumns(componentTables) {
   return [...columnMap.values()];
 }
 
-function buildTables(workspaceRoot) {
+function buildTables(workspaceRoot, { folders, cacheDir } = {}) {
   const components = [];
 
-  for (const folderName of findDataTableDirs(workspaceRoot)) {
+  const allDirs = findDataTableDirs(workspaceRoot);
+  const dirs = folders ? allDirs.filter((d) => folders.includes(d)) : allDirs;
+
+  for (const folderName of dirs) {
     const folderPath = path.join(workspaceRoot, folderName);
     const manuals = findManualFiles(folderPath).map((name) => ({
       name,
-      sheets: loadWorkbookSheets(path.join(folderPath, name)),
+      sheets: loadWorkbookSheetsWithCache(path.join(folderPath, name), cacheDir),
     }));
 
     const csvFiles = fs
@@ -1797,8 +1829,8 @@ function buildGraph(tables) {
   };
 }
 
-export function buildDataset({ workspaceRoot, appRoot }) {
-  const tables = buildTables(workspaceRoot);
+export function buildDataset({ workspaceRoot, appRoot, folders, cacheDir }) {
+  const tables = buildTables(workspaceRoot, { folders, cacheDir });
   const overrides = readOverrides(appRoot);
   attachRelations(tables, overrides);
 
@@ -1809,5 +1841,70 @@ export function buildDataset({ workspaceRoot, appRoot }) {
     relationCount: tables.reduce((sum, table) => sum + table.outboundRelations.length, 0),
     tables,
     graph: buildGraph(tables),
+  };
+}
+
+export function buildCatalog(dataset) {
+  return {
+    generatedAt: dataset.generatedAt,
+    workspaceRoot: dataset.workspaceRoot,
+    tableCount: dataset.tableCount,
+    relationCount: dataset.relationCount,
+    entries: dataset.tables.map((table) => ({
+      tableId: table.tableId,
+      tableSlug: table.tableSlug,
+      displayName: table.displayName,
+      folderName: table.folderName,
+      folderGroup: table.folderGroup,
+      csvPath: table.csvPath,
+      manualWorkbook: table.manualWorkbook,
+      manualSheet: table.manualSheet,
+      keyColumns: table.keyColumns,
+      columnCount: table.columns.length,
+      outboundRelationCount: table.outboundRelations.length,
+      inboundRelationCount: table.inboundRelations.length,
+    })),
+  };
+}
+
+export function buildRelationIndex(dataset) {
+  const outbound = {};
+  const inbound = {};
+
+  for (const table of dataset.tables) {
+    if (table.outboundRelations.length > 0) {
+      outbound[table.tableId] = table.outboundRelations;
+    }
+    if (table.inboundRelations.length > 0) {
+      inbound[table.tableId] = table.inboundRelations;
+    }
+  }
+
+  return {
+    generatedAt: dataset.generatedAt,
+    outbound,
+    inbound,
+    graph: dataset.graph,
+  };
+}
+
+export function buildPerTableJson(table) {
+  return {
+    tableId: table.tableId,
+    tableSlug: table.tableSlug,
+    displayName: table.displayName,
+    folderName: table.folderName,
+    folderGroup: table.folderGroup,
+    csvPath: table.csvPath,
+    manualWorkbook: table.manualWorkbook,
+    manualSheet: table.manualSheet,
+    tableIntro: table.tableIntro,
+    keyColumns: table.keyColumns,
+    columns: table.columns,
+    manualSupplements: table.manualSupplements,
+    manualRemarks: table.manualRemarks,
+    outboundRelations: table.outboundRelations,
+    inboundRelations: table.inboundRelations,
+    unresolvedCandidates: table.unresolvedCandidates,
   };
 }

@@ -31,7 +31,10 @@ npm.cmd run build:data
 ```
 
 출력 파일:
-- `packages/web/src/generated/table-index.json`
+- `packages/web/src/generated/table-index.json` — 전체 테이블 데이터 (하위호환용, 기존 코드 참조)
+- `packages/web/src/generated/catalog.json` — 경량 테이블 메타데이터 목록
+- `packages/web/src/generated/relation-index.json` — 전체 관계 + 그래프 데이터
+- `packages/web/src/generated/tables/{tableId}.json` — 테이블별 개별 데이터 파일
 
 ## 빌드 검증
 
@@ -62,4 +65,6 @@ npm.cmd run build
 
 - 생성 스크립트: `scripts/build-data.mjs`
 - 생성 코어: `packages/web/src/lib/build-data-core.mjs`
-- 출력: `packages/web/src/generated/table-index.json`
+- 출력 (하위호환): `packages/web/src/generated/table-index.json`
+- 출력 (Phase 1-4): `catalog.json`, `relation-index.json`, `tables/{tableId}.json`
+- 데이터 접근: `packages/web/src/lib/tables/data.ts` (`getCatalog`, `getRelationIndex`, `getTableById`, `getRelationsForTable`)

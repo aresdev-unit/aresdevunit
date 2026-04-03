@@ -1,9 +1,11 @@
 import { unstable_noStore as noStore } from 'next/cache';
 import rawData from '@/generated/table-index.json';
+import catalogData from '@/generated/catalog.json';
+import relationData from '@/generated/relation-index.json';
 import { applyColumnOverrides } from '@/lib/tables/column-overrides';
 import { applyRelationOverrides } from '@/lib/tables/relation-overrides';
 import { listColumnOverrides, listRelationOverrides } from '@/lib/tables/override-store';
-import type { CsvPage, Dataset, TableIndex } from '@/lib/tables/types';
+import type { CatalogEntry, CsvPage, Dataset, RelationEdge, RelationIndex, TableIndex } from '@/lib/tables/types';
 
 const snapshotDataset = rawData as Dataset;
 const DATASET_CACHE_TTL_MS = 5_000;
@@ -138,4 +140,39 @@ export async function getCsvPageGroups(): Promise<Array<[string, CsvPage[]]>> {
 export function getCsvPageIdForTable(tableId: string) {
   const table = snapshotDataset.tables.find((candidate) => candidate.tableId === tableId);
   return table ? buildPageId(table.csvPath) : null;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Phase 1-4: catalog / relation-index / per-table lazy accessors    */
+/* ------------------------------------------------------------------ */
+
+const catalog = (catalogData as { entries: CatalogEntry[] }).entries;
+const relationIndex = relationData as RelationIndex;
+
+export function getCatalog(): CatalogEntry[] {
+  return catalog;
+}
+
+export function getRelationIndex(): RelationIndex {
+  return relationIndex;
+}
+
+export async function getTableById(tableId: string): Promise<TableIndex | null> {
+  if (!/^[A-Za-z0-9_]+$/.test(tableId)) return null;
+  try {
+    const mod = await import(`@/generated/tables/${tableId}.json`);
+    return (mod.default ?? mod) as TableIndex;
+  } catch {
+    return null;
+  }
+}
+
+export function getRelationsForTable(tableId: string): {
+  outbound: RelationEdge[];
+  inbound: RelationEdge[];
+} {
+  return {
+    outbound: relationIndex.outbound[tableId] ?? [],
+    inbound: relationIndex.inbound[tableId] ?? [],
+  };
 }

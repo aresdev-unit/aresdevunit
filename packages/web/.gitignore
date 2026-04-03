@@ -38,6 +38,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# generated per-table snapshots (large, rebuilt by build:data)
+src/generated/tables/
+src/generated/.cache/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

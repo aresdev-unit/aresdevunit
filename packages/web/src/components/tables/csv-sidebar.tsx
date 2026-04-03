@@ -16,6 +16,7 @@ type CsvSidebarGroup = {
 type CsvSidebarProps = {
   currentPageId?: string;
   groups: CsvSidebarGroup[];
+  onPageSelect?: (pageId: string) => void;
 };
 
 const STORAGE_KEY = 'aresdevunit.tables.sidebar';
@@ -42,7 +43,7 @@ function appendViewParam(href: string, view: string | null) {
   return `/tables?${params.toString()}`;
 }
 
-export function CsvSidebar({ currentPageId, groups }: CsvSidebarProps) {
+export function CsvSidebar({ currentPageId, groups, onPageSelect }: CsvSidebarProps) {
   const searchParams = useSearchParams();
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const [query, setQuery] = useState('');
@@ -152,7 +153,17 @@ export function CsvSidebar({ currentPageId, groups }: CsvSidebarProps) {
                     const href = appendViewParam(`/tables?page=${item.pageId}`, currentView);
                     const active = item.pageId === currentPageId;
 
-                    return (
+                    return onPageSelect ? (
+                      <button
+                        className={active ? 'tables-sidebar-link active' : 'tables-sidebar-link'}
+                        key={item.pageId}
+                        onClick={() => onPageSelect(item.pageId)}
+                        type="button"
+                      >
+                        <span className="tables-sidebar-link-label">{item.csvName}</span>
+                        <small>{item.tableCount}개</small>
+                      </button>
+                    ) : (
                       <Link
                         className={active ? 'tables-sidebar-link active' : 'tables-sidebar-link'}
                         href={href}

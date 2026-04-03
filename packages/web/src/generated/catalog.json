@@ -1,0 +1,2498 @@
+{
+  "generatedAt": "2026-04-03T18:31:32.299Z",
+  "workspaceRoot": "/mnt/d/gb_document/0_데이터 테이블/TRUNK_GL",
+  "tableCount": 162,
+  "relationCount": 320,
+  "entries": [
+    {
+      "tableId": "archive_collection",
+      "tableSlug": "archive_collection",
+      "displayName": "archive_collection",
+      "folderName": "31_아카이브 DataTable_GL",
+      "folderGroup": "31_아카이브",
+      "csvPath": "31_아카이브 DataTable_GL/archive_collection.csv",
+      "manualWorkbook": "아카이브 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "archive_collection",
+      "keyColumns": [
+        "collection_id"
+      ],
+      "columnCount": 33,
+      "outboundRelationCount": 12,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "archive_suit_collection",
+      "tableSlug": "archive_suit_collection",
+      "displayName": "archive_suit_collection",
+      "folderName": "31_아카이브 DataTable_GL",
+      "folderGroup": "31_아카이브",
+      "csvPath": "31_아카이브 DataTable_GL/archive_suit_collection.csv",
+      "manualWorkbook": "아카이브 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "archive_suit_collection",
+      "keyColumns": [
+        "collection_id"
+      ],
+      "columnCount": 16,
+      "outboundRelationCount": 7,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "char_clone",
+      "tableSlug": "char_clone",
+      "displayName": "char_clone",
+      "folderName": "41_시즌 컨텐츠_DataTable_GL",
+      "folderGroup": "41_시즌 컨텐츠_",
+      "csvPath": "41_시즌 컨텐츠_DataTable_GL/char_clone.csv",
+      "manualWorkbook": null,
+      "manualSheet": null,
+      "keyColumns": [],
+      "columnCount": 5,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "character_random_option",
+      "tableSlug": "character_random_option",
+      "displayName": "character_random_option",
+      "folderName": "43_에테르 각인_DataTable_GL",
+      "folderGroup": "43_에테르 각인_",
+      "csvPath": "43_에테르 각인_DataTable_GL/character_random_option.csv",
+      "manualWorkbook": "에테르 각인 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "character_random_option",
+      "keyColumns": [
+        "random_option_slot_id"
+      ],
+      "columnCount": 14,
+      "outboundRelationCount": 4,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "chatting_penalty",
+      "tableSlug": "chatting_penalty",
+      "displayName": "chatting_penalty",
+      "folderName": "37_채팅 DataTable_GL",
+      "folderGroup": "37_채팅",
+      "csvPath": "37_채팅 DataTable_GL/chatting_penalty.csv",
+      "manualWorkbook": "채팅 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "chatting_penalty",
+      "keyColumns": [
+        "chatting_id"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "chronos_match",
+      "tableSlug": "chronos_match",
+      "displayName": "chronos_match",
+      "folderName": "41_시즌 컨텐츠_DataTable_GL",
+      "folderGroup": "41_시즌 컨텐츠_",
+      "csvPath": "41_시즌 컨텐츠_DataTable_GL/chronos_season_config.csv",
+      "manualWorkbook": null,
+      "manualSheet": null,
+      "keyColumns": [],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "chronos_season_config",
+      "tableSlug": "chronos_season_config",
+      "displayName": "chronos_season_config",
+      "folderName": "41_시즌 컨텐츠_DataTable_GL",
+      "folderGroup": "41_시즌 컨텐츠_",
+      "csvPath": "41_시즌 컨텐츠_DataTable_GL/chronos_season_config.csv",
+      "manualWorkbook": null,
+      "manualSheet": null,
+      "keyColumns": [
+        "chronos_season_id"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "class_health_type",
+      "tableSlug": "class_health_type",
+      "displayName": "class_health_type",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_settings.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_settings",
+      "keyColumns": [],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "class_mastery_data",
+      "tableSlug": "class_mastery_data",
+      "displayName": "class_mastery_data",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_class_mastery.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_class_mastery",
+      "keyColumns": [],
+      "columnCount": 19,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "class_mastery_option",
+      "tableSlug": "class_mastery_option",
+      "displayName": "class_mastery_option",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_class_mastery.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_class_mastery",
+      "keyColumns": [],
+      "columnCount": 7,
+      "outboundRelationCount": 6,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "class_mastery_upgrade",
+      "tableSlug": "class_mastery_upgrade",
+      "displayName": "class_mastery_upgrade",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_class_mastery.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_class_mastery",
+      "keyColumns": [],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "class_shield_type",
+      "tableSlug": "class_shield_type",
+      "displayName": "class_shield_type",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_settings.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_settings",
+      "keyColumns": [],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "collect_object",
+      "tableSlug": "collect_object",
+      "displayName": "collect_object",
+      "folderName": "19_채집오브젝트 DataTable_GL",
+      "folderGroup": "19_채집오브젝트",
+      "csvPath": "19_채집오브젝트 DataTable_GL/collect_object.csv",
+      "manualWorkbook": "채집 오브젝트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "collect_object",
+      "keyColumns": [
+        "act_object_id"
+      ],
+      "columnCount": 9,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "contents_cycle_config",
+      "tableSlug": "contents_cycle_config",
+      "displayName": "contents_cycle_config",
+      "folderName": "40_컨텐츠_DataTable_GL",
+      "folderGroup": "40_컨텐츠_",
+      "csvPath": "40_컨텐츠_DataTable_GL/contents_cycle_config.csv",
+      "manualWorkbook": null,
+      "manualSheet": null,
+      "keyColumns": [],
+      "columnCount": 6,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "contents_settings",
+      "tableSlug": "contents_settings",
+      "displayName": "contents_settings",
+      "folderName": "40_컨텐츠_DataTable_GL",
+      "folderGroup": "40_컨텐츠_",
+      "csvPath": "40_컨텐츠_DataTable_GL/contents_settings.csv",
+      "manualWorkbook": "컨텐츠 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "contents_settings",
+      "keyColumns": [
+        "contents_id"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 8
+    },
+    {
+      "tableId": "craft",
+      "tableSlug": "craft",
+      "displayName": "craft",
+      "folderName": "13_제작 DataTable_GL",
+      "folderGroup": "13_제작",
+      "csvPath": "13_제작 DataTable_GL/craft.csv",
+      "manualWorkbook": "제작 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "craft",
+      "keyColumns": [
+        "craft_id"
+      ],
+      "columnCount": 34,
+      "outboundRelationCount": 12,
+      "inboundRelationCount": 2
+    },
+    {
+      "tableId": "customizing_dress",
+      "tableSlug": "customizing_dress",
+      "displayName": "customizing_dress",
+      "folderName": "15_커스터마이징 DataTable_GL",
+      "folderGroup": "15_커스터마이징",
+      "csvPath": "15_커스터마이징 DataTable_GL/customizing_dress.csv",
+      "manualWorkbook": "커마 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "커마 메뉴얼",
+      "keyColumns": [
+        "customizing_dress_id"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "customizing_modify_option",
+      "tableSlug": "customizing_modify_option",
+      "displayName": "customizing_modify_option",
+      "folderName": "15_커스터마이징 DataTable_GL",
+      "folderGroup": "15_커스터마이징",
+      "csvPath": "15_커스터마이징 DataTable_GL/customizing_modify_option.csv",
+      "manualWorkbook": "커마 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "커마 메뉴얼",
+      "keyColumns": [],
+      "columnCount": 8,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "customizing_preset",
+      "tableSlug": "customizing_preset",
+      "displayName": "customizing_preset",
+      "folderName": "15_커스터마이징 DataTable_GL",
+      "folderGroup": "15_커스터마이징",
+      "csvPath": "15_커스터마이징 DataTable_GL/customizing_preset.csv",
+      "manualWorkbook": "커마 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "커마 메뉴얼",
+      "keyColumns": [
+        "customizing_preset_id"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "dialog_call",
+      "tableSlug": "dialog_call",
+      "displayName": "dialog_call",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/dialog_call.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "dialog",
+      "keyColumns": [],
+      "columnCount": 9,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 2
+    },
+    {
+      "tableId": "dialog_talk",
+      "tableSlug": "dialog_talk",
+      "displayName": "dialog_talk",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/dialog_talk.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "dialog",
+      "keyColumns": [
+        "npc_dialog"
+      ],
+      "columnCount": 14,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "drop",
+      "tableSlug": "drop",
+      "displayName": "drop",
+      "folderName": "07_드랍 DataTeble_GL",
+      "folderGroup": "07_드랍",
+      "csvPath": "07_드랍 DataTeble_GL/drop.csv",
+      "manualWorkbook": "드랍 시스템_GL.xlsx",
+      "manualSheet": "드랍 시스템",
+      "keyColumns": [
+        "drop_id"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 17
+    },
+    {
+      "tableId": "drop_group",
+      "tableSlug": "drop_group",
+      "displayName": "drop_group",
+      "folderName": "07_드랍 DataTeble_GL",
+      "folderGroup": "07_드랍",
+      "csvPath": "07_드랍 DataTeble_GL/drop_group.Boss.seg.csv, 07_드랍 DataTeble_GL/drop_group.box.seg.csv, 07_드랍 DataTeble_GL/drop_group.contents.seg.csv, 07_드랍 DataTeble_GL/drop_group.field.seg.csv, 07_드랍 DataTeble_GL/drop_group.gacha.seg.csv, 07_드랍 DataTeble_GL/drop_group.gear.seg.csv, 07_드랍 DataTeble_GL/drop_group.monster.seg.csv",
+      "manualWorkbook": "드랍 시스템_GL.xlsx",
+      "manualSheet": "드랍 시스템",
+      "keyColumns": [],
+      "columnCount": 11,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "drop_setting",
+      "tableSlug": "drop_setting",
+      "displayName": "drop_setting",
+      "folderName": "07_드랍 DataTeble_GL",
+      "folderGroup": "07_드랍",
+      "csvPath": "07_드랍 DataTeble_GL/drop_setting.csv",
+      "manualWorkbook": "드랍 시스템_GL.xlsx",
+      "manualSheet": "드랍 시스템",
+      "keyColumns": [
+        "level_difference"
+      ],
+      "columnCount": 2,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "dungeon",
+      "tableSlug": "dungeon",
+      "displayName": "dungeon",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon",
+      "keyColumns": [
+        "dungeon_id"
+      ],
+      "columnCount": 53,
+      "outboundRelationCount": 13,
+      "inboundRelationCount": 11
+    },
+    {
+      "tableId": "dungeon_buff",
+      "tableSlug": "dungeon_buff",
+      "displayName": "dungeon_buff",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_buff.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_buff",
+      "keyColumns": [
+        "id"
+      ],
+      "columnCount": 19,
+      "outboundRelationCount": 4,
+      "inboundRelationCount": 3
+    },
+    {
+      "tableId": "dungeon_chronos_buff",
+      "tableSlug": "dungeon_chronos_buff",
+      "displayName": "dungeon_chronos_buff",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_season_buff.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_season_buff",
+      "keyColumns": [
+        "buff_id"
+      ],
+      "columnCount": 9,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "dungeon_config",
+      "tableSlug": "dungeon_config",
+      "displayName": "dungeon_config",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_config.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_config",
+      "keyColumns": [],
+      "columnCount": 40,
+      "outboundRelationCount": 4,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "dungeon_mob_option",
+      "tableSlug": "dungeon_mob_option",
+      "displayName": "dungeon_mob_option",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_mob_option.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_mob_option",
+      "keyColumns": [
+        "dungeon_id"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "dungeon_pair_category",
+      "tableSlug": "dungeon_pair_category",
+      "displayName": "dungeon_pair_category",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_settings.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_settings",
+      "keyColumns": [
+        "dungeon_category"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "dungeon_pair_group",
+      "tableSlug": "dungeon_pair_group",
+      "displayName": "dungeon_pair_group",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_settings.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_settings",
+      "keyColumns": [
+        "dungeon_group"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "dungeon_pair_id",
+      "tableSlug": "dungeon_pair_id",
+      "displayName": "dungeon_pair_id",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_settings.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_settings",
+      "keyColumns": [
+        "dungeon_id"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "dungeon_reward",
+      "tableSlug": "dungeon_reward",
+      "displayName": "dungeon_reward",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_reward.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_reward",
+      "keyColumns": [
+        "dungeon_reward_id"
+      ],
+      "columnCount": 12,
+      "outboundRelationCount": 6,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "dungeon_scaling",
+      "tableSlug": "dungeon_scaling",
+      "displayName": "dungeon_scaling",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_scaling.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_scaling",
+      "keyColumns": [
+        "dungeon_id"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "dungeon_task",
+      "tableSlug": "dungeon_task",
+      "displayName": "dungeon_task",
+      "folderName": "06_던전 DataTable_GL",
+      "folderGroup": "06_던전",
+      "csvPath": "06_던전 DataTable_GL/dungeon_task.battle.seg.csv, 06_던전 DataTable_GL/dungeon_task.boss.seg.csv, 06_던전 DataTable_GL/dungeon_task.cooperate.seg.csv, 06_던전 DataTable_GL/dungeon_task.giant.seg.csv, 06_던전 DataTable_GL/dungeon_task.memory.seg.csv, 06_던전 DataTable_GL/dungeon_task.mobius.seg.csv, 06_던전 DataTable_GL/dungeon_task.nebula.seg.csv, 06_던전 DataTable_GL/dungeon_task.publicevent.seg.csv, 06_던전 DataTable_GL/dungeon_task.worldevent.seg.csv",
+      "manualWorkbook": "던전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "dungeon_task",
+      "keyColumns": [
+        "task_id"
+      ],
+      "columnCount": 27,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 2
+    },
+    {
+      "tableId": "event",
+      "tableSlug": "event",
+      "displayName": "event",
+      "folderName": "38_이벤트_DataTable_GL",
+      "folderGroup": "38_이벤트_",
+      "csvPath": "38_이벤트_DataTable_GL/event.csv",
+      "manualWorkbook": "이벤트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "event",
+      "keyColumns": [
+        "event_id"
+      ],
+      "columnCount": 24,
+      "outboundRelationCount": 7,
+      "inboundRelationCount": 3
+    },
+    {
+      "tableId": "event_drop",
+      "tableSlug": "event_drop",
+      "displayName": "event_drop",
+      "folderName": "38_이벤트_DataTable_GL",
+      "folderGroup": "38_이벤트_",
+      "csvPath": "38_이벤트_DataTable_GL/event_drop.csv",
+      "manualWorkbook": "이벤트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "event_drop",
+      "keyColumns": [],
+      "columnCount": 4,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "event_hottime",
+      "tableSlug": "event_hottime",
+      "displayName": "event_hottime",
+      "folderName": "38_이벤트_DataTable_GL",
+      "folderGroup": "38_이벤트_",
+      "csvPath": "38_이벤트_DataTable_GL/event_hottime.csv",
+      "manualWorkbook": "이벤트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "event_hottime",
+      "keyColumns": [],
+      "columnCount": 8,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "event_reward",
+      "tableSlug": "event_reward",
+      "displayName": "event_reward",
+      "folderName": "38_이벤트_DataTable_GL",
+      "folderGroup": "38_이벤트_",
+      "csvPath": "38_이벤트_DataTable_GL/event_reward.csv",
+      "manualWorkbook": "이벤트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "event_reward",
+      "keyColumns": [],
+      "columnCount": 4,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_attendance",
+      "tableSlug": "guild_attendance",
+      "displayName": "guild_attendance",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_attendance.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_attendance",
+      "keyColumns": [
+        "attendance_id"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_blessing",
+      "tableSlug": "guild_blessing",
+      "displayName": "guild_blessing",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_blessing.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_blessing",
+      "keyColumns": [
+        "blessing_level"
+      ],
+      "columnCount": 10,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_buff",
+      "tableSlug": "guild_buff",
+      "displayName": "guild_buff",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_buff.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_buff",
+      "keyColumns": [
+        "guild_buff_id"
+      ],
+      "columnCount": 4,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_buff_level",
+      "tableSlug": "guild_buff_level",
+      "displayName": "guild_buff_level",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_buff.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_buff",
+      "keyColumns": [
+        "guild_buff_level"
+      ],
+      "columnCount": 2,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_contribute",
+      "tableSlug": "guild_contribute",
+      "displayName": "guild_contribute",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_contribute.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_contribute",
+      "keyColumns": [
+        "contribute_id"
+      ],
+      "columnCount": 8,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_crystal_buff",
+      "tableSlug": "guild_crystal_buff",
+      "displayName": "guild_crystal_buff",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_facility.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_facility",
+      "keyColumns": [
+        "buff_grade"
+      ],
+      "columnCount": 15,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_crystal_enchant",
+      "tableSlug": "guild_crystal_enchant",
+      "displayName": "guild_crystal_enchant",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_facility.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_facility",
+      "keyColumns": [
+        "crystal_level"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_facility",
+      "tableSlug": "guild_facility",
+      "displayName": "guild_facility",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_facility.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_facility",
+      "keyColumns": [
+        "facility_type"
+      ],
+      "columnCount": 7,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_level",
+      "tableSlug": "guild_level",
+      "displayName": "guild_level",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_level.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_level",
+      "keyColumns": [
+        "guild_level"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "guild_mark",
+      "tableSlug": "guild_mark",
+      "displayName": "guild_mark",
+      "folderName": "23_길드 DataTable_GL",
+      "folderGroup": "23_길드",
+      "csvPath": "23_길드 DataTable_GL/guild_mark.csv",
+      "manualWorkbook": "길드 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "guild_mark",
+      "keyColumns": [
+        "mark_id"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item",
+      "tableSlug": "item",
+      "displayName": "item",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 29,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 116
+    },
+    {
+      "tableId": "item_box",
+      "tableSlug": "item_box",
+      "displayName": "item_box",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_box.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_box",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 8,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_category_set",
+      "tableSlug": "item_category_set",
+      "displayName": "item_category_set",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_settings.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_settings",
+      "keyColumns": [
+        "item_category"
+      ],
+      "columnCount": 19,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "item_charge_cycle",
+      "tableSlug": "item_charge_cycle",
+      "displayName": "item_charge_cycle",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_settings.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_settings",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_consumable",
+      "tableSlug": "item_consumable",
+      "displayName": "item_consumable",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_consumable.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_consumable",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 8,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_convert_cost",
+      "tableSlug": "item_convert_cost",
+      "displayName": "item_convert_cost",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_settings.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_settings",
+      "keyColumns": [],
+      "columnCount": 4,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_costume",
+      "tableSlug": "item_costume",
+      "displayName": "item_costume",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_costume.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_costume",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_costume_option",
+      "tableSlug": "item_costume_option",
+      "displayName": "item_costume_option",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_costume_option.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_costume_option",
+      "keyColumns": [],
+      "columnCount": 5,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_default",
+      "tableSlug": "item_default",
+      "displayName": "item_default",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_default.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_default",
+      "keyColumns": [],
+      "columnCount": 8,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_dyeing",
+      "tableSlug": "item_dyeing",
+      "displayName": "item_dyeing",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_dyeing.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_emblem",
+      "tableSlug": "item_emblem",
+      "displayName": "item_emblem",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_emblem.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_emblem",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 9,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_emotion",
+      "tableSlug": "item_emotion",
+      "displayName": "item_emotion",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_emotion.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_emotion",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_exp_material",
+      "tableSlug": "item_exp_material",
+      "displayName": "item_exp_material",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_exp_material.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_exp_material",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_expire_season",
+      "tableSlug": "item_expire_season",
+      "displayName": "item_expire_season",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_settings.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_settings",
+      "keyColumns": [
+        "item_group"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_fusion_ceiling",
+      "tableSlug": "item_fusion_ceiling",
+      "displayName": "item_fusion_ceiling",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_settings.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_settings",
+      "keyColumns": [],
+      "columnCount": 4,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_gear",
+      "tableSlug": "item_gear",
+      "displayName": "item_gear",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_gear.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_gear",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 50,
+      "outboundRelationCount": 9,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "item_gear_default_skill",
+      "tableSlug": "item_gear_default_skill",
+      "displayName": "item_gear_default_skill",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_settings.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_settings",
+      "keyColumns": [
+        "gear_type"
+      ],
+      "columnCount": 10,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_limit_drop",
+      "tableSlug": "item_limit_drop",
+      "displayName": "item_limit_drop",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_settings.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_settings",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_mob_summon",
+      "tableSlug": "item_mob_summon",
+      "displayName": "item_mob_summon",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_mob_summon.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_mob_summon",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_module",
+      "tableSlug": "item_module",
+      "displayName": "item_module",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_module.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_module",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 19,
+      "outboundRelationCount": 6,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_module_option",
+      "tableSlug": "item_module_option",
+      "displayName": "item_module_option",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_module_option.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_module_option",
+      "keyColumns": [
+        "module_option_id"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "item_operator",
+      "tableSlug": "item_operator",
+      "displayName": "item_operator",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_operator.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_operator",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 21,
+      "outboundRelationCount": 9,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_operator_node_link",
+      "tableSlug": "item_operator_node_link",
+      "displayName": "item_operator_node_link",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_operator_node_link.csv",
+      "manualWorkbook": null,
+      "manualSheet": null,
+      "keyColumns": [
+        "node_tuning_id"
+      ],
+      "columnCount": 9,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_operator_tuning",
+      "tableSlug": "item_operator_tuning",
+      "displayName": "item_operator_tuning",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_operator_tuning.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_operator_tuning",
+      "keyColumns": [
+        "operator_tuning_id"
+      ],
+      "columnCount": 13,
+      "outboundRelationCount": 5,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_restore",
+      "tableSlug": "item_restore",
+      "displayName": "item_restore",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_restore.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_restore",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 7,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_skillbook",
+      "tableSlug": "item_skillbook",
+      "displayName": "item_skillbook",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_skillbook.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_skillbook",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 2
+    },
+    {
+      "tableId": "item_stackable_use_override",
+      "tableSlug": "item_stackable_use_override",
+      "displayName": "item_stackable_use_override",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_settings.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_settings",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_sys_awaken",
+      "tableSlug": "item_sys_awaken",
+      "displayName": "item_sys_awaken",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_sys_awaken.csv",
+      "manualWorkbook": "아이템 SYS 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_sys_awaken",
+      "keyColumns": [],
+      "columnCount": 23,
+      "outboundRelationCount": 8,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "item_sys_change",
+      "tableSlug": "item_sys_change",
+      "displayName": "item_sys_change",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_sys_change.csv",
+      "manualWorkbook": "아이템 SYS 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_sys_change",
+      "keyColumns": [],
+      "columnCount": 8,
+      "outboundRelationCount": 3,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_sys_collection",
+      "tableSlug": "item_sys_collection",
+      "displayName": "item_sys_collection",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_sys_collection.csv",
+      "manualWorkbook": null,
+      "manualSheet": null,
+      "keyColumns": [],
+      "columnCount": 10,
+      "outboundRelationCount": 3,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_sys_enchant",
+      "tableSlug": "item_sys_enchant",
+      "displayName": "item_sys_enchant",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_sys_enchant.csv",
+      "manualWorkbook": "아이템 SYS 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_sys_enchant",
+      "keyColumns": [],
+      "columnCount": 23,
+      "outboundRelationCount": 9,
+      "inboundRelationCount": 2
+    },
+    {
+      "tableId": "item_sys_fusion",
+      "tableSlug": "item_sys_fusion",
+      "displayName": "item_sys_fusion",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_sys_fusion.csv",
+      "manualWorkbook": "아이템 SYS 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_sys_fusion",
+      "keyColumns": [],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "item_sys_random_option",
+      "tableSlug": "item_sys_random_option",
+      "displayName": "item_sys_random_option",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_sys_random_option.csv",
+      "manualWorkbook": "아이템 SYS 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_sys_random_option",
+      "keyColumns": [
+        "random_option_id"
+      ],
+      "columnCount": 9,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 4
+    },
+    {
+      "tableId": "item_sys_random_option_change",
+      "tableSlug": "item_sys_random_option_change",
+      "displayName": "item_sys_random_option_change",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_sys_random_option_change.csv",
+      "manualWorkbook": "아이템 SYS 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_sys_random_option_change",
+      "keyColumns": [
+        "random_option_change_id"
+      ],
+      "columnCount": 13,
+      "outboundRelationCount": 6,
+      "inboundRelationCount": 3
+    },
+    {
+      "tableId": "item_sys_upgrade",
+      "tableSlug": "item_sys_upgrade",
+      "displayName": "item_sys_upgrade",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_sys_upgrade.csv",
+      "manualWorkbook": "아이템 SYS 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_sys_upgrade",
+      "keyColumns": [
+        "upgrade_id"
+      ],
+      "columnCount": 11,
+      "outboundRelationCount": 5,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "item_vehicle",
+      "tableSlug": "item_vehicle",
+      "displayName": "item_vehicle",
+      "folderName": "01_아이템 DataTable_GL",
+      "folderGroup": "01_아이템",
+      "csvPath": "01_아이템 DataTable_GL/item_vehicle.csv",
+      "manualWorkbook": "아이템 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "item_vehicle",
+      "keyColumns": [
+        "item_type"
+      ],
+      "columnCount": 23,
+      "outboundRelationCount": 6,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "key_mapping",
+      "tableSlug": "key_mapping",
+      "displayName": "key_mapping",
+      "folderName": "35_키맵핑 DataTable_GL",
+      "folderGroup": "35_키맵핑",
+      "csvPath": "35_키맵핑 DataTable_GL/key_mapping.csv",
+      "manualWorkbook": "키맵핑 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "key_mapping",
+      "keyColumns": [],
+      "columnCount": 8,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "loading_screen",
+      "tableSlug": "loading_screen",
+      "displayName": "loading_screen",
+      "folderName": "29_로딩 DataTable_GL",
+      "folderGroup": "29_로딩",
+      "csvPath": "29_로딩 DataTable_GL/loading_screen.csv",
+      "manualWorkbook": "로딩 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "loading",
+      "keyColumns": [],
+      "columnCount": 11,
+      "outboundRelationCount": 3,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "looting",
+      "tableSlug": "looting",
+      "displayName": "looting",
+      "folderName": "11_몬스터 DataTable_GL",
+      "folderGroup": "11_몬스터",
+      "csvPath": "11_몬스터 DataTable_GL/looting.csv",
+      "manualWorkbook": "몬스터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "looting",
+      "keyColumns": [
+        "looting_id"
+      ],
+      "columnCount": 8,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "mail",
+      "tableSlug": "mail",
+      "displayName": "mail",
+      "folderName": "22_우편 DataTable_GL",
+      "folderGroup": "22_우편",
+      "csvPath": "22_우편 DataTable_GL/mail.csv",
+      "manualWorkbook": "우편 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "mail",
+      "keyColumns": [
+        "mail_id"
+      ],
+      "columnCount": 10,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 4
+    },
+    {
+      "tableId": "menu",
+      "tableSlug": "menu",
+      "displayName": "menu",
+      "folderName": "09_메뉴 DataTable_GL",
+      "folderGroup": "09_메뉴",
+      "csvPath": "09_메뉴 DataTable_GL/menu.csv",
+      "manualWorkbook": "메뉴 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "menu",
+      "keyColumns": [
+        "menu_id"
+      ],
+      "columnCount": 14,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 4
+    },
+    {
+      "tableId": "mob_trial",
+      "tableSlug": "mob_trial",
+      "displayName": "mob_trial",
+      "folderName": "11_몬스터 DataTable_GL",
+      "folderGroup": "11_몬스터",
+      "csvPath": "11_몬스터 DataTable_GL/mob_trial.csv",
+      "manualWorkbook": "몬스터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "mob_trial",
+      "keyColumns": [
+        "mob_id"
+      ],
+      "columnCount": 20,
+      "outboundRelationCount": 7,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "mobcollection_core_drop",
+      "tableSlug": "mobcollection_core_drop",
+      "displayName": "mobcollection_core_drop",
+      "folderName": "24_코덱스 DataTable_GL",
+      "folderGroup": "24_코덱스",
+      "csvPath": "24_코덱스 DataTable_GL/mobcollection_core_drop.csv",
+      "manualWorkbook": "몬스터 도감 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "mobcollection_core_drop",
+      "keyColumns": [
+        "ai_grade"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "mobcollection_core_step",
+      "tableSlug": "mobcollection_core_step",
+      "displayName": "mobcollection_core_step",
+      "folderName": "24_코덱스 DataTable_GL",
+      "folderGroup": "24_코덱스",
+      "csvPath": "24_코덱스 DataTable_GL/mobcollection_core_step.csv",
+      "manualWorkbook": "몬스터 도감 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "mobcollection_core_step",
+      "keyColumns": [],
+      "columnCount": 5,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "mobcollection_corestone_upgrade",
+      "tableSlug": "mobcollection_corestone_upgrade",
+      "displayName": "mobcollection_corestone_upgrade",
+      "folderName": "24_코덱스 DataTable_GL",
+      "folderGroup": "24_코덱스",
+      "csvPath": "24_코덱스 DataTable_GL/mobcollection_corestone_upgrade.csv",
+      "manualWorkbook": "몬스터 도감 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "mobcollection_corestone_upgrade",
+      "keyColumns": [],
+      "columnCount": 8,
+      "outboundRelationCount": 3,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "mobcollection_drop_override",
+      "tableSlug": "mobcollection_drop_override",
+      "displayName": "mobcollection_drop_override",
+      "folderName": "24_코덱스 DataTable_GL",
+      "folderGroup": "24_코덱스",
+      "csvPath": "24_코덱스 DataTable_GL/mobcollection_drop_override.csv",
+      "manualWorkbook": "몬스터 도감 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "mobcollection_drop_override",
+      "keyColumns": [
+        "mob_id"
+      ],
+      "columnCount": 2,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "mobcollection_region",
+      "tableSlug": "mobcollection_region",
+      "displayName": "mobcollection_region",
+      "folderName": "24_코덱스 DataTable_GL",
+      "folderGroup": "24_코덱스",
+      "csvPath": "24_코덱스 DataTable_GL/mobcollection_region.csv",
+      "manualWorkbook": "몬스터 도감 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "mobcollection_region",
+      "keyColumns": [],
+      "columnCount": 6,
+      "outboundRelationCount": 3,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "MobLevelStat",
+      "tableSlug": "MobLevelStat",
+      "displayName": "MobLevelStat",
+      "folderName": "11_몬스터 DataTable_GL",
+      "folderGroup": "11_몬스터",
+      "csvPath": "11_몬스터 DataTable_GL/mob_level_stat.csv",
+      "manualWorkbook": "몬스터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "몬스터 테이블",
+      "keyColumns": [
+        "level"
+      ],
+      "columnCount": 21,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "MobTypeStat",
+      "tableSlug": "MobTypeStat",
+      "displayName": "MobTypeStat",
+      "folderName": "11_몬스터 DataTable_GL",
+      "folderGroup": "11_몬스터",
+      "csvPath": "11_몬스터 DataTable_GL/mob_type_stat.csv",
+      "manualWorkbook": "몬스터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "몬스터 테이블",
+      "keyColumns": [
+        "mob_id"
+      ],
+      "columnCount": 66,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 3
+    },
+    {
+      "tableId": "normal_buff",
+      "tableSlug": "normal_buff",
+      "displayName": "normal_buff",
+      "folderName": "33_버프 DataTable_GL",
+      "folderGroup": "33_버프",
+      "csvPath": "33_버프 DataTable_GL/normal_buff.csv",
+      "manualWorkbook": "버프 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "normal_buff",
+      "keyColumns": [
+        "normal_buff_id"
+      ],
+      "columnCount": 30,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 5
+    },
+    {
+      "tableId": "npc",
+      "tableSlug": "npc",
+      "displayName": "npc",
+      "folderName": "14_NPC DataTable_GL",
+      "folderGroup": "14_NPC",
+      "csvPath": "14_NPC DataTable_GL/npc.csv",
+      "manualWorkbook": "NPC 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "npc",
+      "keyColumns": [
+        "npc_id"
+      ],
+      "columnCount": 30,
+      "outboundRelationCount": 11,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "npc_level_stat",
+      "tableSlug": "npc_level_stat",
+      "displayName": "npc_level_stat",
+      "folderName": "14_NPC DataTable_GL",
+      "folderGroup": "14_NPC",
+      "csvPath": "14_NPC DataTable_GL/npc_level_stat.csv",
+      "manualWorkbook": "NPC 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "npc_level_stat",
+      "keyColumns": [
+        "npc_level"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "npc_shop",
+      "tableSlug": "npc_shop",
+      "displayName": "npc_shop",
+      "folderName": "14_NPC DataTable_GL",
+      "folderGroup": "14_NPC",
+      "csvPath": "14_NPC DataTable_GL/npc_shop.csv",
+      "manualWorkbook": "NPC 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "npc_shop",
+      "keyColumns": [],
+      "columnCount": 9,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "OptionCrowdControl",
+      "tableSlug": "OptionCrowdControl",
+      "displayName": "OptionCrowdControl",
+      "folderName": "18_상태이상 DataTable_GL",
+      "folderGroup": "18_상태이상",
+      "csvPath": "18_상태이상 DataTable_GL/option_crowd_control.csv",
+      "manualWorkbook": "상태이상 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "option_crowd_control",
+      "keyColumns": [
+        "cast_type"
+      ],
+      "columnCount": 16,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "OptionType",
+      "tableSlug": "OptionType",
+      "displayName": "OptionType",
+      "folderName": "20_option_stat DataTable_GL",
+      "folderGroup": "20_option_stat",
+      "csvPath": "20_option_stat DataTable_GL/option_stat.csv",
+      "manualWorkbook": "option_stat 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "option_stat",
+      "keyColumns": [
+        "optionType"
+      ],
+      "columnCount": 12,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 52
+    },
+    {
+      "tableId": "party_category",
+      "tableSlug": "party_category",
+      "displayName": "party_category",
+      "folderName": "36_파티 DataTable_GL",
+      "folderGroup": "36_파티",
+      "csvPath": "36_파티 DataTable_GL/party_category.csv",
+      "manualWorkbook": "파티 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "party_category",
+      "keyColumns": [
+        "party_category_id"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pc_class_open",
+      "tableSlug": "pc_class_open",
+      "displayName": "pc_class_open",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_settings.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_settings",
+      "keyColumns": [],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pc_death_penalty_cost",
+      "tableSlug": "pc_death_penalty_cost",
+      "displayName": "pc_death_penalty_cost",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_settings.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_settings",
+      "keyColumns": [
+        "penalty_count"
+      ],
+      "columnCount": 9,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pc_guardian_rank",
+      "tableSlug": "pc_guardian_rank",
+      "displayName": "pc_guardian_rank",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_guardian_rank.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_guardian_rank",
+      "keyColumns": [
+        "rank"
+      ],
+      "columnCount": 9,
+      "outboundRelationCount": 4,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "pc_guardian_reward",
+      "tableSlug": "pc_guardian_reward",
+      "displayName": "pc_guardian_reward",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_guardian_reward.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_guardian_reward",
+      "keyColumns": [],
+      "columnCount": 9,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pc_level",
+      "tableSlug": "pc_level",
+      "displayName": "pc_level",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_level.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_level",
+      "keyColumns": [
+        "level"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pc_level_penalty",
+      "tableSlug": "pc_level_penalty",
+      "displayName": "pc_level_penalty",
+      "folderName": "03_캐릭터 DataTable_GL",
+      "folderGroup": "03_캐릭터",
+      "csvPath": "03_캐릭터 DataTable_GL/pc_level_penalty.csv",
+      "manualWorkbook": "캐릭터 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pc_level_penalty",
+      "keyColumns": [
+        "level_difference"
+      ],
+      "columnCount": 2,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "PointCrowdControl",
+      "tableSlug": "PointCrowdControl",
+      "displayName": "PointCrowdControl",
+      "folderName": "18_상태이상 DataTable_GL",
+      "folderGroup": "18_상태이상",
+      "csvPath": "18_상태이상 DataTable_GL/option_crowd_control.csv",
+      "manualWorkbook": "상태이상 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "option_crowd_control",
+      "keyColumns": [
+        "cc_point_type"
+      ],
+      "columnCount": 7,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "product",
+      "tableSlug": "product",
+      "displayName": "product",
+      "folderName": "26_프로덕트 DataTable_GL",
+      "folderGroup": "26_프로덕트",
+      "csvPath": "26_프로덕트 DataTable_GL/product.csv",
+      "manualWorkbook": "프로덕트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "product",
+      "keyColumns": [
+        "product_id"
+      ],
+      "columnCount": 48,
+      "outboundRelationCount": 11,
+      "inboundRelationCount": 4
+    },
+    {
+      "tableId": "product_category",
+      "tableSlug": "product_category",
+      "displayName": "product_category",
+      "folderName": "26_프로덕트 DataTable_GL",
+      "folderGroup": "26_프로덕트",
+      "csvPath": "26_프로덕트 DataTable_GL/product_settings.csv",
+      "manualWorkbook": "프로덕트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "product_settings",
+      "keyColumns": [
+        "product_category"
+      ],
+      "columnCount": 18,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 3
+    },
+    {
+      "tableId": "product_gacha",
+      "tableSlug": "product_gacha",
+      "displayName": "product_gacha",
+      "folderName": "26_프로덕트 DataTable_GL",
+      "folderGroup": "26_프로덕트",
+      "csvPath": "26_프로덕트 DataTable_GL/product_gacha.csv",
+      "manualWorkbook": "프로덕트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "product_gacha",
+      "keyColumns": [
+        "product_id"
+      ],
+      "columnCount": 9,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "product_iap",
+      "tableSlug": "product_iap",
+      "displayName": "product_iap",
+      "folderName": "26_프로덕트 DataTable_GL",
+      "folderGroup": "26_프로덕트",
+      "csvPath": "26_프로덕트 DataTable_GL/product_iap.csv",
+      "manualWorkbook": "프로덕트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "product_iap",
+      "keyColumns": [
+        "product_id"
+      ],
+      "columnCount": 8,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "product_reward",
+      "tableSlug": "product_reward",
+      "displayName": "product_reward",
+      "folderName": "26_프로덕트 DataTable_GL",
+      "folderGroup": "26_프로덕트",
+      "csvPath": "26_프로덕트 DataTable_GL/product_reward.csv",
+      "manualWorkbook": "프로덕트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "product_reward",
+      "keyColumns": [
+        "product_reward_id"
+      ],
+      "columnCount": 7,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "product_shop_type",
+      "tableSlug": "product_shop_type",
+      "displayName": "product_shop_type",
+      "folderName": "26_프로덕트 DataTable_GL",
+      "folderGroup": "26_프로덕트",
+      "csvPath": "26_프로덕트 DataTable_GL/product_settings.csv",
+      "manualWorkbook": "프로덕트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "product_settings",
+      "keyColumns": [
+        "product_shop_type"
+      ],
+      "columnCount": 4,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "product_special_reward",
+      "tableSlug": "product_special_reward",
+      "displayName": "product_special_reward",
+      "folderName": "26_프로덕트 DataTable_GL",
+      "folderGroup": "26_프로덕트",
+      "csvPath": "26_프로덕트 DataTable_GL/product_special_reward.csv",
+      "manualWorkbook": "프로덕트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "product_special_reward",
+      "keyColumns": [
+        "product_special_reward_id"
+      ],
+      "columnCount": 9,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "product_step_group",
+      "tableSlug": "product_step_group",
+      "displayName": "product_step_group",
+      "folderName": "26_프로덕트 DataTable_GL",
+      "folderGroup": "26_프로덕트",
+      "csvPath": "26_프로덕트 DataTable_GL/product_step_group.csv",
+      "manualWorkbook": "프로덕트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "product_step_group",
+      "keyColumns": [
+        "product_id"
+      ],
+      "columnCount": 4,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "pvp_async",
+      "tableSlug": "pvp_async",
+      "displayName": "pvp_async",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_async.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_async",
+      "keyColumns": [],
+      "columnCount": 4,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_guild_conquest_buff",
+      "tableSlug": "pvp_guild_conquest_buff",
+      "displayName": "pvp_guild_conquest_buff",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_guild_conquest.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_guild_conquest",
+      "keyColumns": [
+        "buff_id"
+      ],
+      "columnCount": 11,
+      "outboundRelationCount": 5,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "pvp_guild_conquest_reward",
+      "tableSlug": "pvp_guild_conquest_reward",
+      "displayName": "pvp_guild_conquest_reward",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_guild_conquest.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_guild_conquest",
+      "keyColumns": [
+        "reward_id"
+      ],
+      "columnCount": 8,
+      "outboundRelationCount": 3,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_guild_conquest_rule_time",
+      "tableSlug": "pvp_guild_conquest_rule_time",
+      "displayName": "pvp_guild_conquest_rule_time",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_guild_conquest.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_guild_conquest",
+      "keyColumns": [],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_guild_conquest_score_point",
+      "tableSlug": "pvp_guild_conquest_score_point",
+      "displayName": "pvp_guild_conquest_score_point",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_guild_conquest.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_guild_conquest",
+      "keyColumns": [],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_pk_enemy_guild",
+      "tableSlug": "pvp_pk_enemy_guild",
+      "displayName": "pvp_pk_enemy_guild",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_pk.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_pk",
+      "keyColumns": [],
+      "columnCount": 2,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_pk_point",
+      "tableSlug": "pvp_pk_point",
+      "displayName": "pvp_pk_point",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_pk.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_pk",
+      "keyColumns": [],
+      "columnCount": 4,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_pk_ranker",
+      "tableSlug": "pvp_pk_ranker",
+      "displayName": "pvp_pk_ranker",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_pk.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_pk",
+      "keyColumns": [],
+      "columnCount": 2,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_team_group",
+      "tableSlug": "pvp_team_group",
+      "displayName": "pvp_team_group",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_team.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_team",
+      "keyColumns": [
+        "group_id"
+      ],
+      "columnCount": 2,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_team_reward",
+      "tableSlug": "pvp_team_reward",
+      "displayName": "pvp_team_reward",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_team.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_team",
+      "keyColumns": [
+        "reward_id"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_team_rule_time",
+      "tableSlug": "pvp_team_rule_time",
+      "displayName": "pvp_team_rule_time",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_team.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_team",
+      "keyColumns": [],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "pvp_team_score_point",
+      "tableSlug": "pvp_team_score_point",
+      "displayName": "pvp_team_score_point",
+      "folderName": "32_대전 DataTable_GL",
+      "folderGroup": "32_대전",
+      "csvPath": "32_대전 DataTable_GL/pvp_team.csv",
+      "manualWorkbook": "대전 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "pvp_team",
+      "keyColumns": [],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "quest",
+      "tableSlug": "quest",
+      "displayName": "quest",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/quest.circuit.seg.csv, 02_퀘스트 DataTable_GL/quest.event.seg.csv, 02_퀘스트 DataTable_GL/quest.guardian.seg.csv, 02_퀘스트 DataTable_GL/quest.main.seg.csv, 02_퀘스트 DataTable_GL/quest.mission.seg.csv, 02_퀘스트 DataTable_GL/quest.sub.seg.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "quest",
+      "keyColumns": [
+        "quest_id"
+      ],
+      "columnCount": 32,
+      "outboundRelationCount": 5,
+      "inboundRelationCount": 7
+    },
+    {
+      "tableId": "quest_random_list",
+      "tableSlug": "quest_random_list",
+      "displayName": "quest_random_list",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/quest_settings.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "quest_settings",
+      "keyColumns": [
+        "quest_sub_cateogory"
+      ],
+      "columnCount": 7,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "quest_rank",
+      "tableSlug": "quest_rank",
+      "displayName": "quest_rank",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/quest_rank.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "quest_rank",
+      "keyColumns": [],
+      "columnCount": 5,
+      "outboundRelationCount": 3,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "quest_rank_config",
+      "tableSlug": "quest_rank_config",
+      "displayName": "quest_rank_config",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/quest_settings.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "quest_settings",
+      "keyColumns": [
+        "quest_rank"
+      ],
+      "columnCount": 2,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "quest_reward",
+      "tableSlug": "quest_reward",
+      "displayName": "quest_reward",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/quest_reward.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "quest_reward",
+      "keyColumns": [
+        "reward_id"
+      ],
+      "columnCount": 11,
+      "outboundRelationCount": 5,
+      "inboundRelationCount": 3
+    },
+    {
+      "tableId": "quest_season",
+      "tableSlug": "quest_season",
+      "displayName": "quest_season",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/quest_season.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "quest_season",
+      "keyColumns": [
+        "quest_season_id"
+      ],
+      "columnCount": 8,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "quest_season_point",
+      "tableSlug": "quest_season_point",
+      "displayName": "quest_season_point",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/quest_season_point.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "quest_season_point",
+      "keyColumns": [],
+      "columnCount": 10,
+      "outboundRelationCount": 5,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "quest_task",
+      "tableSlug": "quest_task",
+      "displayName": "quest_task",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/quest_task.circuit.seg.csv, 02_퀘스트 DataTable_GL/quest_task.event.seg.csv, 02_퀘스트 DataTable_GL/quest_task.guardian.seg.csv, 02_퀘스트 DataTable_GL/quest_task.main.seg.csv, 02_퀘스트 DataTable_GL/quest_task.mission.seg.csv, 02_퀘스트 DataTable_GL/quest_task.sub.seg.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "quest_task",
+      "keyColumns": [],
+      "columnCount": 30,
+      "outboundRelationCount": 7,
+      "inboundRelationCount": 2
+    },
+    {
+      "tableId": "ranking_formula",
+      "tableSlug": "ranking_formula",
+      "displayName": "ranking_formula",
+      "folderName": "30_랭킹 DataTable_GL",
+      "folderGroup": "30_랭킹",
+      "csvPath": "30_랭킹 DataTable_GL/ranking_formula.csv",
+      "manualWorkbook": "랭킹 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "ranking_formula",
+      "keyColumns": [
+        "contents_id"
+      ],
+      "columnCount": 6,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "ranking_reward",
+      "tableSlug": "ranking_reward",
+      "displayName": "ranking_reward",
+      "folderName": "30_랭킹 DataTable_GL",
+      "folderGroup": "30_랭킹",
+      "csvPath": "30_랭킹 DataTable_GL/ranking_reward.csv",
+      "manualWorkbook": "랭킹 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "ranking_reward",
+      "keyColumns": [],
+      "columnCount": 19,
+      "outboundRelationCount": 4,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "ranking_tier",
+      "tableSlug": "ranking_tier",
+      "displayName": "ranking_tier",
+      "folderName": "30_랭킹 DataTable_GL",
+      "folderGroup": "30_랭킹",
+      "csvPath": "30_랭킹 DataTable_GL/ranking_tier.csv",
+      "manualWorkbook": "랭킹 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "ranking_tier ",
+      "keyColumns": [],
+      "columnCount": 6,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "rune",
+      "tableSlug": "rune",
+      "displayName": "rune",
+      "folderName": "04_룬 DataTable_GL",
+      "folderGroup": "04_룬",
+      "csvPath": "04_룬 DataTable_GL/rune.csv",
+      "manualWorkbook": "룬 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "rune",
+      "keyColumns": [
+        "rune_id"
+      ],
+      "columnCount": 63,
+      "outboundRelationCount": 4,
+      "inboundRelationCount": 10
+    },
+    {
+      "tableId": "rune_condition",
+      "tableSlug": "rune_condition",
+      "displayName": "rune_condition",
+      "folderName": "04_룬 DataTable_GL",
+      "folderGroup": "04_룬",
+      "csvPath": "04_룬 DataTable_GL/rune_condition.csv",
+      "manualWorkbook": "룬 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "rune_condition",
+      "keyColumns": [
+        "condition_type"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "season_config",
+      "tableSlug": "season_config",
+      "displayName": "season_config",
+      "folderName": "41_시즌 컨텐츠_DataTable_GL",
+      "folderGroup": "41_시즌 컨텐츠_",
+      "csvPath": "41_시즌 컨텐츠_DataTable_GL/season_config.csv",
+      "manualWorkbook": "시즌 컨텐츠 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "##season_config(글로벌 사용안함)",
+      "keyColumns": [
+        "season_id"
+      ],
+      "columnCount": 7,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 4
+    },
+    {
+      "tableId": "season_dungeon",
+      "tableSlug": "season_dungeon",
+      "displayName": "season_dungeon",
+      "folderName": "41_시즌 컨텐츠_DataTable_GL",
+      "folderGroup": "41_시즌 컨텐츠_",
+      "csvPath": "41_시즌 컨텐츠_DataTable_GL/season_dungeon.csv",
+      "manualWorkbook": "시즌 컨텐츠 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "##season_dungeon(글로벌 사용안함)",
+      "keyColumns": [],
+      "columnCount": 9,
+      "outboundRelationCount": 6,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "server_target",
+      "tableSlug": "server_target",
+      "displayName": "server_target",
+      "folderName": "42_서버 이전_DataTable_GL",
+      "folderGroup": "42_서버 이전_",
+      "csvPath": "42_서버 이전_DataTable_GL/server_target.csv",
+      "manualWorkbook": "서버 이전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "server_target",
+      "keyColumns": [],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "server_transfer",
+      "tableSlug": "server_transfer",
+      "displayName": "server_transfer",
+      "folderName": "42_서버 이전_DataTable_GL",
+      "folderGroup": "42_서버 이전_",
+      "csvPath": "42_서버 이전_DataTable_GL/server_transfer.csv",
+      "manualWorkbook": "서버 이전 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "server_transfer",
+      "keyColumns": [],
+      "columnCount": 7,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "skill_active",
+      "tableSlug": "skill_active",
+      "displayName": "skill_active",
+      "folderName": "10_스킬 DataTable_GL",
+      "folderGroup": "10_스킬",
+      "csvPath": "10_스킬 DataTable_GL/skill_active.csv",
+      "manualWorkbook": "스킬 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "skill_active",
+      "keyColumns": [
+        "skill_index"
+      ],
+      "columnCount": 30,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 4
+    },
+    {
+      "tableId": "skill_buff",
+      "tableSlug": "skill_buff",
+      "displayName": "skill_buff",
+      "folderName": "10_스킬 DataTable_GL",
+      "folderGroup": "10_스킬",
+      "csvPath": "10_스킬 DataTable_GL/skill_buff.csv",
+      "manualWorkbook": "스킬 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "skill_buff",
+      "keyColumns": [],
+      "columnCount": 21,
+      "outboundRelationCount": 3,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "skill_buff_mob",
+      "tableSlug": "skill_buff_mob",
+      "displayName": "skill_buff_mob",
+      "folderName": "10_스킬 DataTable_GL",
+      "folderGroup": "10_스킬",
+      "csvPath": "10_스킬 DataTable_GL/skill_buff_mob.csv",
+      "manualWorkbook": "스킬 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "skill_buff_mob",
+      "keyColumns": [],
+      "columnCount": 16,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "skill_enchant",
+      "tableSlug": "skill_enchant",
+      "displayName": "skill_enchant",
+      "folderName": "10_스킬 DataTable_GL",
+      "folderGroup": "10_스킬",
+      "csvPath": "10_스킬 DataTable_GL/skill_enchant.csv",
+      "manualWorkbook": "스킬 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "skill_enchant",
+      "keyColumns": [],
+      "columnCount": 12,
+      "outboundRelationCount": 4,
+      "inboundRelationCount": 3
+    },
+    {
+      "tableId": "skill_passive",
+      "tableSlug": "skill_passive",
+      "displayName": "skill_passive",
+      "folderName": "10_스킬 DataTable_GL",
+      "folderGroup": "10_스킬",
+      "csvPath": "10_스킬 DataTable_GL/skill_passive.csv",
+      "manualWorkbook": "스킬 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "skill_passive",
+      "keyColumns": [
+        "skill_index"
+      ],
+      "columnCount": 18,
+      "outboundRelationCount": 5,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "stage",
+      "tableSlug": "stage",
+      "displayName": "stage",
+      "folderName": "16_스테이지 DataTable_GL",
+      "folderGroup": "16_스테이지",
+      "csvPath": "16_스테이지 DataTable_GL/stage.csv",
+      "manualWorkbook": "스테이지 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "stage",
+      "keyColumns": [
+        "index"
+      ],
+      "columnCount": 20,
+      "outboundRelationCount": 2,
+      "inboundRelationCount": 6
+    },
+    {
+      "tableId": "StatType",
+      "tableSlug": "StatType",
+      "displayName": "StatType",
+      "folderName": "20_option_stat DataTable_GL",
+      "folderGroup": "20_option_stat",
+      "csvPath": "20_option_stat DataTable_GL/option_stat.csv",
+      "manualWorkbook": "option_stat 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "option_stat",
+      "keyColumns": [
+        "statType"
+      ],
+      "columnCount": 11,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "sub_quest_info",
+      "tableSlug": "sub_quest_info",
+      "displayName": "sub_quest_info",
+      "folderName": "02_퀘스트 DataTable_GL",
+      "folderGroup": "02_퀘스트",
+      "csvPath": "02_퀘스트 DataTable_GL/quest_settings.csv",
+      "manualWorkbook": "퀘스트 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "quest_settings",
+      "keyColumns": [
+        "region"
+      ],
+      "columnCount": 5,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "tag",
+      "tableSlug": "tag",
+      "displayName": "tag",
+      "folderName": "44_태그_DataTable_GL",
+      "folderGroup": "44_태그_",
+      "csvPath": "44_태그_DataTable_GL/tag.csv",
+      "manualWorkbook": "태그 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "tag",
+      "keyColumns": [
+        "tag_id"
+      ],
+      "columnCount": 7,
+      "outboundRelationCount": 1,
+      "inboundRelationCount": 2
+    },
+    {
+      "tableId": "tag_condition",
+      "tableSlug": "tag_condition",
+      "displayName": "tag_condition",
+      "folderName": "44_태그_DataTable_GL",
+      "folderGroup": "44_태그_",
+      "csvPath": "44_태그_DataTable_GL/tag_condition.csv",
+      "manualWorkbook": "태그 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "tag_condition",
+      "keyColumns": [
+        "condition_type"
+      ],
+      "columnCount": 4,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 1
+    },
+    {
+      "tableId": "tooltip",
+      "tableSlug": "tooltip",
+      "displayName": "tooltip",
+      "folderName": "09_메뉴 DataTable_GL",
+      "folderGroup": "09_메뉴",
+      "csvPath": "09_메뉴 DataTable_GL/tooltip.csv",
+      "manualWorkbook": "메뉴 테이블 메뉴얼_GL.xlsx",
+      "manualSheet": "tooltip",
+      "keyColumns": [
+        "tooltip_id"
+      ],
+      "columnCount": 4,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "unique_battle_stat",
+      "tableSlug": "unique_battle_stat",
+      "displayName": "unique_battle_stat",
+      "folderName": "34_유니크 전투 DataTable_GL",
+      "folderGroup": "34_유니크 전투",
+      "csvPath": "34_유니크 전투 DataTable_GL/unique_battle_stat.csv",
+      "manualWorkbook": "유니크 전투 스텟 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "unique_battle_stat",
+      "keyColumns": [
+        "unique_battle_stat_id"
+      ],
+      "columnCount": 3,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 0
+    },
+    {
+      "tableId": "unlock_contents",
+      "tableSlug": "unlock_contents",
+      "displayName": "unlock_contents",
+      "folderName": "08_언락 DataTable_GL",
+      "folderGroup": "08_언락",
+      "csvPath": "08_언락 DataTable_GL/unlock_contents.csv",
+      "manualWorkbook": "언락 테이블 매뉴얼_GL.xlsx",
+      "manualSheet": "언락 테이블",
+      "keyColumns": [
+        "unlock_id"
+      ],
+      "columnCount": 8,
+      "outboundRelationCount": 0,
+      "inboundRelationCount": 6
+    }
+  ]
+}

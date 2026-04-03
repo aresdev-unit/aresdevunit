@@ -149,3 +149,33 @@ export interface CsvPage {
   manualWorkbook: string | null;
   tables: TableIndex[];
 }
+
+export type CatalogEntry = {
+  tableId: string;
+  tableSlug: string;
+  displayName: string;
+  folderName: string;
+  folderGroup: string;
+  csvPath: string;
+  manualWorkbook: string | null;
+  manualSheet: string | null;
+  keyColumns: string[];
+  columnCount: number;
+  outboundRelationCount: number;
+  inboundRelationCount: number;
+};
+
+export type TableCatalog = {
+  generatedAt: string;
+  workspaceRoot: string;
+  tableCount: number;
+  relationCount: number;
+  entries: CatalogEntry[];
+};
+
+export type RelationIndex = {
+  generatedAt: string;
+  outbound: Record<string, RelationEdge[]>;
+  inbound: Record<string, RelationEdge[]>;
+  graph: GraphData;
+};
