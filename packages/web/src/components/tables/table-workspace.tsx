@@ -2,13 +2,20 @@
 
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useEffect, useCallback, useMemo, Suspense, type ReactNode } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef, Suspense, type ReactNode } from 'react';
 import { CsvSidebar } from '@/components/tables/csv-sidebar';
 import { ColumnMetaEditor } from '@/components/tables/column-meta-editor';
 import { GraphView } from '@/components/tables/graph-view';
 import { ManualTableModal } from '@/components/tables/manual-table-modal';
 import { RelationEditor } from '@/components/tables/relation-editor';
-import type { CsvPage, ManualRemarkBlock, TableEditLog } from '@/lib/tables/types';
+import type {
+  CsvPage,
+  LightweightCsvPage,
+  ManualRemarkBlock,
+  RelationEdge,
+  TableEditLog,
+  TableIndex,
+} from '@/lib/tables/types';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                             */
@@ -39,16 +46,59 @@ export type TableOption = {
 };
 
 export type TableWorkspaceProps = {
-  csvPages: CsvPage[];
+  csvPages: LightweightCsvPage[];
   sidebarGroups: SidebarGroup[];
   initialLogs: TableEditLog[];
   pageIdByTable: Record<string, string>;
   folderGroupByTable: Record<string, string>;
-  tableOptions: TableOption[];
 };
 
 /* ------------------------------------------------------------------ */
-/*  Helper functions (moved from page.tsx)                            */
+/*  Lazy-loaded full page data                                        */
+/* ------------------------------------------------------------------ */
+
+type FullPageData = {
+  tables: TableIndex[];
+  tableOptions: TableOption[];
+};
+
+type FetchState =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'loaded'; data: FullPageData }
+  | { status: 'error'; message: string };
+
+async function fetchFullPageData(
+  page: LightweightCsvPage
+): Promise<FullPageData> {
+  const tables: TableIndex[] = [];
+
+  // Fetch all tables for this page in parallel
+  const results = await Promise.all(
+    page.tables.map(async (entry) => {
+      const res = await fetch(`/api/v1/tables/${entry.tableId}`, {
+        credentials: 'same-origin',
+      });
+      if (!res.ok) return null;
+      const json = await res.json();
+      return json.data?.table as TableIndex | null;
+    })
+  );
+
+  for (const table of results) {
+    if (table) tables.push(table);
+  }
+
+  const tableOptions = tables.map((table) => ({
+    tableId: table.tableId,
+    columns: table.columns.map((column) => column.name),
+  }));
+
+  return { tables, tableOptions };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helper functions                                                  */
 /* ------------------------------------------------------------------ */
 
 function buildTableHref(
@@ -561,7 +611,7 @@ function TablesHome({
   pageIdByTable,
   onPageSelect,
 }: {
-  csvPages: CsvPage[];
+  csvPages: LightweightCsvPage[];
   recentLogs: TableEditLog[];
   sidebarGroups: SidebarGroup[];
   pageIdByTable: Record<string, string>;
@@ -637,7 +687,7 @@ function TablesHome({
 }
 
 /* ------------------------------------------------------------------ */
-/*  PageDetail — shown when a page is selected                        */
+/*  PageDetail — shown when a page is selected (lazy-loads full data) */
 /* ------------------------------------------------------------------ */
 
 function PageDetail({
@@ -646,31 +696,80 @@ function PageDetail({
   sidebarGroups,
   pageIdByTable,
   folderGroupByTable,
-  tableOptions,
   initialLogs,
   onPageSelect,
 }: {
-  page: CsvPage;
-  csvPages: CsvPage[];
+  page: LightweightCsvPage;
+  csvPages: LightweightCsvPage[];
   sidebarGroups: SidebarGroup[];
   pageIdByTable: Record<string, string>;
   folderGroupByTable: Record<string, string>;
-  tableOptions: TableOption[];
   initialLogs: TableEditLog[];
   onPageSelect: (pageId: string) => void;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const fullPageCache = useRef<Map<string, FullPageData>>(new Map());
 
   const currentTabId = searchParams.get('tab');
   const currentView = searchParams.get('view');
   const currentSection: SectionMode = searchParams.get('section') === 'logs' ? 'logs' : 'docs';
   const currentLogScope: LogScope = searchParams.get('logScope') === 'all' ? 'all' : 'current';
 
-  const currentTable = useMemo(
-    () => page.tables.find((t) => t.tableId === currentTabId) ?? page.tables[0],
-    [page, currentTabId]
-  );
+  // Lazy-load full page data
+  const [fetchState, setFetchState] = useState<FetchState>(() => {
+    const cached = fullPageCache.current.get(page.pageId);
+    return cached ? { status: 'loaded', data: cached } : { status: 'idle' };
+  });
+
+  useEffect(() => {
+    const cached = fullPageCache.current.get(page.pageId);
+    if (cached) {
+      setFetchState({ status: 'loaded', data: cached });
+      return;
+    }
+
+    let cancelled = false;
+    setFetchState({ status: 'loading' });
+
+    fetchFullPageData(page)
+      .then((data) => {
+        if (cancelled) return;
+        fullPageCache.current.set(page.pageId, data);
+        setFetchState({ status: 'loaded', data });
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setFetchState({ status: 'error', message: String(err) });
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [page]);
+
+  // Build a CsvPage-compatible object when full data is loaded
+  const fullPage: CsvPage | null = useMemo(() => {
+    if (fetchState.status !== 'loaded') return null;
+    return {
+      pageId: page.pageId,
+      displayName: page.displayName,
+      csvName: page.csvName,
+      csvPath: page.csvPath,
+      csvFiles: page.csvFiles,
+      folderName: page.folderName,
+      folderGroup: page.folderGroup,
+      manualWorkbook: page.manualWorkbook,
+      tables: fetchState.data.tables,
+    };
+  }, [page, fetchState]);
+
+  const currentTable: TableIndex | null = useMemo(() => {
+    if (!fullPage) return null;
+    return fullPage.tables.find((t) => t.tableId === currentTabId) ?? fullPage.tables[0] ?? null;
+  }, [fullPage, currentTabId]);
+
+  const tableOptions = fetchState.status === 'loaded' ? fetchState.data.tableOptions : [];
 
   // Logs state: fetched on demand when section=logs
   const [logs, setLogs] = useState<TableEditLog[]>([]);
@@ -681,6 +780,7 @@ function PageDetail({
     if (currentSection !== 'logs') {
       return;
     }
+    const currentTableId = currentTable?.tableId ?? page.tables[0]?.tableId ?? '';
     const fetchKey = `${page.pageId}:${currentLogScope}`;
     if (fetchKey === logsFetchKey) return;
 
@@ -703,7 +803,7 @@ function PageDetail({
         if (cancelled) return;
         const { data } = json as { ok: boolean; data: TableEditLog[] };
         const fetched: TableEditLog[] = data ?? [];
-        setLogs(sortLogs(fetched, currentTable.tableId));
+        setLogs(sortLogs(fetched, currentTableId));
         setLogsFetchKey(fetchKey);
       })
       .catch(() => {
@@ -716,7 +816,7 @@ function PageDetail({
     return () => {
       cancelled = true;
     };
-  }, [currentSection, currentLogScope, page.pageId, currentTable.tableId, logsFetchKey]);
+  }, [currentSection, currentLogScope, page.pageId, currentTable?.tableId, page.tables, logsFetchKey]);
 
   // Client-side URL update helpers
   const updateParams = useCallback(
@@ -748,7 +848,6 @@ function PageDetail({
   const handleScopeChange = useCallback(
     (scope: LogScope) => {
       updateParams({ logScope: scope });
-      // Force re-fetch by clearing the key
       setLogsFetchKey('');
     },
     [updateParams]
@@ -760,6 +859,10 @@ function PageDetail({
     },
     [updateParams]
   );
+
+  // Loading / error states
+  const isLoading = fetchState.status === 'idle' || fetchState.status === 'loading';
+  const isError = fetchState.status === 'error';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -776,176 +879,188 @@ function PageDetail({
         </aside>
 
         <main className="min-w-0 flex-1 space-y-6">
-          <GraphView
-            currentTableId={currentTable.tableId}
-            folderGroupByTable={folderGroupByTable}
-            page={page}
-            pageIdByTable={pageIdByTable}
-          />
-
-          <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="tables-section-head border-b border-gray-200 pb-5">
-              <div className="tables-section-main">
-                <p className="tables-section-label">컬럼 설명</p>
-                <h2 className="tables-section-title mt-2">{page.csvName}</h2>
-
-                {page.csvFiles.length > 1 ? (
-                  <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600 tables-source-panel">
-                    <p className="tables-muted-label">원본 CSV</p>
-                    <ul className="space-y-1">
-                      {page.csvFiles.map((file) => (
-                        <li key={file}>{file.split('/').pop() ?? file}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-              </div>
-
-              <div className="tables-header-side">
-                <div className="tables-filter-tabs">
-                  <button
-                    className={currentSection === 'docs' ? 'table-tab active' : 'table-tab'}
-                    onClick={() => handleSectionChange('docs')}
-                    type="button"
-                  >
-                    컬럼 문서
-                  </button>
-                  <button
-                    className={currentSection === 'logs' ? 'table-tab active' : 'table-tab'}
-                    onClick={() => handleSectionChange('logs')}
-                    type="button"
-                  >
-                    수정 로그
-                  </button>
-                </div>
-              </div>
+          {isLoading ? (
+            <div className="rounded-lg border border-gray-200 bg-white p-12 text-center text-gray-500 shadow-sm">
+              테이블 데이터를 불러오는 중...
             </div>
+          ) : isError ? (
+            <div className="rounded-lg border border-red-200 bg-red-50 p-12 text-center text-red-600 shadow-sm">
+              테이블 데이터를 불러오지 못했습니다.
+            </div>
+          ) : fullPage && currentTable ? (
+            <>
+              <GraphView
+                currentTableId={currentTable.tableId}
+                folderGroupByTable={folderGroupByTable}
+                page={fullPage}
+                pageIdByTable={pageIdByTable}
+              />
 
-            {currentSection === 'logs' ? (
-              <div className="mt-6">
-                {logsLoading ? (
-                  <div className="tables-log-empty">로그를 불러오는 중...</div>
-                ) : (
-                  <LogsPanel
-                    currentScope={currentLogScope}
-                    logs={logs}
-                    onScopeChange={handleScopeChange}
-                    pageIdByTable={pageIdByTable}
-                  />
-                )}
-              </div>
-            ) : (
-              <>
-                {page.tables.length > 1 ? (
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {page.tables.map((table) => (
+              <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+                <div className="tables-section-head border-b border-gray-200 pb-5">
+                  <div className="tables-section-main">
+                    <p className="tables-section-label">컬럼 설명</p>
+                    <h2 className="tables-section-title mt-2">{page.csvName}</h2>
+
+                    {page.csvFiles.length > 1 ? (
+                      <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600 tables-source-panel">
+                        <p className="tables-muted-label">원본 CSV</p>
+                        <ul className="space-y-1">
+                          {page.csvFiles.map((file) => (
+                            <li key={file}>{file.split('/').pop() ?? file}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <div className="tables-header-side">
+                    <div className="tables-filter-tabs">
                       <button
-                        key={table.tableId}
-                        className={
-                          table.tableId === currentTable.tableId
-                            ? 'inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white'
-                            : 'inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
-                        }
-                        onClick={() => handleTabChange(table.tableId)}
+                        className={currentSection === 'docs' ? 'table-tab active' : 'table-tab'}
+                        onClick={() => handleSectionChange('docs')}
                         type="button"
                       >
-                        {table.tableId}
+                        컬럼 문서
                       </button>
-                    ))}
+                      <button
+                        className={currentSection === 'logs' ? 'table-tab active' : 'table-tab'}
+                        onClick={() => handleSectionChange('logs')}
+                        type="button"
+                      >
+                        수정 로그
+                      </button>
+                    </div>
                   </div>
-                ) : null}
-
-                <div className="mt-6">
-                  <table className="tables-columns-table min-w-full table-fixed text-sm">
-                    <thead>
-                      <tr className="border-b border-gray-200 text-left text-xs uppercase tracking-[0.12em] text-gray-500">
-                        <th className="w-[18%] px-3 py-3">컬럼</th>
-                        <th className="w-[14%] px-3 py-3">타입</th>
-                        <th className="w-[48%] px-3 py-3">설명</th>
-                        <th className="w-[20%] px-3 py-3">참조</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currentTable.columns.map((column) => {
-                        const href = column.relation
-                          ? buildTableHref(pageIdByTable, column.relation.targetTable, column.relation.targetColumn)
-                          : null;
-                        const nameClassName = column.isKey
-                          ? 'text-red-600'
-                          : column.isComment
-                            ? 'text-gray-400'
-                            : 'text-gray-900';
-
-                        return (
-                          <tr
-                            className={`border-b border-gray-100 align-top${column.isComment ? ' bg-gray-50/40' : ''}`}
-                            id={`column-${currentTable.tableId}-${column.name}`}
-                            key={column.name}
-                          >
-                            <td className="px-3 py-4">
-                              <div className="flex flex-wrap items-start gap-2">
-                                <strong className={`column-name-text tables-column-cell ${nameClassName}`}>{renderColumnName(column.name)}</strong>
-                                {column.isKey ? (
-                                  <span className="rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-xs text-red-700">키</span>
-                                ) : null}
-                                {column.isComment ? (
-                                  <span className="rounded-full border border-gray-200 bg-white px-2 py-0.5 text-xs text-gray-500">주석</span>
-                                ) : null}
-                              </div>
-                            </td>
-                            <td className="px-3 py-4 text-gray-700">{column.dataType}</td>
-                            <td className="px-3 py-4 text-gray-700">
-                              <div className="tables-description-cell">
-                                <div className="tables-description-copy">
-                                  <span className="whitespace-pre-wrap">{column.description || '설명 없음'}</span>
-                                  {column.note ? <span className="whitespace-pre-wrap text-sm text-gray-500">{column.note}</span> : null}
-                                </div>
-
-                                <ColumnMetaEditor
-                                  currentDescription={column.description}
-                                  currentManualTables={column.manualTables}
-                                  currentNote={column.note}
-                                  sourceColumn={column.name}
-                                  sourceTable={currentTable.tableId}
-                                />
-                              </div>
-
-                              {column.manualTables.length > 0 ? (
-                                <div className="mt-3">
-                                  <ManualTableModal columnName={column.name} tables={column.manualTables} />
-                                </div>
-                              ) : null}
-                            </td>
-                            <td className="px-3 py-4">
-                              <div className="tables-reference-cell flex min-h-16 flex-col items-start gap-2">
-                                {column.relation && href ? (
-                                  <Link className="tables-reference-link font-semibold text-blue-600 hover:underline" href={href}>
-                                    <span>{column.relation.targetTable}</span>{' '}
-                                    <span className="font-normal text-blue-800">({column.relation.targetColumn})</span>
-                                  </Link>
-                                ) : (
-                                  <span className="text-gray-500">참조 없음</span>
-                                )}
-
-                                <RelationEditor
-                                  currentRelation={column.relation}
-                                  sourceColumn={column.name}
-                                  sourceTable={currentTable.tableId}
-                                  tableOptions={tableOptions}
-                                />
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
                 </div>
-              </>
-            )}
-          </section>
 
-          <RemarksPanel heading={currentTable.tableId} remarks={currentTable.manualRemarks ?? []} />
+                {currentSection === 'logs' ? (
+                  <div className="mt-6">
+                    {logsLoading ? (
+                      <div className="tables-log-empty">로그를 불러오는 중...</div>
+                    ) : (
+                      <LogsPanel
+                        currentScope={currentLogScope}
+                        logs={logs}
+                        onScopeChange={handleScopeChange}
+                        pageIdByTable={pageIdByTable}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    {fullPage.tables.length > 1 ? (
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {fullPage.tables.map((table) => (
+                          <button
+                            key={table.tableId}
+                            className={
+                              table.tableId === currentTable.tableId
+                                ? 'inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white'
+                                : 'inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
+                            }
+                            onClick={() => handleTabChange(table.tableId)}
+                            type="button"
+                          >
+                            {table.tableId}
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    <div className="mt-6">
+                      <table className="tables-columns-table min-w-full table-fixed text-sm">
+                        <thead>
+                          <tr className="border-b border-gray-200 text-left text-xs uppercase tracking-[0.12em] text-gray-500">
+                            <th className="w-[18%] px-3 py-3">컬럼</th>
+                            <th className="w-[14%] px-3 py-3">타입</th>
+                            <th className="w-[48%] px-3 py-3">설명</th>
+                            <th className="w-[20%] px-3 py-3">참조</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {currentTable.columns.map((column) => {
+                            const href = column.relation
+                              ? buildTableHref(pageIdByTable, column.relation.targetTable, column.relation.targetColumn)
+                              : null;
+                            const nameClassName = column.isKey
+                              ? 'text-red-600'
+                              : column.isComment
+                                ? 'text-gray-400'
+                                : 'text-gray-900';
+
+                            return (
+                              <tr
+                                className={`border-b border-gray-100 align-top${column.isComment ? ' bg-gray-50/40' : ''}`}
+                                id={`column-${currentTable.tableId}-${column.name}`}
+                                key={column.name}
+                              >
+                                <td className="px-3 py-4">
+                                  <div className="flex flex-wrap items-start gap-2">
+                                    <strong className={`column-name-text tables-column-cell ${nameClassName}`}>{renderColumnName(column.name)}</strong>
+                                    {column.isKey ? (
+                                      <span className="rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-xs text-red-700">키</span>
+                                    ) : null}
+                                    {column.isComment ? (
+                                      <span className="rounded-full border border-gray-200 bg-white px-2 py-0.5 text-xs text-gray-500">주석</span>
+                                    ) : null}
+                                  </div>
+                                </td>
+                                <td className="px-3 py-4 text-gray-700">{column.dataType}</td>
+                                <td className="px-3 py-4 text-gray-700">
+                                  <div className="tables-description-cell">
+                                    <div className="tables-description-copy">
+                                      <span className="whitespace-pre-wrap">{column.description || '설명 없음'}</span>
+                                      {column.note ? <span className="whitespace-pre-wrap text-sm text-gray-500">{column.note}</span> : null}
+                                    </div>
+
+                                    <ColumnMetaEditor
+                                      currentDescription={column.description}
+                                      currentManualTables={column.manualTables}
+                                      currentNote={column.note}
+                                      sourceColumn={column.name}
+                                      sourceTable={currentTable.tableId}
+                                    />
+                                  </div>
+
+                                  {column.manualTables.length > 0 ? (
+                                    <div className="mt-3">
+                                      <ManualTableModal columnName={column.name} tables={column.manualTables} />
+                                    </div>
+                                  ) : null}
+                                </td>
+                                <td className="px-3 py-4">
+                                  <div className="tables-reference-cell flex min-h-16 flex-col items-start gap-2">
+                                    {column.relation && href ? (
+                                      <Link className="tables-reference-link font-semibold text-blue-600 hover:underline" href={href}>
+                                        <span>{column.relation.targetTable}</span>{' '}
+                                        <span className="font-normal text-blue-800">({column.relation.targetColumn})</span>
+                                      </Link>
+                                    ) : (
+                                      <span className="text-gray-500">참조 없음</span>
+                                    )}
+
+                                    <RelationEditor
+                                      currentRelation={column.relation}
+                                      sourceColumn={column.name}
+                                      sourceTable={currentTable.tableId}
+                                      tableOptions={tableOptions}
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </section>
+
+              <RemarksPanel heading={currentTable.tableId} remarks={currentTable.manualRemarks ?? []} />
+            </>
+          ) : null}
         </main>
       </div>
     </div>
@@ -962,7 +1077,6 @@ function TableWorkspaceInner({
   initialLogs,
   pageIdByTable,
   folderGroupByTable,
-  tableOptions,
 }: TableWorkspaceProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -1007,7 +1121,6 @@ function TableWorkspaceInner({
       page={page}
       pageIdByTable={pageIdByTable}
       sidebarGroups={sidebarGroups}
-      tableOptions={tableOptions}
     />
   );
 }

@@ -2,13 +2,13 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { TableWorkspace } from '@/components/tables/table-workspace';
-import type { SidebarGroup, TableOption } from '@/components/tables/table-workspace';
+import type { SidebarGroup } from '@/components/tables/table-workspace';
 import { authOptions } from '@/lib/auth';
 import { getLocalDevAuthUser } from '@/lib/local-dev-auth';
 import { LOCAL_DEV_AUTH_COOKIE } from '@/lib/local-dev-auth-shared';
-import { getCsvPages } from '@/lib/tables/data';
+import { getLightweightCsvPages } from '@/lib/tables/data';
 import { listEditLogs } from '@/lib/tables/override-store';
-import type { CsvPage } from '@/lib/tables/types';
+import type { LightweightCsvPage } from '@/lib/tables/types';
 
 export const metadata = {
   title: '테이블 - AresDevUnit Hub',
@@ -35,8 +35,8 @@ function compareFolderGroups(left: string, right: string) {
   return left.localeCompare(right, 'ko');
 }
 
-function buildSidebarGroups(csvPages: CsvPage[]): SidebarGroup[] {
-  const grouped = csvPages.reduce<Array<{ group: string; pages: CsvPage[] }>>((groups, csvPage) => {
+function buildSidebarGroups(csvPages: LightweightCsvPage[]): SidebarGroup[] {
+  const grouped = csvPages.reduce<Array<{ group: string; pages: LightweightCsvPage[] }>>((groups, csvPage) => {
     const existing = groups.find((item) => item.group === csvPage.folderGroup);
     if (existing) {
       existing.pages.push(csvPage);
@@ -91,9 +91,10 @@ export default async function TablesPage({
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
   }
 
-  const [csvPages, recentLogs] = await Promise.all([getCsvPages(), listEditLogs({ limit: 30 })]);
+  const lightweightPages = getLightweightCsvPages();
+  const recentLogs = await listEditLogs({ limit: 30 });
 
-  if (csvPages.length === 0) {
+  if (lightweightPages.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -105,31 +106,23 @@ export default async function TablesPage({
     );
   }
 
-  const sidebarGroups = buildSidebarGroups(csvPages);
+  const sidebarGroups = buildSidebarGroups(lightweightPages);
 
   const pageIdByTable = Object.fromEntries(
-    csvPages.flatMap((csvPage) => csvPage.tables.map((table) => [table.tableId, csvPage.pageId]))
+    lightweightPages.flatMap((csvPage) => csvPage.tables.map((table) => [table.tableId, csvPage.pageId]))
   );
 
   const folderGroupByTable = Object.fromEntries(
-    csvPages.flatMap((csvPage) => csvPage.tables.map((table) => [table.tableId, table.folderGroup]))
-  );
-
-  const tableOptions: TableOption[] = csvPages.flatMap((csvPage) =>
-    csvPage.tables.map((table) => ({
-      tableId: table.tableId,
-      columns: table.columns.map((column) => column.name),
-    }))
+    lightweightPages.flatMap((csvPage) => csvPage.tables.map((table) => [table.tableId, csvPage.folderGroup]))
   );
 
   return (
     <TableWorkspace
-      csvPages={csvPages}
+      csvPages={lightweightPages}
       folderGroupByTable={folderGroupByTable}
       initialLogs={recentLogs}
       pageIdByTable={pageIdByTable}
       sidebarGroups={sidebarGroups}
-      tableOptions={tableOptions}
     />
   );
 }

@@ -179,3 +179,28 @@ export type RelationIndex = {
   inbound: Record<string, RelationEdge[]>;
   graph: GraphData;
 };
+
+/* ------------------------------------------------------------------ */
+/*  Lightweight types for Phase 2 (lazy-loading)                      */
+/* ------------------------------------------------------------------ */
+
+export type LightweightTableEntry = {
+  tableId: string;
+  displayName: string;
+  columnCount: number;
+  keyColumns: string[];
+  outboundRelationCount: number;
+  inboundRelationCount: number;
+};
+
+export type LightweightCsvPage = {
+  pageId: string;
+  displayName: string;
+  csvName: string;
+  csvPath: string;
+  csvFiles: string[];
+  folderName: string;
+  folderGroup: string;
+  manualWorkbook: string | null;
+  tables: LightweightTableEntry[];
+};
