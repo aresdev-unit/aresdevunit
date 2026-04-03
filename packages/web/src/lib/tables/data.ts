@@ -106,6 +106,7 @@ export async function getDataset(): Promise<Dataset> {
 export function invalidateDatasetCache() {
   cachedDataset = null;
   cachedDatasetExpiresAt = 0;
+  tableCache.clear();
 }
 
 export async function getCsvPages(): Promise<CsvPage[]> {
@@ -157,8 +158,18 @@ export function getRelationIndex(): RelationIndex {
   return relationIndex;
 }
 
+const tableCache = new Map<string, { table: TableIndex; expiresAt: number }>();
+const TABLE_CACHE_TTL_MS = 10_000;
+
 export async function getTableById(tableId: string): Promise<TableIndex | null> {
   if (!/^[A-Za-z0-9_]+$/.test(tableId)) return null;
+
+  const now = Date.now();
+  const cached = tableCache.get(tableId);
+  if (cached && now < cached.expiresAt) {
+    return structuredClone(cached.table) as TableIndex;
+  }
+
   try {
     const mod = await import(`@/generated/tables/${tableId}.json`);
     const table = structuredClone(mod.default ?? mod) as TableIndex;
@@ -181,7 +192,8 @@ export async function getTableById(tableId: string): Promise<TableIndex | null> 
       applyColumnOverrides(miniDataset, columnOverrides);
     }
 
-    return table;
+    tableCache.set(tableId, { table, expiresAt: now + TABLE_CACHE_TTL_MS });
+    return structuredClone(table) as TableIndex;
   } catch {
     return null;
   }

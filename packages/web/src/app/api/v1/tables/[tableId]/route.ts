@@ -24,14 +24,21 @@ export async function GET(
     return NextResponse.json({ ok: false, error: 'Table not found' }, { status: 404 });
   }
 
-  return NextResponse.json({
-    ok: true,
-    data: {
-      table,
-      relations: {
-        outbound: table.outboundRelations,
-        inbound: table.inboundRelations,
+  return NextResponse.json(
+    {
+      ok: true,
+      data: {
+        table,
+        relations: {
+          outbound: table.outboundRelations,
+          inbound: table.inboundRelations,
+        },
       },
     },
-  });
+    {
+      headers: {
+        'Cache-Control': 'private, max-age=10, stale-while-revalidate=60',
+      },
+    }
+  );
 }

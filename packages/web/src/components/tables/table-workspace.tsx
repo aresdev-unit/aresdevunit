@@ -68,12 +68,12 @@ type FetchState =
   | { status: 'loaded'; data: FullPageData }
   | { status: 'error'; message: string };
 
-async function fetchFullPageData(
+// Prefetch cache — shared across component instances, survives re-renders
+const prefetchCache = new Map<string, Promise<FullPageData>>();
+
+async function fetchFullPageDataRaw(
   page: LightweightCsvPage
 ): Promise<FullPageData> {
-  const tables: TableIndex[] = [];
-
-  // Fetch all tables for this page in parallel
   const results = await Promise.all(
     page.tables.map(async (entry) => {
       const res = await fetch(`/api/v1/tables/${entry.tableId}`, {
@@ -85,16 +85,24 @@ async function fetchFullPageData(
     })
   );
 
-  for (const table of results) {
-    if (table) tables.push(table);
-  }
-
+  const tables = results.filter((t): t is TableIndex => t !== null);
   const tableOptions = tables.map((table) => ({
     tableId: table.tableId,
     columns: table.columns.map((column) => column.name),
   }));
 
   return { tables, tableOptions };
+}
+
+function fetchFullPageData(page: LightweightCsvPage): Promise<FullPageData> {
+  const existing = prefetchCache.get(page.pageId);
+  if (existing) return existing;
+  const promise = fetchFullPageDataRaw(page).catch((err) => {
+    prefetchCache.delete(page.pageId);
+    throw err;
+  });
+  prefetchCache.set(page.pageId, promise);
+  return promise;
 }
 
 /* ------------------------------------------------------------------ */
@@ -610,12 +618,14 @@ function TablesHome({
   sidebarGroups,
   pageIdByTable,
   onPageSelect,
+  onPageHover,
 }: {
   csvPages: LightweightCsvPage[];
   recentLogs: TableEditLog[];
   sidebarGroups: SidebarGroup[];
   pageIdByTable: Record<string, string>;
   onPageSelect: (pageId: string) => void;
+  onPageHover?: (pageId: string) => void;
 }) {
   const tableCount = csvPages.reduce((sum, csvPage) => sum + csvPage.tables.length, 0);
 
@@ -630,7 +640,7 @@ function TablesHome({
 
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:flex-row lg:px-8">
         <aside className="w-full shrink-0 lg:w-72">
-          <CsvSidebar groups={sidebarGroups} onPageSelect={onPageSelect} />
+          <CsvSidebar groups={sidebarGroups} onPageSelect={onPageSelect} onPageHover={onPageHover} />
         </aside>
 
         <main className="min-w-0 flex-1">
@@ -698,6 +708,7 @@ function PageDetail({
   folderGroupByTable,
   initialLogs,
   onPageSelect,
+  onPageHover,
 }: {
   page: LightweightCsvPage;
   csvPages: LightweightCsvPage[];
@@ -706,6 +717,7 @@ function PageDetail({
   folderGroupByTable: Record<string, string>;
   initialLogs: TableEditLog[];
   onPageSelect: (pageId: string) => void;
+  onPageHover?: (pageId: string) => void;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -875,7 +887,7 @@ function PageDetail({
 
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:flex-row lg:px-8">
         <aside className="w-full shrink-0 lg:w-72">
-          <CsvSidebar currentPageId={page.pageId} groups={sidebarGroups} onPageSelect={onPageSelect} />
+          <CsvSidebar currentPageId={page.pageId} groups={sidebarGroups} onPageSelect={onPageSelect} onPageHover={onPageHover} />
         </aside>
 
         <main className="min-w-0 flex-1 space-y-6">
@@ -1100,10 +1112,23 @@ function TableWorkspaceInner({
     [router, searchParams]
   );
 
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const handlePageHover = useCallback(
+    (pageId: string) => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = setTimeout(() => {
+        const target = csvPages.find((p) => p.pageId === pageId);
+        if (target) fetchFullPageData(target); // fire-and-forget prefetch
+      }, 150);
+    },
+    [csvPages]
+  );
+
   if (!page) {
     return (
       <TablesHome
         csvPages={csvPages}
+        onPageHover={handlePageHover}
         onPageSelect={handlePageSelect}
         pageIdByTable={pageIdByTable}
         recentLogs={initialLogs}
@@ -1117,6 +1142,7 @@ function TableWorkspaceInner({
       csvPages={csvPages}
       folderGroupByTable={folderGroupByTable}
       initialLogs={initialLogs}
+      onPageHover={handlePageHover}
       onPageSelect={handlePageSelect}
       page={page}
       pageIdByTable={pageIdByTable}
