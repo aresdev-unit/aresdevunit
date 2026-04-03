@@ -2,14 +2,30 @@
 
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { LOCAL_DEV_AUTH_COOKIE } from '@/lib/local-dev-auth-shared';
 
 export function Nav() {
   const { data: session, status } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hasLocalDevAuth, setHasLocalDevAuth] = useState(false);
 
   const isAdmin = session?.user?.role === 'ADMIN';
-  const isApproved = session?.user?.status === 'APPROVED';
+  const canAccessTables = status === 'authenticated' || hasLocalDevAuth;
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      return;
+    }
+
+    const updateLocalDevAuth = () => {
+      setHasLocalDevAuth(document.cookie.includes(`${LOCAL_DEV_AUTH_COOKIE}=1`));
+    };
+
+    updateLocalDevAuth();
+    window.addEventListener('focus', updateLocalDevAuth);
+    return () => window.removeEventListener('focus', updateLocalDevAuth);
+  }, []);
 
   return (
     <nav className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
@@ -24,15 +40,16 @@ export function Nav() {
           </Link>
 
           <div className="hidden items-center gap-1 sm:flex">
-            {isApproved && <NavLink href="/skills">Skill</NavLink>}
+            <NavLink href="/skills">Skill</NavLink>
             <NavLink href="/docs">문서</NavLink>
-            {status === 'authenticated' && isApproved && (
+            {canAccessTables && <NavLink href="/tables">테이블</NavLink>}
+            {status === 'authenticated' && (
               <>
                 <NavLink href="/dashboard">대시보드</NavLink>
                 <NavLink href="/settings">설정</NavLink>
               </>
             )}
-            {isAdmin && isApproved && <NavLink href="/admin">관리자</NavLink>}
+            {isAdmin && <NavLink href="/admin">관리자</NavLink>}
           </div>
         </div>
 
@@ -42,12 +59,22 @@ export function Nav() {
             <div className="h-8 w-20 animate-pulse rounded-md bg-zinc-100 dark:bg-zinc-800" />
           )}
           {status === 'unauthenticated' && (
-            <Link
-              href="/login"
-              className="inline-flex h-8 items-center rounded-md bg-zinc-900 px-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-            >
-              로그인
-            </Link>
+            <>
+              {hasLocalDevAuth ? (
+                <a
+                  href="/api/dev/local-logout?callbackUrl=/"
+                  className="inline-flex h-8 items-center rounded-md border border-zinc-200 px-3 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                >
+                  로컬 테스트 종료
+                </a>
+              ) : null}
+              <Link
+                href="/login"
+                className="inline-flex h-8 items-center rounded-md bg-zinc-900 px-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+              >
+                로그인
+              </Link>
+            </>
           )}
           {status === 'authenticated' && session?.user && (
             <div className="flex items-center gap-3">
@@ -91,20 +118,28 @@ export function Nav() {
       {mobileOpen && (
         <div className="border-t border-zinc-200 px-4 py-3 sm:hidden dark:border-zinc-800">
           <div className="flex flex-col gap-1">
-            {isApproved && <MobileLink href="/skills" onClick={() => setMobileOpen(false)}>Skill</MobileLink>}
+            <MobileLink href="/skills" onClick={() => setMobileOpen(false)}>Skill</MobileLink>
             <MobileLink href="/docs" onClick={() => setMobileOpen(false)}>문서</MobileLink>
-            {status === 'authenticated' && isApproved && (
+            {canAccessTables && (
+              <MobileLink href="/tables" onClick={() => setMobileOpen(false)}>테이블</MobileLink>
+            )}
+            {status === 'authenticated' && (
               <>
                 <MobileLink href="/dashboard" onClick={() => setMobileOpen(false)}>대시보드</MobileLink>
                 <MobileLink href="/settings" onClick={() => setMobileOpen(false)}>설정</MobileLink>
               </>
             )}
-            {isAdmin && isApproved && (
+            {isAdmin && (
               <MobileLink href="/admin" onClick={() => setMobileOpen(false)}>관리자</MobileLink>
             )}
             <div className="my-2 border-t border-zinc-200 dark:border-zinc-800" />
             {status === 'unauthenticated' && (
-              <MobileLink href="/login" onClick={() => setMobileOpen(false)}>로그인</MobileLink>
+              <>
+                {hasLocalDevAuth ? (
+                  <MobileLink href="/api/dev/local-logout?callbackUrl=/" onClick={() => setMobileOpen(false)}>로컬 테스트 종료</MobileLink>
+                ) : null}
+                <MobileLink href="/login" onClick={() => setMobileOpen(false)}>로그인</MobileLink>
+              </>
             )}
             {status === 'authenticated' && (
               <button

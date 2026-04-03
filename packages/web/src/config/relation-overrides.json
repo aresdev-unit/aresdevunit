@@ -1,0 +1,770 @@
+[
+  {
+    "sourceTable": "skill_active",
+    "sourceColumn": "enchant_id",
+    "targetTable": "skill_enchant",
+    "targetColumn": "enchant_id",
+    "mode": "force",
+    "reason": "스킬 매뉴얼에 skill_enchant 참조가 명시됨"
+  },
+  {
+    "sourceTable": "skill_passive",
+    "sourceColumn": "enchant_id",
+    "targetTable": "skill_enchant",
+    "targetColumn": "enchant_id",
+    "mode": "force",
+    "reason": "패시브 스킬 강화는 skill_enchant를 사용"
+  },
+  {
+    "sourceTable": "skill_passive",
+    "sourceColumn": "rune_id",
+    "targetTable": "rune",
+    "targetColumn": "rune_id",
+    "mode": "force",
+    "reason": "패시브 rune_id는 rune 테이블을 참조"
+  },
+  {
+    "sourceTable": "dungeon",
+    "sourceColumn": "level_index",
+    "targetTable": "stage",
+    "targetColumn": "index",
+    "mode": "force",
+    "reason": "던전 매뉴얼에서 stage 테이블과 연결이 명시됨"
+  },
+  {
+    "sourceTable": "rune",
+    "sourceColumn": "condition_type",
+    "targetTable": "rune_condition",
+    "targetColumn": "condition_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "rune_condition",
+    "sourceColumn": "condition_type",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "dungeon",
+    "sourceColumn": "req_open_item_group",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "item",
+    "sourceColumn": "item_group",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "quest",
+    "sourceColumn": "imm_complete_item_type",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_task",
+    "sourceColumn": "task_id",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "item_default",
+    "sourceColumn": "item_type",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "npc_shop",
+    "sourceColumn": "price_item_group",
+    "targetTable": "item",
+    "targetColumn": "item_group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_rank",
+    "sourceColumn": "reward_drop_id",
+    "targetTable": "drop",
+    "targetColumn": "drop_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_reward",
+    "sourceColumn": "reward_item_type_2",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_reward",
+    "sourceColumn": "reward_item_type_3",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_reward",
+    "sourceColumn": "reward_item_type_4",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_season",
+    "sourceColumn": "royalpass_product_id",
+    "targetTable": "product",
+    "targetColumn": "product_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_season",
+    "sourceColumn": "royalpass_item_type",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_season_point",
+    "sourceColumn": "season_reward",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_season_point",
+    "sourceColumn": "upgrade_item_group",
+    "targetTable": "item",
+    "targetColumn": "item_group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "tag",
+    "sourceColumn": "tag_condition",
+    "targetTable": "tag_condition",
+    "targetColumn": "condition_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "tag_condition",
+    "sourceColumn": "condition_type",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "dungeon",
+    "sourceColumn": "enter_level_index",
+    "targetTable": "stage",
+    "targetColumn": "index",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_task",
+    "sourceColumn": "objective_field",
+    "targetTable": "stage",
+    "targetColumn": "index",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_task",
+    "sourceColumn": "switch_single_zone",
+    "targetTable": "stage",
+    "targetColumn": "index",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_rank_config",
+    "sourceColumn": "quest_rank",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "sub_quest_info",
+    "sourceColumn": "quest_sub_category",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "quest_season_point",
+    "sourceColumn": "free_reward",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest_rank",
+    "sourceColumn": "quest_rank_lv",
+    "targetTable": "quest_rank_config",
+    "targetColumn": "quest_rank",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "quest",
+    "sourceColumn": "request_type",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "quest",
+    "sourceColumn": "req_guardian_rank",
+    "targetTable": "pc_guardian_rank",
+    "targetColumn": "rank",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "pc_guardian_rank",
+    "sourceColumn": "req_quest_id",
+    "targetTable": "quest",
+    "targetColumn": "quest_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon",
+    "sourceColumn": "enter_zone_id",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "dungeon_task",
+    "sourceColumn": "task_type",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "dungeon_task",
+    "sourceColumn": "task_group_id",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "dungeon_reward",
+    "sourceColumn": "clear_reward",
+    "targetTable": "drop",
+    "targetColumn": "drop_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon_reward",
+    "sourceColumn": "contribution_reward",
+    "targetTable": "drop",
+    "targetColumn": "drop_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon_reward",
+    "sourceColumn": "hidden_reward",
+    "targetTable": "drop",
+    "targetColumn": "drop_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon_reward",
+    "sourceColumn": "dungeon_reward_id",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "dungeon_chronos_buff",
+    "sourceColumn": "buff_rank",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "dungeon_config",
+    "sourceColumn": "dungeonId",
+    "targetTable": "dungeon",
+    "targetColumn": "dungeon_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon_config",
+    "sourceColumn": "resurrectionItemGroup",
+    "targetTable": "item",
+    "targetColumn": "item_group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon_pair_group",
+    "sourceColumn": "pair_value",
+    "targetTable": "dungeon",
+    "targetColumn": "group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon_pair_id",
+    "sourceColumn": "pair_value",
+    "targetTable": "dungeon",
+    "targetColumn": "dungeon_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon",
+    "sourceColumn": "category",
+    "targetTable": "contents_settings",
+    "targetColumn": "contents_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon_config",
+    "sourceColumn": "category",
+    "targetTable": "contents_settings",
+    "targetColumn": "contents_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon_config",
+    "sourceColumn": "group",
+    "targetTable": "dungeon",
+    "targetColumn": "group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "skill_active",
+    "sourceColumn": "skillbook_group",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "skill_active",
+    "sourceColumn": "skill_tag",
+    "targetTable": "tag",
+    "targetColumn": "tag_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "item_gear",
+    "sourceColumn": "gear_group_id",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "item_gear",
+    "sourceColumn": "sp_type",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "item_gear",
+    "sourceColumn": "gear_tag",
+    "targetTable": "tag",
+    "targetColumn": "tag_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "item_gear",
+    "sourceColumn": "suit_weapon_sub",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "item_gear",
+    "sourceColumn": "suit_weapon_main",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "item_category_set",
+    "sourceColumn": "item_category",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "item_mob_summon",
+    "sourceColumn": "mob_id",
+    "targetTable": "MobTypeStat",
+    "targetColumn": "mob_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "item_sys_awaken",
+    "sourceColumn": "add_skill_id",
+    "targetTable": "skill_active",
+    "targetColumn": "skill_index",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "item_sys_awaken",
+    "sourceColumn": "remove_skill_id",
+    "targetTable": "skill_active",
+    "targetColumn": "skill_index",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dialog_talk",
+    "sourceColumn": "npc_name_key",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "item",
+    "sourceColumn": "piece_item_group",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "mob_trial",
+    "sourceColumn": "mob_id",
+    "targetTable": "MobTypeStat",
+    "targetColumn": "mob_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "MobTypeStat",
+    "sourceColumn": "mob_region",
+    "targetTable": "stage",
+    "targetColumn": "index",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "craft",
+    "sourceColumn": "display_gear_itemtype",
+    "targetTable": "item_gear",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "craft",
+    "sourceColumn": "filter_type",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "npc",
+    "sourceColumn": "req_qid_positive",
+    "targetTable": "quest",
+    "targetColumn": "quest_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "npc",
+    "sourceColumn": "req_qid_negative",
+    "targetTable": "quest",
+    "targetColumn": "quest_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "npc",
+    "sourceColumn": "req_taskid_positive",
+    "targetTable": "quest_task",
+    "targetColumn": "task_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "npc",
+    "sourceColumn": "req_taskid_negative",
+    "targetTable": "quest_task",
+    "targetColumn": "task_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "customizing_dress",
+    "sourceColumn": "item_type",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "OptionCrowdControl",
+    "sourceColumn": "cast_type",
+    "targetTable": "OptionType",
+    "targetColumn": "optionType",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "PointCrowdControl",
+    "sourceColumn": "cc_point_type",
+    "targetTable": "OptionType",
+    "targetColumn": "optionType",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "mobcollection_core_step",
+    "sourceColumn": "core_complete_reward_itemtype",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "mobcollection_corestone_upgrade",
+    "sourceColumn": "req_upgrade_itemgroup",
+    "targetTable": "item",
+    "targetColumn": "item_group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "mobcollection_drop_override",
+    "sourceColumn": "drop_mob_id",
+    "targetTable": "MobTypeStat",
+    "targetColumn": "mob_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "mobcollection_region",
+    "sourceColumn": "level_index",
+    "targetTable": "stage",
+    "targetColumn": "index",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "product",
+    "sourceColumn": "product_reward_group_id",
+    "targetTable": "product_reward",
+    "targetColumn": "product_reward_group_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "product",
+    "sourceColumn": "product_special_reward_group_id",
+    "targetTable": "product_special_reward",
+    "targetColumn": "product_special_reward_group_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "product",
+    "sourceColumn": "reward_normal_buff_id",
+    "targetTable": "normal_buff",
+    "targetColumn": "normal_buff_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "product_category",
+    "sourceColumn": "step_group_id",
+    "targetTable": "product_step_group",
+    "targetColumn": "product_step_group_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "archive_collection",
+    "sourceColumn": "collection_option_1",
+    "targetTable": "OptionType",
+    "targetColumn": "optionType",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "archive_suit_collection",
+    "sourceColumn": "collection_option_1",
+    "targetTable": "OptionType",
+    "targetColumn": "optionType",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "pvp_guild_conquest_reward",
+    "sourceColumn": "guild_gift_item_type",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "pvp_guild_conquest_reward",
+    "sourceColumn": "reward_buff",
+    "targetTable": "pvp_guild_conquest_buff",
+    "targetColumn": "buff_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "event",
+    "sourceColumn": "craft_event_group",
+    "targetTable": "craft",
+    "targetColumn": "event_group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "event_drop",
+    "sourceColumn": "global_drop_type",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "char_clone",
+    "sourceColumn": "content_id",
+    "targetTable": "contents_settings",
+    "targetColumn": "contents_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "season_dungeon",
+    "sourceColumn": "dungeon_category",
+    "targetTable": "dungeon",
+    "targetColumn": "category",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "season_dungeon",
+    "sourceColumn": "split_2_dungeon_group",
+    "targetTable": "dungeon",
+    "targetColumn": "cycle_group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "season_dungeon",
+    "sourceColumn": "split_2_dungeon_buff_group",
+    "targetTable": "dungeon_buff",
+    "targetColumn": "group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon",
+    "sourceColumn": "buff_group",
+    "targetTable": "dungeon_buff",
+    "targetColumn": "group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "item_stackable_use_override",
+    "sourceColumn": "item_type",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "item_stackable_use_override",
+    "sourceColumn": "item_group",
+    "targetTable": "item",
+    "targetColumn": "item_group",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "item_limit_drop",
+    "sourceColumn": "item_type",
+    "targetTable": "item",
+    "targetColumn": "item_type",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "dungeon",
+    "sourceColumn": "dungeon_bg_type",
+    "targetTable": null,
+    "targetColumn": null,
+    "mode": "ignore",
+    "reason": "manual ignore"
+  },
+  {
+    "sourceTable": "dungeon_buff",
+    "sourceColumn": "rune_id_1",
+    "targetTable": "rune",
+    "targetColumn": "rune_id",
+    "mode": "force",
+    "reason": "manual override"
+  },
+  {
+    "sourceTable": "mobcollection_corestone_upgrade",
+    "sourceColumn": "option_value",
+    "targetTable": "OptionType",
+    "targetColumn": "optionType",
+    "mode": "force",
+    "reason": "manual override"
+  }
+]

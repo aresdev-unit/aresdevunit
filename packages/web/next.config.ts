@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDevelopment = process.env.NODE_ENV !== "production";
+
 const nextConfig: NextConfig = {
   transpilePackages: ["@aresdevunit/shared"],
   async headers() {
@@ -28,7 +30,7 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'", // Next.js requires unsafe-inline for hydration; nonce-based CSP can be added with middleware in v1.1
+              `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ""}`, // Next.js dev mode requires unsafe-eval for React/Turbopack debugging
               "style-src 'self' 'unsafe-inline'", // Tailwind CSS requires unsafe-inline
               "img-src 'self' data: https://avatars.githubusercontent.com",
               "font-src 'self'",

@@ -12,11 +12,15 @@
     "packages/cli"
   ],
   "scripts": {
+    "build:data": "node ./scripts/build-data.mjs",
     "build": "npm run build --workspaces",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --build",
     "test": "npm run test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "xlsx": "^0.18.5"
   }
 }
