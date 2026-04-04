@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hub Image - Promo Icon Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-app: #0c0c0e;
+    --bg-surface: #141416;
+    --bg-elevated: #1a1a1e;
+    --bg-hover: #222228;
+    --border: #2a2a30;
+    --border-focus: #4f6ef7;
+    --text-primary: #e8e8ec;
+    --text-secondary: #8a8a96;
+    --text-muted: #5a5a66;
+    --accent: #4f6ef7;
+    --accent-hover: #6380ff;
+    --accent-subtle: rgba(79, 110, 247, 0.12);
+    --success: #34d399;
+    --warning: #fbbf24;
+    --canvas-bg: #18181c;
+    --canvas-grid: #222228;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --font-display: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-display);
+    background: var(--bg-app);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-surface);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .nav-logo {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2px; }
+  .nav-link {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .nav-link:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .nav-link.active { background: var(--accent-subtle); color: var(--accent); }
+
+  /* ── LAYOUT ── */
+  .layout {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    display: flex;
+    gap: 32px;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+  }
+  .sidebar-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    padding: 0 12px;
+    margin-bottom: 8px;
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .sidebar-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .sidebar-item.active {
+    background: var(--accent-subtle);
+    color: var(--accent);
+  }
+  .sidebar-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+  }
+
+  /* ── MAIN ── */
+  .main { flex: 1; min-width: 0; }
+
+  .page-header {
+    margin-bottom: 28px;
+  }
+  .page-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .page-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  /* ── WORKFLOW STEPS ── */
+  .workflow {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .step {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-number {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-title {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .step-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: auto;
+    font-family: var(--font-mono);
+  }
+  .step-body {
+    padding: 20px;
+  }
+
+  /* ── CONTROLS ROW ── */
+  .controls-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .control-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .select-mock {
+    height: 38px;
+    padding: 0 36px 0 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: var(--font-display);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238a8a96' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+    min-width: 160px;
+  }
+  .select-mock:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+
+  /* ── UPLOAD ZONE ── */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .upload-zone:hover {
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+  }
+  .upload-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 12px;
+    color: var(--text-muted);
+  }
+  .upload-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .upload-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ── ICON LIST ── */
+  .icon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .icon-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .icon-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    background: var(--canvas-bg);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .icon-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .icon-info { flex: 1; min-width: 0; }
+  .icon-name {
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .icon-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+  .icon-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .mini-select {
+    height: 32px;
+    padding: 0 28px 0 10px;
+    background: var(--bg-app);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 12px;
+    font-family: var(--font-display);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%238a8a96' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    cursor: pointer;
+  }
+  .priority-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .priority-1 { background: var(--accent); color: #fff; }
+  .priority-2 { background: var(--bg-hover); color: var(--text-secondary); border: 1px solid var(--border); }
+  .priority-3 { background: var(--bg-hover); color: var(--text-muted); border: 1px solid var(--border); }
+  .icon-remove {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.15s;
+  }
+  .icon-remove:hover { background: #3a1618; color: #f87171; }
+
+  /* ── PROMPT INPUT ── */
+  .prompt-input {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: var(--font-display);
+    resize: vertical;
+    min-height: 60px;
+    margin-top: 14px;
+  }
+  .prompt-input::placeholder { color: var(--text-muted); }
+  .prompt-input:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+  .prompt-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    margin-bottom: 6px;
+  }
+
+  /* ── CANVAS PREVIEW ── */
+  .canvas-container {
+    background: var(--canvas-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 480px;
+    overflow: hidden;
+  }
+  .canvas-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--canvas-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--canvas-grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.5;
+  }
+  .canvas-center-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--accent);
+    opacity: 0.15;
+  }
+  .canvas-item {
+    position: absolute;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: grab;
+    transition: border-color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .canvas-item:hover { border-color: var(--accent); }
+  .canvas-item.main {
+    width: 180px;
+    height: 180px;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .canvas-item.sub1 {
+    width: 100px;
+    height: 100px;
+    bottom: 60px;
+    left: 60px;
+  }
+  .canvas-item.sub2 {
+    width: 100px;
+    height: 100px;
+    bottom: 40px;
+    right: 60px;
+  }
+  .canvas-item-inner {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-elevated);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .canvas-item-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+  .canvas-item-priority {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .canvas-hint {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg-surface);
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* ── GENERATE BAR ── */
+  .generate-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+  }
+  .btn-generate {
+    height: 42px;
+    padding: 0 28px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--font-display);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-generate:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn-regenerate {
+    height: 42px;
+    padding: 0 20px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-display);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-regenerate:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .generate-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: auto;
+    font-family: var(--font-mono);
+  }
+
+  /* ── GALLERY ── */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .gallery-item {
+    aspect-ratio: 1;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .gallery-item:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 12px;
+  }
+  .gallery-item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 10px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+  .gallery-badge {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+  }
+  .btn-download {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  /* ── STATUS INDICATOR ── */
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── TEMPLATE PREVIEW ── */
+  .template-preview {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-top: 12px;
+  }
+  .template-thumb {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .template-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .template-info {
+    flex: 1;
+  }
+  .template-name {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .template-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">Hub</a>
+  <div class="nav-links">
+    <a class="nav-link" href="#">Skill</a>
+    <a class="nav-link active" href="#">이미지</a>
+    <a class="nav-link" href="#">문서</a>
+    <a class="nav-link" href="#">대시보드</a>
+    <a class="nav-link" href="#">설정</a>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Image</div>
+    <a class="sidebar-item active">
+      <svg class="sidebar-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 16l5-5 4 4 4-6 5 7"/></svg>
+      상품 아이콘
+    </a>
+    <a class="sidebar-item">
+      <svg class="sidebar-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/></svg>
+      앱 아이콘
+    </a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="page-header">
+      <h1 class="page-title">상품 아이콘 생성</h1>
+      <p class="page-desc">아이템 아이콘을 조합하여 패키지 상품 이미지를 생성합니다.</p>
+    </div>
+
+    <div class="workflow">
+
+      <!-- STEP 1: Size + Model -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-number">1</span>
+          <span class="step-title">출력 설정</span>
+          <span class="step-subtitle">size &amp; model</span>
+        </div>
+        <div class="step-body">
+          <div class="controls-row">
+            <div class="control-group">
+              <label class="control-label">사이즈 프리셋</label>
+              <select class="select-mock">
+                <option>256 x 256 — 상품 Product (대)</option>
+                <option>180 x 180 — 상품 Product (소)</option>
+                <option>112 x 112 — 무기/아머/코스튬</option>
+                <option>106 x 106 — 기본 아이콘</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label class="control-label">모델</label>
+              <select class="select-mock">
+                <option>Flash (빠름)</option>
+                <option>Pro (품질)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Icon Upload -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-number">2</span>
+          <span class="step-title">아이콘 업로드</span>
+          <span class="step-subtitle">priority &amp; position</span>
+        </div>
+        <div class="step-body">
+          <div class="upload-zone">
+            <svg class="upload-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0L8 8m4-4l4 4M4 20h16"/></svg>
+            <div class="upload-text">아이콘 파일을 드래그하거나 클릭하여 업로드</div>
+            <div class="upload-hint">PNG, JPG — 최대 14개</div>
+          </div>
+
+          <div class="icon-list">
+            <div class="icon-item">
+              <div class="priority-badge priority-1">1</div>
+              <div class="icon-thumb"><div style="width:36px;height:36px;background:linear-gradient(135deg,#4a5568,#2d3748);border-radius:4px"></div></div>
+              <div class="icon-info">
+                <div class="icon-name">Icon_Wmain_DB_Agent_Col0.png</div>
+                <div class="icon-meta">112x112 &middot; 30KB</div>
+              </div>
+              <div class="icon-controls">
+                <select class="mini-select">
+                  <option>우선순위 1</option>
+                  <option>우선순위 2</option>
+                  <option>우선순위 3</option>
+                </select>
+                <select class="mini-select">
+                  <option>중간상단</option>
+                  <option>좌하단</option>
+                  <option>중간하단</option>
+                  <option>우측하단</option>
+                </select>
+              </div>
+              <button class="icon-remove">&times;</button>
+            </div>
+
+            <div class="icon-item">
+              <div class="priority-badge priority-2">2</div>
+              <div class="icon-thumb"><div style="width:36px;height:36px;background:linear-gradient(135deg,#553c9a,#6b46c1);border-radius:4px"></div></div>
+              <div class="icon-info">
+                <div class="icon-name">Icon_Armor_A_T1.png</div>
+                <div class="icon-meta">112x112 &middot; 19KB</div>
+              </div>
+              <div class="icon-controls">
+                <select class="mini-select">
+                  <option>우선순위 2</option>
+                </select>
+                <select class="mini-select">
+                  <option>좌하단</option>
+                </select>
+              </div>
+              <button class="icon-remove">&times;</button>
+            </div>
+
+            <div class="icon-item">
+              <div class="priority-badge priority-3">3</div>
+              <div class="icon-thumb"><div style="width:36px;height:36px;background:linear-gradient(135deg,#2f855a,#38a169);border-radius:4px"></div></div>
+              <div class="icon-info">
+                <div class="icon-name">Icon_Artifact_Group10_A.png</div>
+                <div class="icon-meta">150x150 &middot; 23KB</div>
+              </div>
+              <div class="icon-controls">
+                <select class="mini-select">
+                  <option>우선순위 3</option>
+                </select>
+                <select class="mini-select">
+                  <option>우측하단</option>
+                </select>
+              </div>
+              <button class="icon-remove">&times;</button>
+            </div>
+          </div>
+
+          <div class="prompt-label">추가 프롬프트 (선택)</div>
+          <textarea class="prompt-input" placeholder="예: 아이템들을 다이아몬드 위에 배치하고 고급스러운 느낌으로 만들어주세요"></textarea>
+        </div>
+      </div>
+
+      <!-- STEP 3: Layout Template -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-number">3</span>
+          <span class="step-title">레이아웃 템플릿</span>
+          <span class="step-subtitle">style reference</span>
+        </div>
+        <div class="step-body">
+          <div class="upload-zone" style="padding:20px">
+            <div class="upload-text" style="font-size:13px">스타일 레퍼런스 이미지 업로드</div>
+            <div class="upload-hint">기존 패키지 아이콘을 레이아웃 참고용으로 사용</div>
+          </div>
+          <div class="template-preview">
+            <div class="template-thumb">
+              <div style="width:60px;height:60px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:4px;display:flex;align-items:center;justify-content:center">
+                <div style="font-size:8px;color:#8a8a96;text-align:center;line-height:1.2">Style<br>Ref</div>
+              </div>
+            </div>
+            <div class="template-info">
+              <div class="template-name">Icon_Product_ShopPackage_1320001_Male.png</div>
+              <div class="template-meta">256x256 &middot; 95KB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: Canvas Preview -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-number">4</span>
+          <span class="step-title">Canvas 프리뷰</span>
+          <span class="step-subtitle">drag to adjust</span>
+        </div>
+        <div class="step-body">
+          <div class="canvas-container">
+            <div class="canvas-grid"></div>
+            <div class="canvas-center-line"></div>
+
+            <!-- Main item (Priority 1) -->
+            <div class="canvas-item main">
+              <div class="canvas-item-inner" style="background:linear-gradient(135deg,#1a1a2e,#2d3748);border:1px solid var(--border)">
+                <div class="canvas-item-priority">1</div>
+                <div class="canvas-item-label">Weapon</div>
+              </div>
+            </div>
+
+            <!-- Sub item 1 (Priority 2) -->
+            <div class="canvas-item sub1">
+              <div class="canvas-item-inner" style="background:linear-gradient(135deg,#1a1a2e,#553c9a);border:1px solid var(--border)">
+                <div class="canvas-item-priority" style="font-size:14px">2</div>
+                <div class="canvas-item-label">Armor</div>
+              </div>
+            </div>
+
+            <!-- Sub item 2 (Priority 3) -->
+            <div class="canvas-item sub2">
+              <div class="canvas-item-inner" style="background:linear-gradient(135deg,#1a1a2e,#2f855a);border:1px solid var(--border)">
+                <div class="canvas-item-priority" style="font-size:14px">3</div>
+                <div class="canvas-item-label">Relic</div>
+              </div>
+            </div>
+
+            <div class="canvas-hint">드래그하여 위치를 조정하세요</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5: Generate -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-number">5</span>
+          <span class="step-title">생성</span>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
+            <div class="status-dot"></div>
+            <span class="step-subtitle">ready</span>
+          </div>
+        </div>
+        <div class="generate-bar">
+          <button class="btn-generate">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Generate
+          </button>
+          <button class="btn-regenerate">Re-generate</button>
+          <span class="generate-hint">3 / 14 images used</span>
+        </div>
+
+        <!-- Results Gallery -->
+        <div style="padding:0 20px 20px">
+          <div class="gallery">
+            <div class="gallery-item">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#0f0f1a,#1a1a2e);display:flex;align-items:center;justify-content:center">
+                <div style="width:140px;height:140px;background:linear-gradient(135deg,#2d3748,#4a5568);border-radius:8px;opacity:0.6"></div>
+              </div>
+              <div class="gallery-item-overlay">
+                <span class="gallery-badge">#1 &middot; Flash</span>
+                <button class="btn-download">&darr;</button>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a0f1a,#2e1a2e);display:flex;align-items:center;justify-content:center">
+                <div style="width:140px;height:140px;background:linear-gradient(135deg,#553c9a,#6b46c1);border-radius:8px;opacity:0.6"></div>
+              </div>
+              <div class="gallery-item-overlay">
+                <span class="gallery-badge">#2 &middot; Flash</span>
+                <button class="btn-download">&darr;</button>
+              </div>
+            </div>
+            <div class="gallery-item" style="border-style:dashed;display:flex;align-items:center;justify-content:center">
+              <div style="text-align:center;color:var(--text-muted)">
+                <div style="font-size:24px;margin-bottom:4px">+</div>
+                <div style="font-size:11px">Re-generate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

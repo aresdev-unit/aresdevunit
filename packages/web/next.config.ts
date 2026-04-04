@@ -32,7 +32,7 @@ const nextConfig: NextConfig = {
               "default-src 'self'",
               `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ""}`, // Next.js dev mode requires unsafe-eval for React/Turbopack debugging
               "style-src 'self' 'unsafe-inline'", // Tailwind CSS requires unsafe-inline
-              "img-src 'self' data: https://avatars.githubusercontent.com",
+              "img-src 'self' data: blob: https://avatars.githubusercontent.com",
               "font-src 'self'",
               "connect-src 'self'",
               "frame-ancestors 'none'",

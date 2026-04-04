@@ -42,6 +42,7 @@ export function Nav() {
 
           <div className="hidden items-center gap-1 sm:flex">
             {isApproved && <NavLink href="/skills">Skill</NavLink>}
+            <NavLink href="/image">이미지</NavLink>
             <NavLink href="/docs">문서</NavLink>
             {canAccessTables && <NavLink href="/tables">테이블</NavLink>}
             {status === 'authenticated' && isApproved && (
@@ -120,6 +121,7 @@ export function Nav() {
         <div className="border-t border-zinc-200 px-4 py-3 sm:hidden dark:border-zinc-800">
           <div className="flex flex-col gap-1">
             {isApproved && <MobileLink href="/skills" onClick={() => setMobileOpen(false)}>Skill</MobileLink>}
+            <MobileLink href="/image" onClick={() => setMobileOpen(false)}>이미지</MobileLink>
             <MobileLink href="/docs" onClick={() => setMobileOpen(false)}>문서</MobileLink>
             {canAccessTables && (
               <MobileLink href="/tables" onClick={() => setMobileOpen(false)}>테이블</MobileLink>
