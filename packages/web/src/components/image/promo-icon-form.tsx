@@ -275,16 +275,6 @@ export function PromoIconForm() {
             onChange={handleIconsChange}
             onRemove={handleIconRemove}
           />
-
-          {/* Optional prompt */}
-          <p className="mt-3.5 text-xs text-zinc-400 dark:text-zinc-500">추가 프롬프트 (선택)</p>
-          <textarea
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="예: 아이템들을 다이아몬드 위에 배치하고 고급스러운 느낌으로 만들어주세요"
-            className="mt-1.5 w-full resize-y rounded-md border border-zinc-200 bg-zinc-50 px-3.5 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-blue-500"
-            rows={2}
-          />
         </StepCard>
 
         {/* Step 3: Layout Template */}
@@ -352,6 +342,16 @@ export function PromoIconForm() {
 
         {/* Step 5: Generate */}
         <StepCard number={5} title="생성" subtitle="ready" statusDot>
+          {/* Optional prompt */}
+          <p className="text-xs text-zinc-400 dark:text-zinc-500">추가 프롬프트 (선택)</p>
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="예: 아이템들을 다이아몬드 위에 배치하고 고급스러운 느낌으로 만들어주세요"
+            className="mt-1.5 mb-4 w-full resize-y rounded-md border border-zinc-200 bg-zinc-50 px-3.5 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-blue-500"
+            rows={2}
+          />
+
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -371,17 +371,6 @@ export function PromoIconForm() {
               )}
               {generating ? 'Generating...' : 'Generate'}
             </button>
-
-            {results.length > 0 && (
-              <button
-                type="button"
-                onClick={handleGenerate}
-                disabled={!canGenerate}
-                className="inline-flex h-[42px] items-center rounded-lg border border-zinc-200 px-5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 disabled:pointer-events-none disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
-              >
-                Re-generate
-              </button>
-            )}
 
             <span className="ml-auto font-mono text-xs text-zinc-400 dark:text-zinc-500">
               {icons.length} / {MAX_ICONS} icons
@@ -404,7 +393,7 @@ export function PromoIconForm() {
 
           {results.length > 0 && (
             <div className="mt-4">
-              <ImageGallery items={results} generating={generating} onRegenerate={handleGenerate} />
+              <ImageGallery items={results} generating={generating} />
             </div>
           )}
         </StepCard>

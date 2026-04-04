@@ -239,17 +239,6 @@ export function ItemIconForm() {
               {generating ? 'Generating...' : 'Generate'}
             </button>
 
-            {results.length > 0 && (
-              <button
-                type="button"
-                onClick={handleGenerate}
-                disabled={!canGenerate}
-                className="inline-flex h-[42px] items-center rounded-lg border border-zinc-200 px-5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 disabled:pointer-events-none disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
-              >
-                Re-generate
-              </button>
-            )}
-
             <span className="ml-auto font-mono text-xs text-zinc-400 dark:text-zinc-500">
               {results.length} generated
             </span>
@@ -271,7 +260,7 @@ export function ItemIconForm() {
 
           {results.length > 0 && (
             <div className="mt-4">
-              <ImageGallery items={results} generating={generating} onRegenerate={handleGenerate} />
+              <ImageGallery items={results} generating={generating} />
             </div>
           )}
         </StepCard>
