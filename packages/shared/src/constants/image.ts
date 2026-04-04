@@ -18,13 +18,13 @@ export const SIZE_PRESETS = {
 } as const;
 export type SizePreset = keyof typeof SIZE_PRESETS;
 
-export const POSITION_PRESETS = {
-  'top-center': '중간상단',
-  'bottom-left': '좌하단',
-  'bottom-center': '중간하단',
-  'bottom-right': '우측하단',
+export const IMPORTANCE_LEVELS = {
+  'highest': '최상',
+  'high': '상',
+  'medium': '중',
+  'low': '하',
 } as const;
-export type PositionPreset = keyof typeof POSITION_PRESETS;
+export type ImportanceLevel = keyof typeof IMPORTANCE_LEVELS;
 
 export const MODEL_OPTIONS = {
   'gemini-3.1-flash-image-preview': 'Flash (빠름)',

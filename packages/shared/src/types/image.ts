@@ -4,7 +4,7 @@ export interface IconItem {
   base64: string;
   mimeType: string;
   priority: number;
-  position: string; // PositionPreset key
+  importance: string; // ImportanceLevel key
   width?: number;
   height?: number;
 }
@@ -12,11 +12,12 @@ export interface IconItem {
 export interface PromoIconRequest {
   model: string;
   sizePreset: string;
-  icons: { base64: string; mimeType: string; priority: number; position: string }[];
+  icons: { base64: string; mimeType: string; priority: number; importance: string }[];
   templateBase64?: string;
   templateMimeType?: string;
   prompt?: string;
-  canvasLayout?: { priority: number; x: number; y: number; size: number }[];
+  canvasImageBase64?: string;
+  canvasImageMimeType?: string;
 }
 
 export interface ItemIconRequest {

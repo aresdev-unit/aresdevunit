@@ -26,14 +26,7 @@ const iconSchema = z.object({
   base64: z.string().min(1),
   mimeType: z.string().regex(/^image\/(png|jpeg|webp|gif)$/),
   priority: z.number().int().min(1).max(10),
-  position: z.string().min(1),
-});
-
-const canvasLayoutItemSchema = z.object({
-  priority: z.number().int().min(1),
-  x: z.number().min(0).max(1),
-  y: z.number().min(0).max(1),
-  size: z.number().min(0).max(1),
+  importance: z.string().min(1),
 });
 
 const promoPayloadSchema = z.object({
@@ -43,7 +36,8 @@ const promoPayloadSchema = z.object({
   templateBase64: z.string().optional(),
   templateMimeType: z.string().regex(/^image\/(png|jpeg|webp|gif)$/).optional(),
   prompt: z.string().max(2000).optional(),
-  canvasLayout: z.array(canvasLayoutItemSchema).optional(),
+  canvasImageBase64: z.string().optional(),
+  canvasImageMimeType: z.string().regex(/^image\/(png|jpeg|webp|gif)$/).optional(),
 });
 
 const referenceIconSchema = z.object({
@@ -148,14 +142,43 @@ async function handlePromoIcon(
   // Sort icons by priority (main first)
   const sortedIcons = [...payload.icons].sort((a, b) => a.priority - b.priority);
 
-  // Add icon images
+  // 1. TEXT PROMPT FIRST
+  const sizeEntry = SIZE_PRESETS[payload.sizePreset as SizePreset];
+  const promptW = sizeEntry?.w ?? 256;
+  const promptH = sizeEntry?.h ?? 256;
+  const iconInfos = sortedIcons.map((icon, idx) => ({
+    index: idx + 1,
+    importance: icon.importance,
+    priority: icon.priority,
+  }));
+  const prompt = buildPromoPrompt(
+    iconInfos,
+    promptW,
+    promptH,
+    !!payload.canvasImageBase64,
+    !!(payload.templateBase64 && payload.templateMimeType),
+    payload.prompt,
+  );
+  parts.push({ text: prompt });
+
+  // 2. CANVAS CAPTURE (layout reference)
+  if (payload.canvasImageBase64 && payload.canvasImageMimeType) {
+    parts.push({
+      inlineData: {
+        mimeType: payload.canvasImageMimeType,
+        data: payload.canvasImageBase64,
+      },
+    });
+  }
+
+  // 3. ICON IMAGES (sorted by priority for z-order)
   for (const icon of sortedIcons) {
     parts.push({
       inlineData: { mimeType: icon.mimeType, data: icon.base64 },
     });
   }
 
-  // Add template/style reference if provided
+  // 4. TEMPLATE (style reference, last)
   if (payload.templateBase64 && payload.templateMimeType) {
     parts.push({
       inlineData: {
@@ -164,19 +187,6 @@ async function handlePromoIcon(
       },
     });
   }
-
-  // Build text prompt
-  const sizeEntry = SIZE_PRESETS[payload.sizePreset as SizePreset];
-  const promptW = sizeEntry?.w ?? 256;
-  const promptH = sizeEntry?.h ?? 256;
-  const prompt = buildPromoPrompt(
-    payload.icons.length,
-    promptW,
-    promptH,
-    payload.canvasLayout,
-    payload.prompt,
-  );
-  parts.push({ text: prompt });
 
   const aspectRatio = computeAspectRatio(payload.sizePreset);
   const result = await generateImage(payload.model, parts, aspectRatio);

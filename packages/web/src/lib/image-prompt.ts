@@ -1,46 +1,74 @@
-interface CanvasItem {
-  priority: number;
-  x: number; // 0~1 normalized
-  y: number; // 0~1 normalized
-  size: number; // 0~1 relative size
+import { IMPORTANCE_LEVELS, type ImportanceLevel } from '@aresdevunit/shared';
+
+export interface PromoIconInfo {
+  index: number;        // 1-based, matches image order sent to Gemini
+  importance: string;   // ImportanceLevel key
+  priority: number;     // z-order (lower = front when overlapping)
 }
 
-function positionDescription(x: number, y: number): string {
-  const vPos = y < 0.33 ? 'top' : y < 0.66 ? 'center' : 'bottom';
-  const hPos = x < 0.33 ? 'left' : x < 0.66 ? 'center' : 'right';
-  return `${vPos}-${hPos}`;
-}
+const IMPORTANCE_SIZE_DESC: Record<string, string> = {
+  highest: '~40% of canvas area, hero/focal item',
+  high: '~25% of canvas area, prominent',
+  medium: '~15% of canvas area, supporting element',
+  low: '~10% of canvas area, small accent',
+};
 
 export function buildPromoPrompt(
-  iconCount: number,
+  icons: PromoIconInfo[],
   width: number,
   height: number,
-  canvasLayout?: CanvasItem[],
+  hasCanvasCapture: boolean,
+  hasTemplate: boolean,
   userPrompt?: string,
 ): string {
-  let layoutDesc = '';
+  const lines: string[] = [];
 
-  if (canvasLayout && canvasLayout.length > 0) {
-    const sorted = [...canvasLayout].sort((a, b) => a.priority - b.priority);
-    const items = sorted.map((item) => {
-      const pos = positionDescription(item.x, item.y);
-      const sizeLabel = item.priority === 1 ? 'large (main/hero)' : 'small (secondary)';
-      return `item${item.priority} at ${pos}, ${sizeLabel}`;
-    });
-    layoutDesc = `\nLAYOUT: ${items.join('. ')}.`;
-  } else {
-    layoutDesc =
-      '\nLAYOUT: First item (priority 1) is the MAIN item — place it large at top-center as the hero. Remaining items are secondary — place them smaller at the bottom.';
+  // 1. Task description
+  lines.push(`Create a game shop package product icon (${width}x${height}).`);
+  lines.push('');
+
+  // 2. Per-icon role mapping
+  lines.push('ITEM ROLES:');
+  for (const icon of icons) {
+    const impKey = icon.importance as ImportanceLevel;
+    const impLabel = IMPORTANCE_LEVELS[impKey] ?? icon.importance;
+    const sizeDesc = IMPORTANCE_SIZE_DESC[icon.importance] ?? 'supporting element';
+    lines.push(
+      `- Image ${icon.index}: importance=${impLabel} (render as ${sizeDesc}). z-order=${icon.priority} (${icon.priority === 1 ? 'appears in front when overlapping with other items' : `appears behind lower-numbered items when overlapping`}).`,
+    );
+  }
+  lines.push('');
+
+  // 3. Canvas capture reference
+  if (hasCanvasCapture) {
+    lines.push(
+      'LAYOUT REFERENCE: The image immediately following this text (before the item images) shows the exact spatial arrangement on a canvas. Place each item at the same relative position and size shown in this reference.',
+    );
+    lines.push('');
   }
 
-  const base = `Create a game shop package product icon (${width}x${height}).${layoutDesc}
-Items should have layered depth structure: back(big/main) → front(small/sub).
-Items overlap slightly with natural perspective.
-Add subtle shadows and glow effects for depth.
-White/clean background, items form the composition.
-The last image provided is a STYLE REFERENCE for layout/composition.`;
+  // 4. Template / style reference
+  if (hasTemplate) {
+    lines.push(
+      'STYLE REFERENCE: The last image is an existing product icon — match its visual style, depth effects, and composition quality.',
+    );
+    lines.push('');
+  }
 
-  return userPrompt ? `${base}\n\nAdditional instructions: ${userPrompt}` : base;
+  // 5. Composition rules
+  lines.push('COMPOSITION RULES:');
+  lines.push('- Items should have layered depth: larger items behind, smaller items in front');
+  lines.push('- When items overlap, the one with lower z-order number appears in FRONT');
+  lines.push('- Add subtle shadows and glow effects for depth');
+  lines.push('- White/clean background — items themselves form the composition');
+
+  // 6. Optional user prompt
+  if (userPrompt) {
+    lines.push('');
+    lines.push(`Additional instructions: ${userPrompt}`);
+  }
+
+  return lines.join('\n');
 }
 
 export function buildItemIconPrompt(userPrompt: string): string {

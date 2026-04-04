@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { MODEL_OPTIONS, MAX_ICONS } from '@aresdevunit/shared';
 import dynamic from 'next/dynamic';
 import { ImageUploadZone } from '@/components/image/image-upload-zone';
 import { ModelSelector } from '@/components/image/model-selector';
 import { SizePresetSelector } from '@/components/image/size-preset-selector';
 import { ImageGallery, type GalleryItem } from '@/components/image/image-gallery';
-import type { CanvasIcon } from '@/components/image/canvas-preview';
+import type { CanvasIcon, CanvasPreviewRef } from '@/components/image/canvas-preview';
 import { IconConfigPanel, type IconConfigItem } from '@/components/image/icon-config-panel';
 import { StepCard, stripDataUrlPrefix, formatBytes } from './shared';
 
@@ -35,35 +35,35 @@ interface TemplateFile {
 
 const MODEL_KEYS = Object.keys(MODEL_OPTIONS) as (keyof typeof MODEL_OPTIONS)[];
 
-const POSITION_COORDS: Record<string, { x: number; y: number }> = {
-  'top-center': { x: 0.5, y: 0.2 },
-  'bottom-left': { x: 0.25, y: 0.75 },
-  'bottom-center': { x: 0.5, y: 0.75 },
-  'bottom-right': { x: 0.75, y: 0.75 },
-};
-
-function priorityToSize(priority: number): number {
-  if (priority === 1) return 0.4;
-  if (priority <= 3) return 0.25;
-  return 0.2;
+function importanceToSize(importance: string): number {
+  switch (importance) {
+    case 'highest': return 0.4;
+    case 'high': return 0.25;
+    case 'medium': return 0.15;
+    case 'low': return 0.1;
+    default: return 0.15;
+  }
 }
 
-function defaultPositionForPriority(priority: number): string {
+function defaultImportanceForPriority(priority: number): string {
+  if (priority === 1) return 'highest';
+  if (priority === 2) return 'high';
+  if (priority <= 4) return 'medium';
+  return 'low';
+}
+
+function defaultCoordsForPriority(priority: number): { x: number; y: number } {
   switch (priority) {
-    case 1:
-      return 'top-center';
-    case 2:
-      return 'bottom-left';
-    case 3:
-      return 'bottom-right';
-    default:
-      return 'bottom-center';
+    case 1: return { x: 0.5, y: 0.35 };
+    case 2: return { x: 0.3, y: 0.7 };
+    case 3: return { x: 0.7, y: 0.7 };
+    default: return { x: 0.5, y: 0.75 };
   }
 }
 
 function iconToCanvas(icon: IconConfigItem): CanvasIcon {
-  const coords = POSITION_COORDS[icon.position] ?? POSITION_COORDS['bottom-center'];
-  const size = priorityToSize(icon.priority);
+  const coords = defaultCoordsForPriority(icon.priority);
+  const size = importanceToSize(icon.importance);
   return {
     id: icon.id,
     preview: icon.preview,
@@ -85,6 +85,7 @@ export function PromoIconForm() {
   const [results, setResults] = useState<GalleryItem[]>([]);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const canvasPreviewRef = useRef<CanvasPreviewRef>(null);
 
   // Restore form state from sessionStorage on mount
   useEffect(() => {
@@ -115,11 +116,12 @@ export function PromoIconForm() {
         const existing = prevMap.get(icon.id);
         if (existing) {
           // Keep position from canvas but update priority/size
+          const size = importanceToSize(icon.importance);
           return {
             ...existing,
             priority: icon.priority,
-            width: priorityToSize(icon.priority),
-            height: priorityToSize(icon.priority),
+            width: size,
+            height: size,
           };
         }
         return iconToCanvas(icon);
@@ -138,7 +140,7 @@ export function PromoIconForm() {
           base64: f.base64,
           mimeType: f.file.type,
           priority,
-          position: defaultPositionForPriority(priority),
+          importance: defaultImportanceForPriority(priority),
         };
       });
       const updated = [...icons, ...newIcons].slice(0, MAX_ICONS);
@@ -179,6 +181,9 @@ export function PromoIconForm() {
     setGenerating(true);
     setError(null);
     try {
+      // Capture canvas layout as image
+      const canvasDataUrl = canvasPreviewRef.current?.toDataURL() ?? '';
+
       const res = await fetch('/api/v1/image/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -191,17 +196,13 @@ export function PromoIconForm() {
               base64: stripDataUrlPrefix(i.base64),
               mimeType: i.mimeType,
               priority: i.priority,
-              position: i.position,
+              importance: i.importance,
             })),
             templateBase64: template ? stripDataUrlPrefix(template.base64) : undefined,
             templateMimeType: template?.file.type,
             prompt: prompt || undefined,
-            canvasLayout: canvasIcons.map((c) => ({
-              priority: c.priority,
-              x: c.x,
-              y: c.y,
-              size: c.width,
-            })),
+            canvasImageBase64: canvasDataUrl ? stripDataUrlPrefix(canvasDataUrl) : undefined,
+            canvasImageMimeType: canvasDataUrl ? 'image/png' : undefined,
           },
         }),
       });
@@ -223,7 +224,7 @@ export function PromoIconForm() {
     } finally {
       setGenerating(false);
     }
-  }, [model, sizePreset, icons, template, prompt, canvasIcons]);
+  }, [model, sizePreset, icons, template, prompt]);
 
   const canGenerate = icons.length > 0 && !generating;
 
@@ -259,7 +260,7 @@ export function PromoIconForm() {
         </StepCard>
 
         {/* Step 2: Icon Upload */}
-        <StepCard number={2} title="아이콘 업로드" subtitle="priority & position">
+        <StepCard number={2} title="아이콘 업로드" subtitle="importance & priority">
           <ImageUploadZone
             onFilesSelected={handleIconUpload}
             multiple
@@ -336,6 +337,7 @@ export function PromoIconForm() {
         <StepCard number={4} title="Canvas 프리뷰" subtitle="drag to adjust">
           {canvasIcons.length > 0 ? (
             <CanvasPreview
+              ref={canvasPreviewRef}
               icons={canvasIcons}
               onLayoutChange={handleCanvasLayoutChange}
             />
@@ -410,4 +412,3 @@ export function PromoIconForm() {
     </div>
   );
 }
-

@@ -1,6 +1,6 @@
 'use client';
 
-import { POSITION_PRESETS, MAX_PRIORITY } from '@aresdevunit/shared';
+import { IMPORTANCE_LEVELS, MAX_PRIORITY } from '@aresdevunit/shared';
 import { formatBytes, stripDataUrlPrefix } from './shared';
 
 export interface IconConfigItem {
@@ -10,7 +10,7 @@ export interface IconConfigItem {
   base64: string;
   mimeType: string;
   priority: number;
-  position: string;
+  importance: string;
 }
 
 interface IconConfigPanelProps {
@@ -78,13 +78,13 @@ export function IconConfigPanel({ icons, onChange, onRemove }: IconConfigPanelPr
               ))}
             </select>
 
-            {/* Position dropdown */}
+            {/* Importance dropdown */}
             <select
-              value={icon.position}
-              onChange={(e) => updateIcon(icon.id, { position: e.target.value })}
+              value={icon.importance}
+              onChange={(e) => updateIcon(icon.id, { importance: e.target.value })}
               className="h-8 cursor-pointer appearance-none rounded-md border border-zinc-300 bg-white bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22%238a8a96%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%2011L3%206h10z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-[right_8px_center] bg-no-repeat pl-2.5 pr-7 text-xs text-zinc-900 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
             >
-              {Object.entries(POSITION_PRESETS).map(([key, label]) => (
+              {Object.entries(IMPORTANCE_LEVELS).map(([key, label]) => (
                 <option key={key} value={key}>
                   {label}
                 </option>
